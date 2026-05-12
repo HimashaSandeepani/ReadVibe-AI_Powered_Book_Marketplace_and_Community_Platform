@@ -7,6 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "test:unit": "node --test tests/auth.test.js tests/recommendation-utils.test.js tests/homeFeaturedCommunityPosts.test.js",
+    "test:integration": "node --test tests/integration/cart.integration.test.js tests/integration/order.integration.test.js tests/integration/order-confirmation.integration.test.js tests/integration/wishlist.integration.test.js",
+    "test": "npm run test:unit && npm run test:integration",
     "preview": "vite preview"
   },
   "dependencies": {

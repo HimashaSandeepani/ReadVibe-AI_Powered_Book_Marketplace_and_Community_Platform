@@ -1,4 +1,4 @@
-import { addWishlistItemApi } from "./wishlistApi";
+import { addWishlistItemApi } from "./wishlistApi.js";
 
 const normalizeUser = (user) => {
   if (!user || typeof user !== "object") return null;

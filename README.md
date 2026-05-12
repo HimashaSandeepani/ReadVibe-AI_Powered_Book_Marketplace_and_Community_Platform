@@ -186,7 +186,83 @@ For detailed schema, see [Backend README](backend/README.md)
 - Token stored in localStorage (frontend)
 - Role-based route protection
 
+## 🧪 Testing Results
+
+The testing work for ReadVibe was structured around functional validation, integration checks, role-based access control, and AI recommendation evaluation. The following results summarize the implemented test coverage and the observed verification outcome in this workspace.
+
+### Functional Test Cases
+
+| TC | Feature | Test case | Expected result |
+|---|---|---|---|
+| 1 | Registration | Register a new user with valid name, email, username, and password | Account is created successfully and the user is ready to log in |
+| 2 | Login | Log in with valid credentials | User is authenticated and redirected to the correct role-based page |
+| 3 | Invalid login | Log in with an incorrect password or email | Login fails and an error message is shown |
+| 4 | Guest access | Open cart, wishlist, profile, or community actions while logged out | Access is blocked and the user is redirected |
+| 5 | Role redirection | Log in as regular user, stock manager, and admin | Each role is redirected to its permitted area |
+| 6 | Cart add item | Add a book to the cart as a logged-in user | Item appears in the cart with the correct quantity |
+| 7 | Cart quantity update | Increase or decrease cart item quantity | Quantity updates correctly and does not go below 1 |
+| 8 | Wishlist add/remove | Add a book to wishlist and then remove it | Wishlist updates correctly after each action |
+| 9 | Checkout flow | Complete the three-stage checkout process | Order is placed and the confirmation page is shown |
+| 10 | Stock validation | Try to exceed available stock during cart or checkout | System prevents invalid quantity and shows a warning |
+| 11 | Stock manager CRUD | Add, edit, and delete a book as stock manager | Changes are saved and reflected in the catalog |
+| 12 | Admin moderation | Manage users or moderate community posts as admin | Admin actions succeed and restricted actions stay blocked |
+
+### Functional Testing Results
+- User registration and login flows were validated against the role-based normalization logic used by the frontend authentication helpers.
+- Guest restrictions were verified through route-protection logic so non-authenticated users are blocked from cart, wishlist, profile, admin, and stock manager areas.
+- Cart and wishlist helper behavior was covered with repeatable tests for user identity handling and storage updates.
+- The checkout and order-confirmation path was supported by recommendation helper tests that confirm the order summary can resolve recommended books correctly.
+
+### Integration Testing Results
+- Shared frontend modules that depend on browser storage were adjusted so they can be imported safely in a test environment.
+- Recommendation utilities were verified as a connected flow: ordered books are resolved, recommendation rules are applied, and the final book objects are returned in the expected order.
+- Backend-facing API helpers for wishlist persistence were made import-safe, which allows the frontend test suite to exercise the same code paths used in production.
+
+### AI Recommendation Pipeline
+1. Load the interaction dataset from the CSV file.
+2. Clean and group the data into user-to-book transactions.
+3. Split the transactions into training and evaluation sets.
+4. Build frequent itemsets using Apriori.
+5. Generate association rules from the frequent itemsets.
+6. Apply the recommendation fallback chain when rules do not match.
+7. Save the new rules and the cleaned training snapshot as model artifacts.
+8. Evaluate the model using Hit Rate@K on the held-out transactions.
+
+### AI Recommendation Testing Results
+- The recommendation fallback chain was validated in the order used by the application: association rules, same-author fallback, category fallback, and database-first fallback.
+- Automated tests confirm that the system returns exactly four recommendations when enough catalog data is available.
+- The retraining script was covered with smoke tests that validate transaction loading, rule evaluation, hit-rate calculation, and artifact generation.
+
+### Current Validation Status
+- Frontend unit tests pass with `npm run test:unit`.
+- Frontend integration tests pass with `npm run test:integration`.
+- Backend integration tests pass with `npm run test:integration` in the backend folder.
+- The Python AI test suite passes locally with `py -m unittest discover -s tests`.
+
+### Test Files Added
+- [frontend/tests/auth.test.js](frontend/tests/auth.test.js)
+- [frontend/tests/recommendation-utils.test.js](frontend/tests/recommendation-utils.test.js)
+- [frontend/tests/integration/cart.integration.test.js](frontend/tests/integration/cart.integration.test.js)
+- [frontend/tests/integration/order.integration.test.js](frontend/tests/integration/order.integration.test.js)
+- [frontend/tests/integration/order-confirmation.integration.test.js](frontend/tests/integration/order-confirmation.integration.test.js)
+- [frontend/tests/integration/wishlist.integration.test.js](frontend/tests/integration/wishlist.integration.test.js)
+- [AI/tests/test_retrain_recommendation.py](AI/tests/test_retrain_recommendation.py)
+
 ## 📡 API Endpoints
+
+See [Backend README](backend/README.md) for the full endpoint list and request details.
+
+## 🧪 Postman Testing
+
+You can import the Postman collection in [postman/ReadVibe.postman_collection.json](postman/ReadVibe.postman_collection.json) together with [postman/ReadVibe.postman_environment.json](postman/ReadVibe.postman_environment.json).
+
+After import, set `baseUrl` to your backend address, usually `http://localhost:5000`, then run the requests in this order:
+1. `Auth` for register/login/logout.
+2. `Books` and `Catalog Setup` to seed or inspect catalog data.
+3. `Cart`, `Wishlist`, and `Orders` for user flow testing.
+4. `Profile`, `Community`, and `Support` for authenticated feature checks.
+
+Most user-scoped routes require `x-user-id` in the header and sometimes `userId` in the query string. The collection already includes those defaults, so you can replace only the IDs and payloads you want to test.
 
 ### Authentication
 ```
@@ -296,6 +372,9 @@ cd frontend
 npm run dev        # Start dev server
 npm run build      # Build for production
 npm run lint       # Run ESLint
+npm run test:unit  # Run frontend unit tests only
+npm run test:integration  # Run frontend integration tests only
+npm test           # Run all frontend tests
 ```
 
 ### Backend Development
@@ -303,7 +382,8 @@ npm run lint       # Run ESLint
 cd backend
 npm run dev        # Start with nodemon
 npm start          # Start production
-npm test           # Run tests (if configured)
+npm run test:integration  # Run backend integration tests
+npm test           # Run backend integration tests
 ```
 
 ## 📚 Project Structure Details
@@ -379,16 +459,19 @@ Database (PostgreSQL)
 
 ## 🧪 Testing
 
-### Frontend Testing (to be implemented)
+### Frontend Testing
 ```bash
 cd frontend
-npm run test
+npm run test:unit
+npm run test:integration
+npm test
 ```
 
-### Backend Testing (to be implemented)
+### Backend Testing
 ```bash
 cd backend
-npm run test
+npm run test:integration
+npm test
 ```
 
 ## 🚢 Production Deployment

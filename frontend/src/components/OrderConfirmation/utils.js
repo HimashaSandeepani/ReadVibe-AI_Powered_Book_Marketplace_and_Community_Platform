@@ -1,7 +1,7 @@
 // Format price helper
-import { formatPrice, formatDate } from "../../utils/helpers";
-import { getCurrentUser } from "../../utils/auth";
-import { getOrderPaymentConfirmationKey } from "../Checkout/utils";
+import { formatPrice, formatDate } from "../../utils/helpers.js";
+import { getCurrentUser } from "../../utils/auth.js";
+import { getOrderPaymentConfirmationKey } from "../Checkout/utils.js";
 
 const normalizeRecommendationId = (value) => {
   if (value === null || value === undefined) return "";

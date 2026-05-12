@@ -1,0 +1,361 @@
+{
+  "info": {
+    "name": "ReadVibe API",
+    "_postman_id": "b0c2f3c6-1f9d-4d6f-b5aa-2f8c9d6a7b11",
+    "description": "Core ReadVibe backend requests for auth, books, users, cart, orders, wishlist, profile, community, support, publishers, categories, and authors.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test.user@example.com\",\n  \"username\": \"testuser\",\n  \"password\": \"Password123\",\n  \"role\": \"user\",\n  \"status\": \"active\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"testuser\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Logout user",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "auth", "logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "List books",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/books", "host": ["{{baseUrl}}"], "path": ["api", "books"] } }
+        },
+        {
+          "name": "Get book by id",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/books/{{bookId}}", "host": ["{{baseUrl}}"], "path": ["api", "books", "{{bookId}}"] } }
+        },
+        {
+          "name": "Create book",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Sample Book\",\n  \"author\": \"Sample Author\",\n  \"category\": \"Fiction\",\n  \"price\": 1499,\n  \"stock\": 10,\n  \"featured\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/books", "host": ["{{baseUrl}}"], "path": ["api", "books"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        { "name": "List users", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] } } },
+        { "name": "Get user by id", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "users", "{{userId}}"] } } },
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"fullName\": \"Postman User\",\n  \"email\": \"postman.user@example.com\",\n  \"username\": \"postmanuser\",\n  \"password\": \"Password123\",\n  \"role\": \"user\",\n  \"status\": \"active\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api", "users"] }
+          }
+        },
+        { "name": "List roles", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users/roles", "host": ["{{baseUrl}}"], "path": ["api", "users", "roles"] } } },
+        { "name": "List statuses", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users/statuses", "host": ["{{baseUrl}}"], "path": ["api", "users", "statuses"] } } }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Get cart",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/cart?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "cart"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        },
+        {
+          "name": "Add to cart",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"bookId\": {{bookId}},\n  \"quantity\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/api/cart", "host": ["{{baseUrl}}"], "path": ["api", "cart"] }
+          }
+        },
+        {
+          "name": "Update cart item",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"quantity\": 2\n}" },
+            "url": { "raw": "{{baseUrl}}/api/cart/{{bookId}}", "host": ["{{baseUrl}}"], "path": ["api", "cart", "{{bookId}}"] }
+          }
+        },
+        {
+          "name": "Delete cart item",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/cart/{{bookId}}?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "cart", "{{bookId}}"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        },
+        {
+          "name": "Clear cart",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/cart?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "cart"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wishlist",
+      "item": [
+        {
+          "name": "Get wishlist",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/wishlist?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "wishlist"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        },
+        {
+          "name": "Add wishlist item",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"bookId\": {{bookId}},\n  \"priority\": 3,\n  \"notes\": \"Read later\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/wishlist", "host": ["{{baseUrl}}"], "path": ["api", "wishlist"] }
+          }
+        },
+        {
+          "name": "Update wishlist item",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"priority\": 4,\n  \"notes\": \"Top priority\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/wishlist/{{bookId}}", "host": ["{{baseUrl}}"], "path": ["api", "wishlist", "{{bookId}}"] }
+          }
+        },
+        {
+          "name": "Delete wishlist item",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/wishlist/{{bookId}}?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "wishlist", "{{bookId}}"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        },
+        {
+          "name": "Clear wishlist",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/wishlist?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "wishlist"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Get orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/orders?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "orders"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        },
+        {
+          "name": "Create order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"items\": [{ \"bookId\": {{bookId}}, \"quantity\": 1 }],\n  \"shippingMethod\": \"standard\",\n  \"shippingCost\": 500\n}" },
+            "url": { "raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api", "orders"] }
+          }
+        },
+        {
+          "name": "Get order by id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/orders/{{orderId}}?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "orders", "{{orderId}}"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        },
+        {
+          "name": "Update order tracking",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"shipped\",\n  \"courier\": \"DHL\",\n  \"trackingNumber\": \"TRK123\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/orders/{{orderId}}/tracking", "host": ["{{baseUrl}}"], "path": ["api", "orders", "{{orderId}}", "tracking"] }
+          }
+        },
+        {
+          "name": "Update order status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"delivered\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/orders/{{orderId}}/status", "host": ["{{baseUrl}}"], "path": ["api", "orders", "{{orderId}}", "status"] }
+          }
+        },
+        {
+          "name": "Get all orders",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/orders/all", "host": ["{{baseUrl}}"], "path": ["api", "orders", "all"] } }
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get profile summary",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "x-user-id", "value": "{{userId}}" }],
+            "url": { "raw": "{{baseUrl}}/api/profile?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "profile"], "query": [{ "key": "userId", "value": "{{userId}}" }] }
+          }
+        },
+        {
+          "name": "Update profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"fullName\": \"Updated User\",\n  \"email\": \"updated.user@example.com\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/profile", "host": ["{{baseUrl}}"], "path": ["api", "profile"] }
+          }
+        },
+        { "name": "List my reviews", "request": { "method": "GET", "header": [{ "key": "x-user-id", "value": "{{userId}}" }], "url": { "raw": "{{baseUrl}}/api/profile/reviews?userId={{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "profile", "reviews"], "query": [{ "key": "userId", "value": "{{userId}}" }] } } },
+        {
+          "name": "Create my review",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"bookId\": {{bookId}},\n  \"rating\": 5,\n  \"text\": \"Excellent book\",\n  \"title\": \"Great read\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/profile/reviews", "host": ["{{baseUrl}}"], "path": ["api", "profile", "reviews"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Community",
+      "item": [
+        { "name": "List posts", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/community/posts", "host": ["{{baseUrl}}"], "path": ["api", "community", "posts"] } } },
+        { "name": "Get post by id", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/community/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["api", "community", "posts", "{{postId}}"] } } },
+        {
+          "name": "Create post",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Reading update\",\n  \"content\": \"Loving the latest book in the series.\",\n  \"category\": \"General\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/community/posts", "host": ["{{baseUrl}}"], "path": ["api", "community", "posts"] }
+          }
+        },
+        { "name": "Like post", "request": { "method": "POST", "header": [{ "key": "x-user-id", "value": "{{userId}}" }], "url": { "raw": "{{baseUrl}}/api/community/posts/{{postId}}/like", "host": ["{{baseUrl}}"], "path": ["api", "community", "posts", "{{postId}}", "like"] } } },
+        {
+          "name": "Add comment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"content\": \"Great post!\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/community/posts/{{postId}}/comments", "host": ["{{baseUrl}}"], "path": ["api", "community", "posts", "{{postId}}", "comments"] }
+          }
+        },
+        { "name": "List book requests", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/community/requests", "host": ["{{baseUrl}}"], "path": ["api", "community", "requests"] } } },
+        {
+          "name": "Create book request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"bookTitle\": \"Requested Book\",\n  \"author\": \"Requested Author\",\n  \"reason\": \"Need it for reading group\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/community/requests", "host": ["{{baseUrl}}"], "path": ["api", "community", "requests"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Support",
+      "item": [
+        { "name": "List support messages", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/support/messages", "host": ["{{baseUrl}}"], "path": ["api", "support", "messages"] } } },
+        {
+          "name": "Create support message",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "x-user-id", "value": "{{userId}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"subject\": \"Order issue\",\n  \"message\": \"I need help with my order.\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/support/messages", "host": ["{{baseUrl}}"], "path": ["api", "support", "messages"] }
+          }
+        },
+        { "name": "List live chat threads", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/support/live-chat/threads", "host": ["{{baseUrl}}"], "path": ["api", "support", "live-chat", "threads"] } } },
+        {
+          "name": "Resolve live chat thread",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"order\": { \"id\": {{orderId}} },\n  \"user\": { \"id\": {{userId}} }\n}" },
+            "url": { "raw": "{{baseUrl}}/api/support/live-chat/threads/resolve", "host": ["{{baseUrl}}"], "path": ["api", "support", "live-chat", "threads", "resolve"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catalog Setup",
+      "item": [
+        { "name": "List publishers", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/publishers", "host": ["{{baseUrl}}"], "path": ["api", "publishers"] } } },
+        { "name": "List categories", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api", "categories"] } } },
+        { "name": "List authors", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/authors", "host": ["{{baseUrl}}"], "path": ["api", "authors"] } } }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!pm.environment.get('baseUrl')) {",
+          "  pm.environment.set('baseUrl', 'http://localhost:5000');",
+          "}",
+          "if (!pm.environment.get('userId')) {",
+          "  pm.environment.set('userId', '12');",
+          "}",
+          "if (!pm.environment.get('bookId')) {",
+          "  pm.environment.set('bookId', '7');",
+          "}",
+          "if (!pm.environment.get('orderId')) {",
+          "  pm.environment.set('orderId', '55');",
+          "}",
+          "if (!pm.environment.get('postId')) {",
+          "  pm.environment.set('postId', '1');",
+          "}"
+        ]
+      }
+    }
+  ]
+}

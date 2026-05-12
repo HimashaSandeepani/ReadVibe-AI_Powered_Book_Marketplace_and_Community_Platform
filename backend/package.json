@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:integration": "node --test tests/integration/health.integration.test.js tests/integration/auth.integration.test.js tests/integration/cart.integration.test.js tests/integration/wishlist.integration.test.js tests/integration/orders.integration.test.js",
+    "test": "npm run test:integration"
   },
   "keywords": [
     "express",

@@ -1,0 +1,9 @@
+# Use this workspace to collaborate
+workspace:
+  id: 5a8b49b9-ab28-454d-8be7-d1f07d10b656
+
+localResources:
+  collections:
+    - ..\ReadVibe.postman_collection.json
+  environments:
+    - ..\ReadVibe.postman_environment.json

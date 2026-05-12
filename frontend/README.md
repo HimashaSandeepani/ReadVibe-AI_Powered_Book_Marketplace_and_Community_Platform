@@ -72,6 +72,13 @@ npm run preview  # Preview production build locally
 npm run lint     # Run ESLint
 ```
 
+### Testing
+```bash
+npm run test:unit        # Run frontend unit tests only
+npm run test:integration # Run frontend integration tests only
+npm test                 # Run both unit and integration tests
+```
+
 ## Project Structure
 
 ```
@@ -308,6 +315,14 @@ Important backend-backed features include:
 - Orders and stock manager inventory updates
 - Support messages and live chat threads
 - Order confirmation emails sent via Gmail SMTP
+
+## Testing Notes
+
+The frontend test suite is split into two groups so you can run them separately from the terminal:
+- Unit tests cover pure helpers such as authentication normalization and recommendation utilities.
+- Integration tests cover API helper flows and connected feature paths.
+
+Use `npm run test:unit` for fast local helper checks, or `npm run test:integration` when you want the request-flow coverage.
 
 ## License
 
