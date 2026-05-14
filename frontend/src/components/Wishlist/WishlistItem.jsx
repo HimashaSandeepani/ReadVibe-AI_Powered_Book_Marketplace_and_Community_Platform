@@ -18,7 +18,7 @@ import {
 import { renderPriorityStars, formatPrice } from "./utils.jsx";
 import createBookCoverPlaceholder from "../../utils/imagePlaceholders";
 
-const WishlistItem = ({ item, onRemove, onAddToCart, onEditItem, actionsDisabled = false }) => {
+const WishlistItem = ({ item, onRemove, onAddToCart, onBuyNow, onEditItem, actionsDisabled = false }) => {
   return (
     <Col lg={4} md={6} key={item.id} className="mb-4">
       <Card className="wishlist-card h-100">
@@ -155,12 +155,12 @@ const WishlistItem = ({ item, onRemove, onAddToCart, onEditItem, actionsDisabled
               <Button
                 variant="primary"
                 size="sm"
-                onClick={() => onAddToCart(item.id)}
+                onClick={() => onBuyNow(item.id)}
                 disabled={!item.inStock || actionsDisabled}
-                title={actionsDisabled ? "Not available for this account" : item.inStock ? "Add to cart" : "Out of stock"}
+                title={actionsDisabled ? "Not available for this account" : item.inStock ? "Buy now" : "Out of stock"}
               >
                 <FontAwesomeIcon icon={faCartPlus} className="me-1" />
-                {item.inStock ? "Buy" : "Out"}
+                {item.inStock ? "Buy Now" : "Out"}
               </Button>
             </div>
           </div>

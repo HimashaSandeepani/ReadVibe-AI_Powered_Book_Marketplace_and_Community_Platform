@@ -1,11 +1,11 @@
 import { createApp } from './app.js';
-import authRoutes, { createAuthRouter } from './routes/auth.js';
+import { createAuthRouter } from './routes/auth.js';
 import booksRoutes from './routes/books.js';
 import usersRoutes from './routes/users.js';
-import cartRoutes, { createCartRouter } from './routes/cart.js';
-import ordersRoutes, { createOrdersRouter } from './routes/orders.js';
+import { createCartRouter } from './routes/cart.js';
+import { createOrdersRouter } from './routes/orders.js';
 import communityRoutes from './routes/community.js';
-import wishlistRoutes, { createWishlistRouter } from './routes/wishlist.js';
+import { createWishlistRouter } from './routes/wishlist.js';
 import profileRoutes from './routes/profile.js';
 import publishersRoutes from './routes/publishers.js';
 import categoriesRoutes from './routes/categories.js';

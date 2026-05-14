@@ -13,7 +13,16 @@ const readCartFromStorage = () => {
 
 const emitCartEvent = () => {
   try {
-    window.dispatchEvent(new CustomEvent("cart-updated"));
+    const dispatchCartEvent = () => {
+      window.dispatchEvent(new CustomEvent("cart-updated"));
+    };
+
+    if (typeof queueMicrotask === "function") {
+      queueMicrotask(dispatchCartEvent);
+      return;
+    }
+
+    setTimeout(dispatchCartEvent, 0);
   } catch {
     // no-op if events fail
   }

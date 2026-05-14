@@ -28,6 +28,7 @@ import {
   deleteWishlistItemApi,
   clearWishlistApi,
 } from "../utils/wishlistApi";
+import { addCartItemApi } from "../utils/cartApi";
 import "../styles/pages/Wishlist.css";
 
 const SAMPLE_NOTES = [
@@ -386,6 +387,48 @@ const Wishlist = () => {
     showNotification("Book added to cart!", "success");
   };
 
+  const handleBuyNow = (bookId) => {
+    if (!user) {
+      showNotification("Please login to buy books", "warning");
+      navigate("/login");
+      return;
+    }
+
+    if (isPrivilegedUser()) {
+      showNotification("Admin and stock manager accounts cannot buy books.", "warning");
+      return;
+    }
+
+    const book =
+      allBooks.find((b) => b.id === bookId) ||
+      wishlist.find((b) => b.id === bookId) ||
+      sampleBooks.find((b) => b.id === bookId);
+
+    const inStock = book?.inStock ?? (book?.stock ?? 0) > 0;
+
+    if (!book || !inStock) {
+      showNotification("This book is currently out of stock", "warning");
+      return;
+    }
+
+    const payload = [
+      {
+        id: book.id,
+        title: book.title,
+        author: book.author,
+        price: book.price,
+        image: book.image,
+        quantity: 1,
+        stock: book.stock ?? 0,
+      },
+    ];
+
+    dispatch(setCart(payload));
+    sessionStorage.setItem("checkoutCart", JSON.stringify(payload));
+    showNotification("Proceeding to delivery details", "success");
+    navigate("/delivery-details");
+  };
+
   // Add all available to cart
   const handleAddAllToCart = () => {
     if (isPrivilegedUser()) {
@@ -403,44 +446,47 @@ const Wishlist = () => {
     if (
       window.confirm(`Add ${availableItems.length} available items to cart?`)
     ) {
-      const mergedCart = [...cartItems];
+      const addItemsToCart = async () => {
+        try {
+          let latestCartItems = cartItems;
 
-      availableItems.forEach((item) => {
-        const existingItem = mergedCart.find(
-          (cartItem) => cartItem.id === item.id,
-        );
+          for (const item of availableItems) {
+            const responseItems = await addCartItemApi(user.id, item.id, 1);
+            latestCartItems = Array.isArray(responseItems)
+              ? responseItems.map((cartItem) => ({
+                  id: cartItem.bookId,
+                  quantity: cartItem.quantity,
+                  title: cartItem.title,
+                  author: cartItem.author,
+                  price: cartItem.price,
+                  image: resolveBookImage(cartItem),
+                  stock: cartItem.stock,
+                }))
+              : latestCartItems;
+          }
 
-        if (existingItem) {
-          existingItem.quantity += 1;
-        } else {
-          mergedCart.push({
-            id: item.id,
-            title: item.title,
-            author: item.author,
-            price: item.price,
-            image: item.image,
-            quantity: 1,
-            stock: item.stock,
-          });
+          dispatch(setCart(latestCartItems));
+
+          const updatedWishlist = wishlist.filter((item) => !item.inStock);
+          setWishlist(updatedWishlist);
+
+          // Remove added items from backend wishlist
+          Promise.all(
+            availableItems.map((item) =>
+              deleteWishlistItemApi({ userId: user.id, bookId: item.id }).catch(() => null),
+            ),
+          ).catch(() => null);
+
+          showNotification(
+            `${availableItems.length} items added to cart!`,
+            "success",
+          );
+        } catch (error) {
+          showNotification(error.message || "Failed to add items to cart", "danger");
         }
-      });
+      };
 
-      dispatch(setCart(mergedCart));
-
-      const updatedWishlist = wishlist.filter((item) => !item.inStock);
-      setWishlist(updatedWishlist);
-
-      // Remove added items from backend wishlist
-      Promise.all(
-        availableItems.map((item) =>
-          deleteWishlistItemApi({ userId: user.id, bookId: item.id }).catch(() => null),
-        ),
-      ).catch(() => null);
-
-      showNotification(
-        `${availableItems.length} items added to cart!`,
-        "success",
-      );
+      void addItemsToCart();
     }
   };
 
@@ -538,6 +584,7 @@ const Wishlist = () => {
                         onRemove={handleRemoveFromWishlist}
                         onEdit={handleEditItem}
                         onAddToCart={handleAddToCart}
+                        onBuyNow={handleBuyNow}
                         onEditItem={handleEditItem}
                         actionsDisabled={isPrivilegedUser()}
                       />
