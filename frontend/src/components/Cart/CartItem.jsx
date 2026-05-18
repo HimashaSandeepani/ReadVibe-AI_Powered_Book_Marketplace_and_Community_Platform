@@ -32,7 +32,7 @@ const CartItem = ({ item, book, onRemove, onUpdateQuantity }) => {
         </Col>
         <Col md={3} className="cart-item-details">
           <h6 className="mb-1">{book.title}</h6>
-          <p className="author mb-0">by {book.author}</p>
+          <p className="author mb-0">by {book.author || "Unknown Author"}</p>
           <small className="text-muted">
             Price: {formatPrice(book.price, true)} Each
           </small>

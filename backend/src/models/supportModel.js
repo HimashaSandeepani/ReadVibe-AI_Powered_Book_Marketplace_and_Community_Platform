@@ -358,3 +358,11 @@ export const getUnreadLiveChatThreadCount = async () => {
   `);
   return rows[0]?.count || 0;
 };
+
+export const getLiveChatThreadCount = async () => {
+  const { rows } = await query(`
+    SELECT COUNT(*)::int AS count
+    FROM live_chat_threads
+  `);
+  return rows[0]?.count || 0;
+};

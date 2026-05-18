@@ -67,6 +67,18 @@ export const loadLiveChatThreads = async (userId = null) => {
   return syncLiveChatCache(data.threads || []);
 };
 
+export const fetchLiveChatThreadsSummary = async (userId = null) => {
+  const query = userId ? `?userId=${encodeURIComponent(userId)}` : "";
+  const data = await handleApi(`/api/support/live-chat/threads${query}`);
+  const threads = syncLiveChatCache(data.threads || []);
+
+  return {
+    threads,
+    totalCount: Number(data.totalCount ?? threads.length) || 0,
+    unreadCount: Number(data.unreadCount) || 0,
+  };
+};
+
 export const getLiveChatThreads = () => liveChatCache;
 
 export const getLiveChatThread = (orderId, userId) =>

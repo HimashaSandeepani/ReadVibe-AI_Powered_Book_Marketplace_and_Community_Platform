@@ -23,15 +23,22 @@ import {
   getUserWishlist,
 } from "../../utils/helpers";
 import { addItem, setCart } from "../../store/slices/cartSlice";
+import { addCartItemApi } from "../../utils/cartApi";
+import { getCurrentUser, isPrivilegedUser } from "../../utils/auth";
 
 const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, rank = null }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const isLoggedIn = () => currentUser !== null;
+  const resolvedCurrentUser =
+    currentUser && typeof currentUser === "object" ? currentUser : getCurrentUser();
+  const currentUserId = resolvedCurrentUser?.id ?? null;
+  const isActionsDisabled = actionsDisabled || isPrivilegedUser();
+
+  const isLoggedIn = () => resolvedCurrentUser !== null;
 
   const isInWishlist = (bookId) => {
-    if (!currentUser) return false;
+    if (!resolvedCurrentUser) return false;
     const wishlist = getUserWishlist();
     return wishlist.some((item) => item.id === bookId);
   };
@@ -39,7 +46,7 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
   const handleAddToWishlist = async (e) => {
     e.stopPropagation();
 
-    if (actionsDisabled) {
+    if (isActionsDisabled) {
       showNotification("Admin and stock manager accounts cannot use wishlist actions.", "warning");
       return;
     }
@@ -50,17 +57,17 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
     }
 
     try {
-      await addToWishlist(book.id, currentUser.id);
+      await addToWishlist(book.id, currentUserId);
       showNotification("Book added to wishlist!", "success");
     } catch (error) {
       showNotification(error.message || "Failed to add to wishlist", "danger");
     }
   };
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.stopPropagation();
 
-    if (actionsDisabled) {
+    if (isActionsDisabled) {
       showNotification("Admin and stock manager accounts cannot add books to cart.", "warning");
       return;
     }
@@ -75,23 +82,57 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
       return;
     }
 
-    dispatch(
-      addItem({
-        id: book.id,
-        title: book.title,
-        price: book.price,
-        quantity: 1,
-        image: book.image,
-        stock: book.stock,
-      }),
-    );
-    showNotification("Book added to cart!", "success");
+    try {
+      const items = await addCartItemApi(currentUserId, book.id, 1);
+      const normalizedItems = Array.isArray(items)
+        ? items.map((item) => ({
+            id: item.bookId,
+            quantity: item.quantity,
+            title: item.title,
+            author: book.author,
+            price: item.price,
+            image: item.image,
+            stock: item.stock,
+          }))
+        : [];
+
+      if (normalizedItems.length > 0) {
+        dispatch(setCart(normalizedItems));
+      } else {
+        dispatch(
+          addItem({
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            price: book.price,
+            quantity: 1,
+            image: book.image,
+            stock: book.stock,
+          }),
+        );
+      }
+
+      showNotification("Book added to cart!", "success");
+    } catch (error) {
+      dispatch(
+        addItem({
+          id: book.id,
+          title: book.title,
+          author: book.author,
+          price: book.price,
+          quantity: 1,
+          image: book.image,
+          stock: book.stock,
+        }),
+      );
+      showNotification(error.message || "Book added to cart!", "success");
+    }
   };
 
   const handleBuyNow = (e) => {
     e.stopPropagation();
 
-    if (actionsDisabled) {
+    if (isActionsDisabled) {
       showNotification("Admin and stock manager accounts cannot buy books.", "warning");
       return;
     }
@@ -111,6 +152,7 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
         {
           id: book.id,
           title: book.title,
+          author: book.author,
           price: book.price,
           quantity: 1,
           image: book.image,
@@ -231,7 +273,7 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
               size="sm"
               onClick={handleAddToWishlist}
               className="book-action-btn"
-              disabled={actionsDisabled}
+              disabled={isActionsDisabled}
             >
               <FontAwesomeIcon
                 icon={isInWishlist(book.id) ? faHeart : faHeartRegular}
@@ -248,7 +290,7 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
                   size="sm"
                   onClick={handleAddToCart}
                   className="book-action-btn"
-                  disabled={actionsDisabled}
+                  disabled={isActionsDisabled}
                 >
                   <FontAwesomeIcon icon={faShoppingCart} className="me-1" />
                 </Button>
@@ -260,7 +302,7 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
                   size="sm"
                   onClick={handleBuyNow}
                   className="book-action-btn"
-                  disabled={actionsDisabled}
+                  disabled={isActionsDisabled}
                 >
                   <FontAwesomeIcon icon={faTruck} className="me-1" />
                 </Button>

@@ -37,9 +37,8 @@ import {
 import {
   getLiveChatThreads,
   getLiveChatUpdatedEventName,
-  loadLiveChatThreads,
+  fetchLiveChatThreadsSummary,
   sendLiveChatMessage,
-  getUnreadLiveChatThreadCount,
 } from "../utils/liveChat";
 
 const DEFAULT_SYSTEM_SETTINGS = {
@@ -138,6 +137,8 @@ const AdminPanel = () => {
     return [...loadedStatuses];
   });
   const [liveChatThreads, setLiveChatThreads] = useState([]);
+  const [liveChatTotalCount, setLiveChatTotalCount] = useState(0);
+  const [liveChatUnreadCount, setLiveChatUnreadCount] = useState(0);
 
   // Modal states
   const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -240,11 +241,19 @@ const AdminPanel = () => {
 
   useEffect(() => {
     const handleLiveChatUpdate = () => {
-      void loadLiveChatThreads().then((threads) => setLiveChatThreads(threads));
+      void fetchLiveChatThreadsSummary().then(({ threads, totalCount, unreadCount }) => {
+        setLiveChatThreads(threads);
+        setLiveChatTotalCount(totalCount);
+        setLiveChatUnreadCount(unreadCount);
+      });
     };
 
     window.addEventListener(getLiveChatUpdatedEventName(), handleLiveChatUpdate);
-    void loadLiveChatThreads().then((threads) => setLiveChatThreads(threads));
+    void fetchLiveChatThreadsSummary().then(({ threads, totalCount, unreadCount }) => {
+      setLiveChatThreads(threads);
+      setLiveChatTotalCount(totalCount);
+      setLiveChatUnreadCount(unreadCount);
+    });
     return () => {
       window.removeEventListener(getLiveChatUpdatedEventName(), handleLiveChatUpdate);
     };
@@ -256,6 +265,12 @@ const AdminPanel = () => {
       setActiveUserSubTab("all");
     }
   };
+
+  const resolvedLiveChatTotalCount = Math.max(
+    Number(liveChatTotalCount) || 0,
+    Array.isArray(liveChatThreads) ? liveChatThreads.length : 0,
+    Array.isArray(getLiveChatThreads()) ? getLiveChatThreads().length : 0,
+  );
 
   const handleAddUserSubmit = (formData) => {
     const errors = validateNewUser(formData, users);
@@ -527,7 +542,7 @@ const AdminPanel = () => {
           <DashboardTab
             users={users}
             posts={posts}
-            liveChatCount={liveChatThreads.length}
+            liveChatCount={resolvedLiveChatTotalCount}
             liveChatThreads={liveChatThreads}
           />
         );
@@ -560,7 +575,7 @@ const AdminPanel = () => {
             <AdminSidebar
               activeTab={activeTab}
               onTabChange={handleTabChange}
-              liveChatCount={getUnreadLiveChatThreadCount()}
+              liveChatCount={liveChatUnreadCount}
             />
           </div>
 

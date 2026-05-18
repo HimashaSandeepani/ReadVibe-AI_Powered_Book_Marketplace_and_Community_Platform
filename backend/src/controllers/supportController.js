@@ -1,6 +1,7 @@
 import {
   addSupportReply,
   createSupportMessage,
+  getLiveChatThreadCount,
   getLiveChatThread,
   getLiveChatThreads,
   getSupportMessages,
@@ -87,7 +88,11 @@ export const listLiveChatThreadsHandler = async (req, res, next) => {
   try {
     const userId = getOptionalUserId(req);
     const threads = await getLiveChatThreads(userId);
-    res.json({ threads, unreadCount: await getUnreadLiveChatThreadCount() });
+    res.json({
+      threads,
+      totalCount: await getLiveChatThreadCount(),
+      unreadCount: await getUnreadLiveChatThreadCount(),
+    });
   } catch (err) {
     next(err);
   }

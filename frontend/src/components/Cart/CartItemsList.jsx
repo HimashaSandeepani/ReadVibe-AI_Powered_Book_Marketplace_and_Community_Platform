@@ -11,8 +11,7 @@ const CartItemsList = ({ cart, books, onRemoveItem, onUpdateQuantity }) => {
         <h4>Cart Items ({itemCount} items)</h4>
         <div id="cartItemsList">
           {cart.map((item) => {
-            const book = books.find((b) => b.id === item.id);
-            if (!book) return null;
+            const book = books.find((b) => b.id === item.id) || item;
 
             return (
               <CartItem

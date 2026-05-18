@@ -22,7 +22,8 @@ export const formatPriceLKR = (price) => formatPrice(price, true);
 export const calculateTotals = (cart, books) => {
   const subtotal = cart.reduce((sum, item) => {
     const book = books.find((b) => b.id === item.id);
-    return sum + (book ? book.price * item.quantity : 0);
+    const price = Number(book?.price ?? item.price ?? 0);
+    return sum + price * item.quantity;
   }, 0);
 
   const shipping = subtotal > 0 ? 500.0 : 0; // LKR 500.00 for shipping
@@ -96,7 +97,8 @@ import createBookCoverPlaceholder from "../../utils/imagePlaceholders";
 export const checkStockAvailability = (cart, books) => {
   return cart.filter((item) => {
     const book = books.find((b) => b.id === item.id);
-    return book && !book.inStock;
+    const inStock = book?.inStock ?? (book?.stock ?? item.stock ?? 0) > 0;
+    return !inStock;
   });
 };
 
@@ -108,10 +110,10 @@ export const prepareCheckoutData = (cart, books) => {
     const book = books.find((b) => b.id === item.id);
     return {
       ...item,
-      title: book?.title || "Unknown Book",
-      author: book?.author || "Unknown Author",
-      price: book?.price || 0,
-      image: book?.image || createBookCoverPlaceholder(),
+      title: book?.title || item.title || "Unknown Book",
+      author: book?.author || item.author || "Unknown Author",
+      price: book?.price ?? item.price ?? 0,
+      image: book?.image || item.image || createBookCoverPlaceholder(),
     };
   });
 

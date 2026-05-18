@@ -1,5 +1,6 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import StatsCards from "./StatsCards";
+import { fetchLiveChatThreadsSummary } from "../../utils/liveChat";
 
 const formatRelativeTime = (value) => {
   if (!value) return "Recently";
@@ -37,6 +38,30 @@ const getStatusClass = (status) => {
 };
 
 const DashboardTab = ({ users, posts, liveChatCount = 0, liveChatThreads = [] }) => {
+  const [apiLiveChatCount, setApiLiveChatCount] = useState(0);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadLiveChatCount = async () => {
+      try {
+        const summary = await fetchLiveChatThreadsSummary();
+        if (!isMounted) return;
+
+        setApiLiveChatCount(Number(summary.totalCount) || summary.threads.length || 0);
+      } catch {
+        if (!isMounted) return;
+        setApiLiveChatCount(0);
+      }
+    };
+
+    void loadLiveChatCount();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const userStats = {
     total: users.length,
     newThisMonth: users.filter((user) => {
@@ -52,7 +77,11 @@ const DashboardTab = ({ users, posts, liveChatCount = 0, liveChatThreads = [] })
   };
 
   const liveChatStats = {
-    total: liveChatCount,
+    total: Math.max(
+      Number(apiLiveChatCount) || 0,
+      Number(liveChatCount) || 0,
+      Array.isArray(liveChatThreads) ? liveChatThreads.length : 0,
+    ),
   };
 
   const recentActivity = [

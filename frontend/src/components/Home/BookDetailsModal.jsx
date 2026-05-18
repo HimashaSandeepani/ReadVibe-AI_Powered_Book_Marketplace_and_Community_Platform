@@ -31,7 +31,7 @@ import {
   getUserWishlist,
 } from "../../utils/helpers";
 import { addItem, setCart } from "../../store/slices/cartSlice";
-import { isPrivilegedUser } from "../../utils/auth";
+import { getCurrentUser, isPrivilegedUser } from "../../utils/auth";
 
 const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) => {
   const navigate = useNavigate();
@@ -40,11 +40,15 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
   if (!book) return null;
   const reviewItems = Array.isArray(book.reviewsList) ? book.reviewsList : [];
 
-  const isLoggedIn = () => currentUser !== null;
-  const isActionsDisabled = actionsDisabled ?? isPrivilegedUser();
+  const resolvedCurrentUser =
+    currentUser && typeof currentUser === "object" ? currentUser : getCurrentUser();
+  const currentUserId = resolvedCurrentUser?.id ?? null;
+  const isLoggedIn = () => resolvedCurrentUser !== null;
+  const isActionsDisabled = actionsDisabled || isPrivilegedUser();
+  const isBookInStock = book.inStock ?? Number(book.stock) > 0;
 
   const isInWishlist = (bookId) => {
-    if (!currentUser) return false;
+    if (!resolvedCurrentUser) return false;
     const wishlist = getUserWishlist();
     return wishlist.some((item) => item.id === bookId);
   };
@@ -62,7 +66,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
     }
 
     try {
-      await addToWishlist(book.id, currentUser.id);
+      await addToWishlist(book.id, currentUserId);
       showNotification("Book added to wishlist!", "success");
     } catch (error) {
       showNotification(error.message || "Failed to add to wishlist", "danger");
@@ -81,7 +85,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
       return;
     }
 
-    if (book.stock === 0 || !book.inStock) {
+    if (!isBookInStock) {
       showNotification("This book is currently out of stock", "warning");
       return;
     }
@@ -111,7 +115,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
       return;
     }
 
-    if (book.stock === 0 || !book.inStock) {
+    if (!isBookInStock) {
       showNotification("This book is currently out of stock", "warning");
       return;
     }
@@ -334,7 +338,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
               variant="outline-primary"
               onClick={handleAddToCart}
               className="book-action-btn"
-              disabled={isActionsDisabled || !book.inStock || book.stock === 0}
+              disabled={isActionsDisabled || !isBookInStock}
             >
               <FontAwesomeIcon icon={faShoppingCart} className="me-2" />
               Add to Cart
@@ -343,7 +347,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
               variant="primary"
               onClick={handleBuyNow}
               className="book-action-btn"
-              disabled={isActionsDisabled || !book.inStock || book.stock === 0}
+              disabled={isActionsDisabled || !isBookInStock}
             >
               <FontAwesomeIcon icon={faTruck} className="me-2" />
               Buy Now
