@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { formatPrice, formatDate } from "./utils";
 
+// Renders the user's order history list and follow-up actions.
 const OrderHistory = ({ orders, onBack, onReviewOrder, onViewDetails }) => {
   return (
     <Card className="dashboard-card mb-4">

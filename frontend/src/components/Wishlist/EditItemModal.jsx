@@ -12,6 +12,7 @@ import {
 // In WishlistItem.jsx, EditItemModal.jsx, etc.
 import { renderPriorityStars, getPriorityLabel } from "./utils.jsx";
 
+// Renders the modal for editing wishlist item priority and notes.
 const EditItemModal = ({
   show,
   onHide,

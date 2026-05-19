@@ -1,6 +1,7 @@
 // Order database access helpers and table initialization.
 import pool, { query } from '../config/database.js';
 
+// Ensures the orders and order_items tables exist before any read or write operation runs.
 const ensureTables = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS orders (
@@ -37,6 +38,7 @@ const ensureTables = async () => {
   `);
 };
 
+// Retries table creation when dependencies are not yet ready.
 const ensureTablesWithRetry = async (attempt = 1) => {
   try {
     await ensureTables();
@@ -53,6 +55,7 @@ const ensureTablesWithRetry = async (attempt = 1) => {
 
 void ensureTablesWithRetry();
 
+// Maps an order row into the API order shape.
 const mapOrder = (row) => ({
   id: row.id,
   userId: Number(row.user_id) || row.user_id,
@@ -71,6 +74,7 @@ const mapOrder = (row) => ({
   orderDate: row.created_at,
 });
 
+// Extends an order with the latest tracking data.
 const mapOrderWithTracking = (row) => {
   const trackingUpdates = Array.isArray(row.tracking_updates)
     ? row.tracking_updates
@@ -89,6 +93,7 @@ const mapOrderWithTracking = (row) => {
   };
 };
 
+// Maps an order item row into the API item shape.
 const mapItem = (row) => ({
   id: row.id,
   orderId: row.order_id,
@@ -100,6 +105,7 @@ const mapItem = (row) => ({
   image: row.image,
 });
 
+// Returns all items for a specific order.
 const getOrderItems = async (orderId) => {
   const { rows } = await query(
     `SELECT oi.*, b.title, b.image
@@ -112,6 +118,7 @@ const getOrderItems = async (orderId) => {
   return rows.map(mapItem);
 };
 
+// Returns one order together with its line items and tracking details.
 export const getOrderById = async (orderId) => {
   const { rows } = await query(
     `SELECT o.*, u.full_name AS customer_name, u.email AS customer_email
@@ -127,6 +134,7 @@ export const getOrderById = async (orderId) => {
   return { ...order, items, itemCount: items.length };
 };
 
+// Returns all orders for a single user.
 export const getOrdersForUser = async (userId) => {
   const { rows } = await query(
     `SELECT o.*, u.full_name AS customer_name, u.email AS customer_email
@@ -145,6 +153,7 @@ export const getOrdersForUser = async (userId) => {
   return orders;
 };
 
+// Returns every order for admin and stock dashboards.
 export const getAllOrders = async () => {
   const { rows } = await query(
     `SELECT o.*, u.full_name AS customer_name, u.email AS customer_email
@@ -165,6 +174,7 @@ export const getAllOrders = async () => {
   return orders;
 };
 
+// Updates the order status and returns the refreshed order.
 export const updateOrderStatus = async (orderId, status) => {
   const { rows } = await query(
     `UPDATE orders
@@ -178,6 +188,7 @@ export const updateOrderStatus = async (orderId, status) => {
   return getOrderById(orderId);
 };
 
+// Appends a tracking update and returns the refreshed order.
 export const updateOrderTracking = async (orderId, trackingUpdate) => {
   const order = await getOrderById(orderId);
   if (!order) return null;
@@ -208,6 +219,7 @@ export const updateOrderTracking = async (orderId, trackingUpdate) => {
   return getOrderById(orderId);
 };
 
+// Creates an order, writes its items, and clears the user's cart.
 export const createOrder = async ({
   userId,
   items,

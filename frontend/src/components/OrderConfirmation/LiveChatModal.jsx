@@ -12,6 +12,7 @@ import {
   sendLiveChatMessage,
 } from "../../utils/liveChat";
 
+// Renders the live chat support modal for an order.
 const LiveChatModal = ({ show, onHide, order }) => {
   const [thread, setThread] = useState(null);
 

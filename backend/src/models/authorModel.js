@@ -1,6 +1,7 @@
 // Author database access helpers and table initialization.
 import { query } from '../config/database.js';
 
+// Ensures the authors table exists before any read or write operation runs.
 const ensureTable = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS authors (
@@ -14,6 +15,7 @@ const ensureTable = async () => {
 
 ensureTable().catch((err) => console.error('Failed to ensure authors table', err));
 
+// Maps a database row into the API author shape.
 const mapRow = (row) => ({
   id: row.author_id,
   name: row.author_name,
@@ -21,6 +23,7 @@ const mapRow = (row) => ({
   createdAt: row.created_at,
 });
 
+// Returns all authors sorted alphabetically.
 export const listAuthors = async () => {
   const { rows } = await query(
     'SELECT author_id, author_name, status_id, created_at FROM authors ORDER BY author_name ASC'
@@ -28,6 +31,7 @@ export const listAuthors = async () => {
   return rows.map(mapRow);
 };
 
+// Returns one author by id or null when no row exists.
 export const getAuthorById = async (id) => {
   const { rows } = await query(
     'SELECT author_id, author_name, status_id, created_at FROM authors WHERE author_id = $1 LIMIT 1',
@@ -37,6 +41,7 @@ export const getAuthorById = async (id) => {
   return mapRow(rows[0]);
 };
 
+// Creates a new author and returns the stored record.
 export const createAuthor = async ({ name }) => {
   const { rows } = await query(
     `INSERT INTO authors (author_name)
@@ -47,6 +52,7 @@ export const createAuthor = async ({ name }) => {
   return getAuthorById(rows[0].author_id);
 };
 
+// Updates the provided author fields and returns the refreshed row.
 export const updateAuthor = async (id, updates = {}) => {
   const fields = [];
   const values = [];
@@ -71,6 +77,7 @@ export const updateAuthor = async (id, updates = {}) => {
   return getAuthorById(id);
 };
 
+// Deletes an author by id.
 export const deleteAuthor = async (id) => {
   await query('DELETE FROM authors WHERE author_id = $1', [id]);
 };

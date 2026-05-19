@@ -4,6 +4,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faSave } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the profile editing modal for account details.
 const EditProfileModal = ({ show, onHide, user, onSave }) => {
   const [formData, setFormData] = useState({
     name: user?.name || "",

@@ -12,6 +12,7 @@ import {
 // In WishlistItem.jsx, EditItemModal.jsx, etc.
 import { calculateSummary, formatPrice } from "./utils.jsx";
 
+// Renders the wishlist summary and bulk action card.
 const SummaryCard = ({ wishlist, onAddAllToCart, onClearWishlist }) => {
   const summary = calculateSummary(wishlist);
 

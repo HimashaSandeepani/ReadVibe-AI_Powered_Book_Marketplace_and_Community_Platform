@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the add/edit book modal used by the stock manager.
 const BookModalBase = ({
   show,
   onClose,
@@ -42,6 +43,7 @@ const BookModalBase = ({
 
   if (!show) return null;
 
+  // Adds a new author entry from the modal input.
   const handleAddAuthor = () => {
     const name = (authorNameInput || "").trim();
     if (!name) return;

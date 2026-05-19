@@ -4,6 +4,7 @@ import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the support contact modal for order issues.
 const ContactSupportModal = ({ show, onHide, order, onSubmit }) => {
   const [message, setMessage] = useState("");
 

@@ -1,6 +1,7 @@
 // Support ticket and chat database access helpers.
 import pool, { query } from '../config/database.js';
 
+// Ensures the support-related tables exist before any read or write operation runs.
 const ensureTables = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS support_messages (
@@ -47,6 +48,7 @@ const ensureTables = async () => {
   `);
 };
 
+// Retries table creation when dependencies are not yet ready.
 const ensureTablesWithRetry = async (attempt = 1) => {
   try {
     await ensureTables();
@@ -63,6 +65,7 @@ const ensureTablesWithRetry = async (attempt = 1) => {
 
 void ensureTablesWithRetry();
 
+// Maps a reply row into the API reply shape.
 const mapReply = (reply) => ({
   id: reply.id,
   senderRole: reply.senderRole || 'stock',
@@ -71,6 +74,7 @@ const mapReply = (reply) => ({
   createdAt: reply.createdAt,
 });
 
+// Maps a support message row into the API message shape.
 const mapSupportMessage = (row) => ({
   id: row.id,
   orderId: row.order_id,
@@ -88,6 +92,7 @@ const mapSupportMessage = (row) => ({
   replies: Array.isArray(row.replies) ? row.replies.map(mapReply) : [],
 });
 
+// Maps a live chat message into the API message shape.
 const mapLiveChatMessage = (message) => ({
   id: message.id,
   senderRole: message.senderRole || 'user',
@@ -96,6 +101,7 @@ const mapLiveChatMessage = (message) => ({
   createdAt: message.createdAt,
 });
 
+// Maps a live chat thread row into the API thread shape.
 const mapLiveChatThread = (row) => ({
   id: row.id,
   orderId: row.order_id,
@@ -109,6 +115,7 @@ const mapLiveChatThread = (row) => ({
   messages: Array.isArray(row.messages) ? row.messages.map(mapLiveChatMessage) : [],
 });
 
+// Builds a support message filter for the current user id when present.
 const buildSupportWhere = (userId) => {
   if (userId === null || userId === undefined || userId === '') {
     return { clause: '', params: [] };
@@ -124,6 +131,7 @@ const buildSupportWhere = (userId) => {
   };
 };
 
+// Returns support messages, optionally filtered by user id.
 export const getSupportMessages = async (userId = null) => {
   const { clause, params } = buildSupportWhere(userId);
   const { rows } = await query(
@@ -133,6 +141,7 @@ export const getSupportMessages = async (userId = null) => {
   return rows.map(mapSupportMessage);
 };
 
+// Creates a support message and returns the stored record.
 export const createSupportMessage = async ({
   orderId,
   orderNumber,
@@ -181,6 +190,7 @@ export const createSupportMessage = async ({
   return mapSupportMessage(rows[0]);
 };
 
+// Adds a reply to an existing support message.
 export const addSupportReply = async (messageId, replyText, repliedBy = {}) => {
   if (!messageId || !replyText?.trim()) {
     const err = new Error('messageId and replyText are required');
@@ -213,6 +223,7 @@ export const addSupportReply = async (messageId, replyText, repliedBy = {}) => {
   return mapSupportMessage(updatedRows[0]);
 };
 
+// Returns the count of unread support messages.
 export const getUnreadSupportMessageCount = async () => {
   const { rows } = await query(
     `SELECT COUNT(*)::int AS count FROM support_messages WHERE status = 'Open'`
@@ -220,6 +231,7 @@ export const getUnreadSupportMessageCount = async () => {
   return rows[0]?.count || 0;
 };
 
+// Builds a live chat filter for the current user id when present.
 const buildThreadWhere = (userId) => {
   if (userId === null || userId === undefined || userId === '') {
     return { clause: '', params: [] };
@@ -235,6 +247,7 @@ const buildThreadWhere = (userId) => {
   };
 };
 
+// Returns live chat threads, optionally filtered by user id.
 export const getLiveChatThreads = async (userId = null) => {
   const { clause, params } = buildThreadWhere(userId);
   const { rows } = await query(
@@ -244,6 +257,7 @@ export const getLiveChatThreads = async (userId = null) => {
   return rows.map(mapLiveChatThread);
 };
 
+// Returns a single live chat thread for an order and user.
 export const getLiveChatThread = async (orderId, userId) => {
   if (!orderId || !userId) return null;
 
@@ -254,6 +268,7 @@ export const getLiveChatThread = async (orderId, userId) => {
   return rows[0] ? mapLiveChatThread(rows[0]) : null;
 };
 
+// Ensures a live chat thread exists for the given order and user.
 export const ensureLiveChatThread = async ({ order, user }) => {
   if (!order || !user) return null;
 
@@ -305,6 +320,7 @@ export const ensureLiveChatThread = async ({ order, user }) => {
   return mapLiveChatThread(rows[0]);
 };
 
+// Appends a live chat message to the thread for the given order and user.
 export const sendLiveChatMessage = async ({ order, user, senderRole, senderName, message }) => {
   if (!order || !user || !message?.trim()) return null;
 
@@ -345,11 +361,13 @@ export const sendLiveChatMessage = async ({ order, user, senderRole, senderName,
   return mapLiveChatThread(rows[0]);
 };
 
+// Resolves a live chat thread for the given order and user.
 export const resolveLiveChatThread = async ({ order, user }) => {
   if (!order || !user) return null;
   return ensureLiveChatThread({ order, user });
 };
 
+// Returns the count of live chat threads awaiting a user reply.
 export const getUnreadLiveChatThreadCount = async () => {
   const { rows } = await query(`
     SELECT COUNT(*)::int AS count
@@ -360,6 +378,7 @@ export const getUnreadLiveChatThreadCount = async () => {
   return rows[0]?.count || 0;
 };
 
+// Returns the total number of live chat threads.
 export const getLiveChatThreadCount = async () => {
   const { rows } = await query(`
     SELECT COUNT(*)::int AS count

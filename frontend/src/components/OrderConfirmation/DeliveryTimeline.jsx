@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 // Defines the canonical order progression for the timeline.
+// Renders the delivery status timeline for a confirmed order.
 const statusOrder = [
   "Processing",
   "Shipped",

@@ -21,6 +21,7 @@ const pool = new Pool({
 pool.on('connect', () => console.log('Connected to PostgreSQL database'));
 pool.on('error', (err) => console.error('Unexpected error on idle client', err));
 
+// Verifies the database connection with retries during startup.
 const testConnection = async (attempt = 1) => {
   try {
     await pool.query('SELECT 1');
@@ -37,5 +38,6 @@ const testConnection = async (attempt = 1) => {
 
 void testConnection();
 
+// Runs a SQL query against the shared connection pool.
 export const query = (text, params) => pool.query(text, params);
 export default pool;

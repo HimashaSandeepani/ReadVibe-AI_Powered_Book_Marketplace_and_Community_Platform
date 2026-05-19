@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import StatusBadge from "../Common/StatusBadge";
 
+// Renders the modal for reviewing a book request and taking action.
 const RequestDetailsModal = ({
   show,
   onClose,

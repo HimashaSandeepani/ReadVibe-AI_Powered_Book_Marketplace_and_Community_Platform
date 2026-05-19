@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTimes } from "@fortawesome/free-solid-svg-icons";
 import ReviewItem from "./ReviewItem";
 
+// Renders the user's review history section.
 const MyReviews = ({ reviews, onBack, onEditReview, onDeleteReview }) => {
   return (
     <Card className="dashboard-card mb-4">

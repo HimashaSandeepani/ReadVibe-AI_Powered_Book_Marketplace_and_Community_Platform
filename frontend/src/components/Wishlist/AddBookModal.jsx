@@ -22,6 +22,7 @@ import {
 import { categories, renderPriorityStars, getPriorityLabel } from "./utils.jsx";
 // In WishlistItem.jsx, EditItemModal.jsx, etc.
 
+// Renders the modal for searching or manually adding wishlist books.
 const AddBookModal = ({
   show,
   onHide,

@@ -10,6 +10,7 @@ import {
 import StatusBadge from "../Common/StatusBadge";
 import ActionButtons from "../Common/ActionButtons";
 
+// Renders the publisher management tab and contact actions.
 const PublishersTab = ({
   publishers,
   onAddPublisher,

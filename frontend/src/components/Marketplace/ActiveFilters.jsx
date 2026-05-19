@@ -4,6 +4,7 @@ import { Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the active marketplace filter chips and clear actions.
 const ActiveFilters = ({
   filters,
   setFilters,

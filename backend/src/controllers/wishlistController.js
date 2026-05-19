@@ -7,6 +7,7 @@ import {
   updateWishlistItem,
 } from '../models/wishlistModel.js';
 
+// Extracts the current user id and fails fast when it is missing.
 const ensureUser = (req) => {
   if (!req.userId) {
     const err = new Error('userId is required');
@@ -16,6 +17,7 @@ const ensureUser = (req) => {
   return req.userId;
 };
 
+// Returns the current user's wishlist items.
 export const getWishlist = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -26,6 +28,7 @@ export const getWishlist = async (req, res, next) => {
   }
 };
 
+// Adds a book to the current user's wishlist.
 export const addWishlist = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -41,6 +44,7 @@ export const addWishlist = async (req, res, next) => {
   }
 };
 
+// Updates a wishlist item for the current user.
 export const updateWishlist = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -54,6 +58,7 @@ export const updateWishlist = async (req, res, next) => {
   }
 };
 
+// Deletes a wishlist item for the current user.
 export const deleteWishlist = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -64,6 +69,7 @@ export const deleteWishlist = async (req, res, next) => {
   }
 };
 
+// Clears the current user's wishlist.
 export const clearWishlistHandler = async (req, res, next) => {
   try {
     const userId = ensureUser(req);

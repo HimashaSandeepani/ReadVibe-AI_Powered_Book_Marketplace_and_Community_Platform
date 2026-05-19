@@ -11,6 +11,7 @@ import {
   faComments,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the user's identity card and profile navigation buttons.
 const UserInfoCard = ({
   user,
   activeSection,

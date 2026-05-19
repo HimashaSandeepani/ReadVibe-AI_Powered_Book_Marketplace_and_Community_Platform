@@ -18,6 +18,7 @@ import StatsCard from "../Common/StatsCard";
 import StatusBadge from "../Common/StatusBadge";
 import { formatCurrency } from "../utils";
 
+// Renders the stock manager dashboard overview and quick actions.
 const DashboardTab = ({
   stats,
   onAddBook,

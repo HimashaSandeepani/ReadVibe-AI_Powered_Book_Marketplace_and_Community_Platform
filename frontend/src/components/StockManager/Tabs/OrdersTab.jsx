@@ -3,6 +3,7 @@ import React from "react";
 import StatsCard from "../Common/StatsCard";
 import OrdersTable from "../Tables/OrdersTable";
 
+// Renders the stock manager order workflow tab.
 const OrdersTab = ({
   stats,
   orders,

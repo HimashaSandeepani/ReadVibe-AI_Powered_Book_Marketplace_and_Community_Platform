@@ -9,12 +9,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import StatsCard from "../Common/StatsCard";
 
+// Renders the stock manager support inbox and reply composer.
 const formatDateTime = (value) =>
   new Date(value).toLocaleString([], {
     dateStyle: "medium",
     timeStyle: "short",
   });
 
+  // Renders the stock manager support messages tab.
 const SupportMessagesTab = ({
   messages,
   replyDrafts,

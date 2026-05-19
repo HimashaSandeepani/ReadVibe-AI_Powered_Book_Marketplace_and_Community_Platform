@@ -1,6 +1,7 @@
 // Community post database access helpers.
 import { query } from '../config/database.js';
 
+// Builds the shared post select used by community list and lookup queries.
 const postBaseSelect = `
   SELECT
     p.id,
@@ -29,6 +30,7 @@ const postBaseSelect = `
   LEFT JOIN community_comments c ON c.post_id = p.id
 `;
 
+// Maps a post row into the API community post shape.
 const mapPostRow = (row) => ({
   id: row.id,
   userId: row.user_id,
@@ -49,6 +51,7 @@ const mapPostRow = (row) => ({
   updatedAt: row.updated_at,
 });
 
+// Ensures the community tables exist before any read or write operation runs.
 const ensureTables = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS community_posts (
@@ -103,6 +106,7 @@ const ensureTables = async () => {
   `);
 };
 
+// Retries table creation when dependencies are not yet ready.
 const ensureTablesWithRetry = async (attempt = 1) => {
   try {
     await ensureTables();
@@ -119,11 +123,13 @@ const ensureTablesWithRetry = async (attempt = 1) => {
 
 void ensureTablesWithRetry();
 
+// Returns all community posts sorted by newest first.
 export const listPosts = async () => {
   const { rows } = await query(`${postBaseSelect} GROUP BY p.id, u.username, u.full_name, p.book_title, b.title ORDER BY p.created_at DESC`);
   return rows.map(mapPostRow);
 };
 
+// Returns one community post by id or null when no row exists.
 export const getPostById = async (id) => {
   const { rows } = await query(
     `${postBaseSelect} WHERE p.id = $1 GROUP BY p.id, u.username, u.full_name, p.book_title, b.title`,
@@ -133,6 +139,7 @@ export const getPostById = async (id) => {
   return mapPostRow(rows[0]);
 };
 
+// Creates a new community post and returns the stored record.
 export const createPost = async ({ userId, title, category, content, bookId, bookTitle }) => {
   const { rows } = await query(
     `INSERT INTO community_posts (user_id, title, category, content, book_id, book_title)
@@ -143,10 +150,12 @@ export const createPost = async ({ userId, title, category, content, bookId, boo
   return getPostById(rows[0].id);
 };
 
+// Deletes a community post by id.
 export const deletePost = async (id) => {
   await query('DELETE FROM community_posts WHERE id = $1', [id]);
 };
 
+// Returns all comments attached to a given community post.
 export const listCommentsForPost = async (postId) => {
   const { rows } = await query(
     `SELECT c.id, c.post_id, c.user_id, u.username, u.full_name, c.content, c.created_at
@@ -168,6 +177,7 @@ export const listCommentsForPost = async (postId) => {
   }));
 };
 
+// Creates a comment and returns the refreshed comment list.
 export const createComment = async ({ postId, userId, content }) => {
   await query(
     `INSERT INTO community_comments (post_id, user_id, content)
@@ -177,6 +187,7 @@ export const createComment = async ({ postId, userId, content }) => {
   return listCommentsForPost(postId);
 };
 
+// Toggles a like for the current user and returns the new count.
 export const toggleLike = async ({ postId, userId }) => {
   const inserted = await query(
     `INSERT INTO community_likes (post_id, user_id)
@@ -202,6 +213,7 @@ export const toggleLike = async ({ postId, userId }) => {
   return { liked, likesCount };
 };
 
+// Returns the full list of book requests for community and admin views.
 export const listBookRequests = async () => {
   const { rows } = await query(
     `SELECT r.id, r.user_id, u.username, u.full_name, u.email,
@@ -229,6 +241,7 @@ export const listBookRequests = async () => {
   }));
 };
 
+// Creates a book request and returns the stored record.
 export const createBookRequest = async ({
   userId,
   bookTitle,
@@ -278,6 +291,7 @@ export const createBookRequest = async ({
   };
 };
 
+// Updates a book request status and returns the refreshed record.
 export const updateBookRequestStatus = async (id, status) => {
   await query(
     `UPDATE book_requests

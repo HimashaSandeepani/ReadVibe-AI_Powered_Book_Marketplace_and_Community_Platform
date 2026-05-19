@@ -4,6 +4,7 @@ import StatusBadge from "../Common/StatusBadge";
 import ActionButtons from "../Common/ActionButtons";
 import { formatCurrency } from "../utils";
 
+// Renders the stock manager orders table with fulfillment actions.
 const OrdersTable = ({ orders, onView, onShip, onUpdateTracking }) => {
   return (
     <div className="table-responsive">

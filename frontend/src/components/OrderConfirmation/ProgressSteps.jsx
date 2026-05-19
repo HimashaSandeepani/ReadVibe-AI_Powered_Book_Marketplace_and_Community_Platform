@@ -3,6 +3,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the checkout progress indicator used on confirmation pages.
 const ProgressSteps = ({ currentStep = 3 }) => {
   const steps = [
     { number: 1, label: "Delivery" },

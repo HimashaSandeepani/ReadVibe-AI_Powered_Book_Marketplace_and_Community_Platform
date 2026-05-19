@@ -7,6 +7,7 @@ import {
   updateAuthor,
 } from '../models/authorModel.js';
 
+// Returns the full author list for catalog views.
 export const getAuthors = async (_req, res, next) => {
   try {
     const authors = await listAuthors();
@@ -16,6 +17,7 @@ export const getAuthors = async (_req, res, next) => {
   }
 };
 
+// Returns a single author by id or a 404 response.
 export const getAuthor = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -29,6 +31,7 @@ export const getAuthor = async (req, res, next) => {
   }
 };
 
+// Creates a new author record from the request body.
 export const createAuthorHandler = async (req, res, next) => {
   try {
     const { name } = req.body || {};
@@ -39,6 +42,7 @@ export const createAuthorHandler = async (req, res, next) => {
   }
 };
 
+// Updates an existing author after confirming it exists.
 export const updateAuthorHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -53,6 +57,7 @@ export const updateAuthorHandler = async (req, res, next) => {
   }
 };
 
+// Deletes an author after confirming it exists.
 export const deleteAuthorHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);

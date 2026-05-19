@@ -14,6 +14,7 @@ import {
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { formatCurrency, getStockStatusClass } from "../utils";
 
+// Renders the stock manager reporting and export view.
 const ReportsTab = ({
   inventoryStats,
   orderStats,

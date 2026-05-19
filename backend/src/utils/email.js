@@ -1,13 +1,16 @@
 // Email transport setup and template helpers for notification messages.
 import nodemailer from 'nodemailer';
 
+// Parses environment flags that are stored as strings.
 const parseBoolean = (value) => String(value).toLowerCase() === 'true';
 
+// Reports whether outbound email is enabled for the current environment.
 const isEmailEnabled = () =>
   parseBoolean(process.env.EMAIL_ENABLED) &&
   !!process.env.SMTP_USER &&
   !!process.env.SMTP_PASS;
 
+// Creates the shared email transporter when mail sending is enabled.
 const getTransporter = () => {
   if (!isEmailEnabled()) {
     return null;
@@ -26,6 +29,7 @@ const getTransporter = () => {
   });
 };
 
+// Formats currency values for order emails.
 const formatCurrency = (amount) =>
   new Intl.NumberFormat('en-LK', {
     style: 'currency',
@@ -34,6 +38,7 @@ const formatCurrency = (amount) =>
     maximumFractionDigits: 2,
   }).format(Number(amount) || 0);
 
+// Builds the subject, text, and HTML content for an order confirmation.
 const buildOrderEmail = ({ customerName, order }) => {
   const items = Array.isArray(order?.items) ? order.items : [];
   const itemLines = items
@@ -108,6 +113,7 @@ ReadVibe`,
   };
 };
 
+// Sends an order confirmation email when transport is configured.
 export const sendOrderConfirmationEmail = async ({ to, customerName, order }) => {
   if (!to || !order) {
     console.log('Email skipped: missing recipient or order payload.');

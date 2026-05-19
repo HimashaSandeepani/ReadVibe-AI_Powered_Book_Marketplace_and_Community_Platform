@@ -3,6 +3,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the add or edit publisher modal for the stock manager.
 const AddPublisherModal = ({
   show,
   onClose,

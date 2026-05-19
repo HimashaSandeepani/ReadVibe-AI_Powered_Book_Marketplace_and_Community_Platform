@@ -2,15 +2,18 @@
 import express from 'express';
 import { body, param, validationResult } from 'express-validator';
 
+// Builds the shopping cart router with user-scoped cart operations.
 export const createCartRouter = (controller) => {
   const router = express.Router();
 
+  // Resolves the current user id from request headers, query, or body.
   const getUserId = (req) => {
     const raw = req.headers['x-user-id'] || req.query.userId || req.body.userId;
     const parsed = Number(raw);
     return Number.isInteger(parsed) ? parsed : null;
   };
 
+  // Ensures a request has a usable user id before hitting cart handlers.
   const requireUser = (req, res, next) => {
     const userId = getUserId(req);
     if (!userId) {
@@ -20,6 +23,7 @@ export const createCartRouter = (controller) => {
     next();
   };
 
+  // Returns a 400 response when request validation fails.
   const handleValidation = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -28,6 +32,7 @@ export const createCartRouter = (controller) => {
     next();
   };
 
+  // Checks whether a value can be safely interpreted as an integer.
   const isIntegerLike = (value) => Number.isInteger(Number(value));
 
   // @route   GET /api/cart

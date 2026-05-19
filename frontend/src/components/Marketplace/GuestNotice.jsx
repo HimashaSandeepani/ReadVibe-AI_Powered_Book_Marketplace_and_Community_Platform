@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the guest access notice shown in the marketplace.
 const GuestNotice = ({ user }) => {
   if (user) return null;
 

@@ -11,6 +11,7 @@ import {
 
 const router = express.Router();
 
+// Returns a 400 response when book route validation fails.
 const handleValidation = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

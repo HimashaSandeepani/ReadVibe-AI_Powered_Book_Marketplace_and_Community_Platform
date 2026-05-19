@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the marketplace empty state when no books match.
 const EmptyState = ({ resetFilters }) => {
   return (
     <div className="text-center py-5">

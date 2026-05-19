@@ -7,6 +7,7 @@ import {
   updateCategory,
 } from '../models/categoryModel.js';
 
+// Returns all categories for filters and admin views.
 export const getCategories = async (_req, res, next) => {
   try {
     const categories = await listCategories();
@@ -16,6 +17,7 @@ export const getCategories = async (_req, res, next) => {
   }
 };
 
+// Returns one category by id or a 404 response.
 export const getCategory = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -29,6 +31,7 @@ export const getCategory = async (req, res, next) => {
   }
 };
 
+// Creates a new category record.
 export const createCategoryHandler = async (req, res, next) => {
   try {
     const { name } = req.body || {};
@@ -39,6 +42,7 @@ export const createCategoryHandler = async (req, res, next) => {
   }
 };
 
+// Updates an existing category after verifying it exists.
 export const updateCategoryHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -53,6 +57,7 @@ export const updateCategoryHandler = async (req, res, next) => {
   }
 };
 
+// Deletes a category after verifying it exists.
 export const deleteCategoryHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);

@@ -6,6 +6,7 @@ import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 import { formatPrice } from "./utils";
 import createBookCoverPlaceholder from "../../utils/imagePlaceholders";
 
+// Renders the ordered items list for the confirmation page.
 const OrderItemsSection = ({ items }) => {
   if (!items || items.length === 0) {
     return (

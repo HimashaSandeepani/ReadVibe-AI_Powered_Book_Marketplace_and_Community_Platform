@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReceipt } from "@fortawesome/free-solid-svg-icons";
 import { formatPrice } from "./utils";
 
+// Renders the order totals and shipping summary card.
 const OrderSummaryCard = ({ order, methodDetails }) => {
   return (
     <Card className="checkout-order-summary mb-4">

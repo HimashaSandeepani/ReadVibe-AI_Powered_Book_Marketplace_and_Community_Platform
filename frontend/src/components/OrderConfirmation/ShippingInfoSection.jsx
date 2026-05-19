@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { formatPrice } from "./utils";
 
+// Renders the shipping address and delivery method details.
 const ShippingInfoSection = ({ order, methodDetails }) => {
   if (!order.shipping) {
     return (

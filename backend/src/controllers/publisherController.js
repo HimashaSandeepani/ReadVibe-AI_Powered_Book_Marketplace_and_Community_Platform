@@ -7,6 +7,7 @@ import {
   updatePublisher,
 } from '../models/publisherModel.js';
 
+// Returns the full publisher list for admin views.
 export const getPublishers = async (_req, res, next) => {
   try {
     const publishers = await listPublishers();
@@ -16,6 +17,7 @@ export const getPublishers = async (_req, res, next) => {
   }
 };
 
+// Returns one publisher by id or a 404 response.
 export const getPublisher = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -29,6 +31,7 @@ export const getPublisher = async (req, res, next) => {
   }
 };
 
+// Creates a new publisher record from the request body.
 export const createPublisherHandler = async (req, res, next) => {
   try {
     const { name, email, phone, address } = req.body || {};
@@ -39,6 +42,7 @@ export const createPublisherHandler = async (req, res, next) => {
   }
 };
 
+// Updates an existing publisher after confirming it exists.
 export const updatePublisherHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -53,6 +57,7 @@ export const updatePublisherHandler = async (req, res, next) => {
   }
 };
 
+// Deletes a publisher after confirming it exists.
 export const deletePublisherHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);

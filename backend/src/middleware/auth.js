@@ -2,6 +2,7 @@
 import jwt from 'jsonwebtoken';
 import { UnauthorizedError, ForbiddenError } from '../utils/errors.js';
 
+// Validates the bearer token and attaches the decoded user to the request.
 export const authenticate = (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
@@ -18,6 +19,7 @@ export const authenticate = (req, res, next) => {
   }
 };
 
+// Restricts access to requests whose role matches one of the allowed roles.
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {

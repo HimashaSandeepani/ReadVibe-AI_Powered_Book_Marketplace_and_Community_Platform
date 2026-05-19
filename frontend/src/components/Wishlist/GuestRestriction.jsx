@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the login prompt shown to guest users.
 const GuestRestriction = () => {
   return (
     <Card className="guest-restriction-card mb-4">

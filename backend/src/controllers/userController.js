@@ -14,6 +14,7 @@ import {
   userExists,
 } from '../models/userModel.js';
 
+// Returns the full user list for administration screens.
 export const getUsers = async (_req, res, next) => {
   try {
     const users = await getAllUsers();
@@ -23,6 +24,7 @@ export const getUsers = async (_req, res, next) => {
   }
 };
 
+// Returns one user by id or a 404 response.
 export const getUser = async (req, res, next) => {
   try {
     const user = await getUserById(Number(req.params.id));
@@ -35,6 +37,7 @@ export const getUser = async (req, res, next) => {
   }
 };
 
+// Creates a new user account when the email and username are unique.
 export const createUserHandler = async (req, res, next) => {
   try {
     const { fullName, email, username, password, role, status, termsAccepted, aiEmailOptIn } = req.body;
@@ -61,6 +64,7 @@ export const createUserHandler = async (req, res, next) => {
   }
 };
 
+// Updates an existing user after validating uniqueness constraints.
 export const updateUserHandler = async (req, res, next) => {
   const userId = Number(req.params.id);
   const updates = req.body || {};
@@ -83,6 +87,7 @@ export const updateUserHandler = async (req, res, next) => {
   }
 };
 
+// Deletes a user unless the account is protected.
 export const deleteUserHandler = async (req, res, next) => {
   const userId = Number(req.params.id);
   try {
@@ -102,6 +107,7 @@ export const deleteUserHandler = async (req, res, next) => {
   }
 };
 
+// Returns the available roles for account management.
 export const getRoles = async (_req, res, next) => {
   try {
     const roles = await listRoles();
@@ -111,6 +117,7 @@ export const getRoles = async (_req, res, next) => {
   }
 };
 
+// Returns the available account statuses.
 export const getStatuses = async (_req, res, next) => {
   try {
     const statuses = await listStatuses();
@@ -120,6 +127,7 @@ export const getStatuses = async (_req, res, next) => {
   }
 };
 
+// Creates a new account status entry.
 export const createStatusHandler = async (req, res, next) => {
   try {
     const { status, isActive } = req.body || {};
@@ -134,6 +142,7 @@ export const createStatusHandler = async (req, res, next) => {
   }
 };
 
+// Updates an existing account status entry.
 export const updateStatusHandler = async (req, res, next) => {
   const id = Number(req.params.id);
 
@@ -153,6 +162,7 @@ export const updateStatusHandler = async (req, res, next) => {
   }
 };
 
+// Deletes an account status entry when it exists.
 export const deleteStatusHandler = async (req, res, next) => {
   const id = Number(req.params.id);
 

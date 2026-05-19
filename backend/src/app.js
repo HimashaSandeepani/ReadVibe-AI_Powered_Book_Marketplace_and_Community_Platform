@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// Creates the Express app with all API middleware and mounted routers.
 export const createApp = ({
   authRouter,
   booksRouter,
@@ -45,14 +46,17 @@ export const createApp = ({
   if (supportRouter) app.use('/api/support', supportRouter);
   if (emailRouter) app.use('/api', emailRouter);
 
+  // Responds with a basic health check for uptime monitoring.
   app.get('/api/health', (req, res) => {
     res.json({ status: 'Server is running', timestamp: new Date() });
   });
 
+  // Returns a JSON 404 response for unknown routes.
   app.use((req, res) => {
     res.status(404).json({ error: 'Route not found' });
   });
 
+  // Serializes unexpected errors into a consistent JSON response.
   app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(err.status || 500).json({

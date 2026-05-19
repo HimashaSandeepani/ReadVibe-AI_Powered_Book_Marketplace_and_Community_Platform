@@ -6,6 +6,7 @@ import StatsCard from "../Common/StatsCard";
 import StatusBadge from "../Common/StatusBadge";
 import ActionButtons from "../Common/ActionButtons";
 
+// Renders the book request queue and moderation actions.
 const BookRequestsTab = ({
   stats,
   requests,

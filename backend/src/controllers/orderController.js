@@ -3,6 +3,7 @@ import { createOrder, getAllOrders, getOrderById, getOrdersForUser, updateOrderS
 import { getUserById } from '../models/userModel.js';
 import { sendOrderConfirmationEmail } from '../services/emailService.js';
 
+// Extracts the current user id and raises a 400 error when missing.
 const ensureUser = (req) => {
   if (!req.userId) {
     const err = new Error('userId is required');
@@ -12,6 +13,7 @@ const ensureUser = (req) => {
   return req.userId;
 };
 
+// Creates a new order and triggers the confirmation email flow.
 export const createOrderHandler = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -44,6 +46,7 @@ export const createOrderHandler = async (req, res, next) => {
   }
 };
 
+// Returns the current user's orders.
 export const getOrdersHandler = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -54,6 +57,7 @@ export const getOrdersHandler = async (req, res, next) => {
   }
 };
 
+// Returns all orders for admin and stock dashboards.
 export const getAllOrdersHandler = async (_req, res, next) => {
   try {
     const orders = await getAllOrders();
@@ -63,6 +67,7 @@ export const getAllOrdersHandler = async (_req, res, next) => {
   }
 };
 
+// Returns one order when it belongs to the current user.
 export const getOrderHandler = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -80,6 +85,7 @@ export const getOrderHandler = async (req, res, next) => {
   }
 };
 
+// Updates the fulfillment status for an order.
 export const updateOrderStatusHandler = async (req, res, next) => {
   try {
     const orderId = Number(req.params.id);
@@ -96,6 +102,7 @@ export const updateOrderStatusHandler = async (req, res, next) => {
   }
 };
 
+// Updates tracking metadata for an order.
 export const updateOrderTrackingHandler = async (req, res, next) => {
   try {
     const orderId = Number(req.params.id);

@@ -4,6 +4,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartLine } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the user's reading statistics summary card.
 const ReadingStatsCard = ({ userStats }) => {
   return (
     <Card className="dashboard-card">

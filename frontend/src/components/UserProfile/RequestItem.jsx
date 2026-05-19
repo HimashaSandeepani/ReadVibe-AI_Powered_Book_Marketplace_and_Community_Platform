@@ -3,7 +3,9 @@ import React from "react";
 import { Card, Badge, Alert } from "react-bootstrap";
 import { formatDate } from "./utils";
 
+// Returns the Bootstrap badge variant for a book request status.
 const RequestItem = ({ request }) => {
+  // Maps a request status to its Bootstrap badge color.
   const getStatusBadge = (status) => {
     switch (status) {
       case "Pending":

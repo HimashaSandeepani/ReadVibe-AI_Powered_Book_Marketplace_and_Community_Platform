@@ -15,6 +15,7 @@ import {
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import createBookCoverPlaceholder from "../../utils/imagePlaceholders";
 
+// Renders a marketplace book card with quick purchase actions.
 const BookCard = ({
   book,
   isLoggedIn,

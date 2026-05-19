@@ -1,6 +1,7 @@
 // Book database access helpers and catalog queries.
 import { query } from '../config/database.js';
 
+// Builds the shared book select used by list and lookup queries.
 const baseSelect = `
   SELECT
     id,
@@ -42,6 +43,7 @@ const baseSelect = `
   ) review_stats ON review_stats.book_id = books.id
 `;
 
+// Maps a database row into the API book shape.
 const mapRow = (row) => ({
   id: row.id,
   datasetBookId: row.dataset_book_id,
@@ -73,6 +75,7 @@ const mapRow = (row) => ({
   updatedAt: row.updated_at,
 });
 
+// Ensures the books table exists before any read or write operation runs.
 const ensureTable = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS books (
@@ -106,6 +109,7 @@ const ensureTable = async () => {
   `);
 };
 
+// Adds missing legacy columns so older database snapshots still work.
 const ensureLegacyColumns = async () => {
   // Reconcile legacy schemas where books table exists with only partial columns.
   await query(`
@@ -139,6 +143,7 @@ const ensureLegacyColumns = async () => {
   `);
 };
 
+// Ensures the full book schema is available before the module is used.
 const ensureBookSchema = async () => {
   await ensureTable();
   await ensureLegacyColumns();
@@ -148,6 +153,7 @@ ensureBookSchema().catch((err) => {
   console.error('Failed to ensure books table', err);
 });
 
+// Derives the stock status from the current and minimum stock values.
 const computeStatus = (stock, minStock) => {
   if (!Number.isFinite(stock)) return 'Out of Stock';
   if (stock === 0) return 'Out of Stock';
@@ -155,6 +161,7 @@ const computeStatus = (stock, minStock) => {
   return 'In Stock';
 };
 
+// Normalizes image payloads into a clean string array.
 const normalizeImages = (value) => {
   if (value === undefined) return undefined;
   if (value === null) return [];
@@ -197,17 +204,20 @@ const normalizeImages = (value) => {
   return [];
 };
 
+// Returns all books sorted by newest first.
 export const listBooks = async () => {
   const { rows } = await query(`${baseSelect} ORDER BY created_at DESC`);
   return rows.map(mapRow);
 };
 
+// Returns one book by id or null when no row exists.
 export const getBookById = async (id) => {
   const { rows } = await query(`${baseSelect} WHERE id = $1 LIMIT 1`, [id]);
   if (!rows[0]) return null;
   return mapRow(rows[0]);
 };
 
+// Creates a new book row and returns the stored record.
 export const createBook = async (payload) => {
   const status = payload.status || computeStatus(payload.stock ?? 0, payload.minStock ?? 0);
   const normalizedImages = normalizeImages(payload.images) ?? [];
@@ -269,6 +279,7 @@ export const createBook = async (payload) => {
   return getBookById(rows[0].id);
 };
 
+// Updates the requested book fields and returns the refreshed row.
 export const updateBook = async (id, updates = {}) => {
   const fields = [];
   const values = [];
@@ -327,6 +338,7 @@ export const updateBook = async (id, updates = {}) => {
   return getBookById(id);
 };
 
+// Deletes a book by id.
 export const deleteBook = async (id) => {
   await query('DELETE FROM books WHERE id = $1', [id]);
 };

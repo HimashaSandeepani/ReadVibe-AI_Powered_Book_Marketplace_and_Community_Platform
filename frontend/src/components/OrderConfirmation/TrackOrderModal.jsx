@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { formatDate } from "./utils";
 
+// Renders the modal that shows order tracking updates.
 const TrackOrderModal = ({
   show,
   onHide,

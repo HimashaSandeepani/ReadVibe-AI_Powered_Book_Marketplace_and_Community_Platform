@@ -9,6 +9,7 @@ import {
   faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the review creation modal for a selected book.
 const AddReviewModal = ({ show, onHide, book, onSubmit, reviewIndex = 1, reviewCount = 1 }) => {
   const [reviewData, setReviewData] = useState({
     rating: 5,
@@ -16,10 +17,12 @@ const AddReviewModal = ({ show, onHide, book, onSubmit, reviewIndex = 1, reviewC
     recommend: true,
   });
 
+  // Updates the selected star rating.
   const handleSetRating = (rating) => {
     setReviewData({ ...reviewData, rating });
   };
 
+  // Submits the review and resets the form state.
   const handleSubmit = async (e) => {
     e.preventDefault();
     await onSubmit(reviewData);
@@ -30,6 +33,7 @@ const AddReviewModal = ({ show, onHide, book, onSubmit, reviewIndex = 1, reviewC
     });
   };
 
+  // Updates the text or recommendation fields in the review form.
   const handleChange = (e) => {
     setReviewData({ ...reviewData, [e.target.name]: e.target.value });
   };

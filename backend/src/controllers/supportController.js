@@ -12,6 +12,7 @@ import {
   sendLiveChatMessage,
 } from '../models/supportModel.js';
 
+// Resolves an optional user id from the request and validates it when present.
 const getOptionalUserId = (req) => {
   const raw = req.headers['x-user-id'] || req.query.userId || req.body?.userId;
   if (raw === undefined || raw === null || raw === '') return null;
@@ -24,6 +25,7 @@ const getOptionalUserId = (req) => {
   return parsed;
 };
 
+// Requires a valid user id for support actions that must be authenticated.
 const requireUserId = (req) => {
   const userId = getOptionalUserId(req);
   if (!userId) {
@@ -34,6 +36,7 @@ const requireUserId = (req) => {
   return userId;
 };
 
+// Returns support messages together with the unread count.
 export const listSupportMessagesHandler = async (req, res, next) => {
   try {
     const userId = getOptionalUserId(req);
@@ -44,6 +47,7 @@ export const listSupportMessagesHandler = async (req, res, next) => {
   }
 };
 
+// Creates a new support message for the current user.
 export const createSupportMessageHandler = async (req, res, next) => {
   try {
     const userId = requireUserId(req);
@@ -66,6 +70,7 @@ export const createSupportMessageHandler = async (req, res, next) => {
   }
 };
 
+// Appends a reply to an existing support message.
 export const addSupportReplyHandler = async (req, res, next) => {
   try {
     const messageId = Number(req.params.id);
@@ -85,6 +90,7 @@ export const addSupportReplyHandler = async (req, res, next) => {
   }
 };
 
+// Returns live chat threads together with total and unread counts.
 export const listLiveChatThreadsHandler = async (req, res, next) => {
   try {
     const userId = getOptionalUserId(req);
@@ -99,6 +105,7 @@ export const listLiveChatThreadsHandler = async (req, res, next) => {
   }
 };
 
+// Ensures a live chat thread exists for the supplied order and user.
 export const resolveLiveChatThreadHandler = async (req, res, next) => {
   try {
     const { order, user } = req.body || {};
@@ -113,6 +120,7 @@ export const resolveLiveChatThreadHandler = async (req, res, next) => {
   }
 };
 
+// Sends a live chat message for the supplied order and user.
 export const sendLiveChatMessageHandler = async (req, res, next) => {
   try {
     const { order, user, senderRole, senderName, message } = req.body || {};
@@ -128,6 +136,7 @@ export const sendLiveChatMessageHandler = async (req, res, next) => {
   }
 };
 
+// Returns a single live chat thread by order and user id.
 export const getLiveChatThreadHandler = async (req, res, next) => {
   try {
     const orderId = Number(req.params.orderId);

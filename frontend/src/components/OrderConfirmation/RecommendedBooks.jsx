@@ -6,6 +6,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { formatPrice } from "./utils";
 import createBookCoverPlaceholder from "../../utils/imagePlaceholders";
 
+// Renders recommended books shown after checkout.
 const RecommendedBooks = ({ books, onAddToCart }) => {
   if (!books || books.length === 0) return null;
 

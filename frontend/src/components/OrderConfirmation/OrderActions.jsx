@@ -8,6 +8,7 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the follow-up actions available after checkout.
 const OrderActions = ({
   onContinueShopping,
   onViewOrderHistory,

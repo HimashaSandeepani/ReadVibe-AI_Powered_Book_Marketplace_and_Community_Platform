@@ -16,6 +16,7 @@ const iconMap = {
   book: faBook,
 };
 
+// Renders the recent activity feed for the user profile.
 const RecentActivity = ({ activities, onRefresh }) => {
   return (
     <Card className="dashboard-card mb-4">

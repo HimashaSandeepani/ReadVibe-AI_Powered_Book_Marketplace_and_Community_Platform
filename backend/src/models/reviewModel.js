@@ -1,6 +1,7 @@
 // Book review database access helpers and table initialization.
 import { query } from '../config/database.js';
 
+// Ensures the book_reviews table exists before any read or write operation runs.
 const ensureTable = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS book_reviews (
@@ -36,6 +37,7 @@ const ensureTableWithRetry = async (attempt = 1) => {
 
 void ensureTableWithRetry();
 
+// Builds the shared review select used by list queries.
 const baseSelect = `
   SELECT
     r.id,
@@ -59,6 +61,7 @@ const baseSelect = `
   LEFT JOIN users u ON r.user_id = u.user_id
 `;
 
+// Maps a database row into the API review shape.
 const mapRow = (row) => ({
   id: row.id,
   bookId: row.book_id?.toString(),
@@ -77,6 +80,7 @@ const mapRow = (row) => ({
   orderId: row.order_id,
 });
 
+// Returns all reviews written by a user.
 export const listReviewsForUser = async (userId) => {
   const { rows } = await query(
     `${baseSelect} WHERE r.user_id = $1 ORDER BY r.created_at DESC`,
@@ -85,6 +89,7 @@ export const listReviewsForUser = async (userId) => {
   return rows.map(mapRow);
 };
 
+// Returns all reviews for a given book.
 export const listReviewsForBook = async (bookId) => {
   const { rows } = await query(
     `${baseSelect} WHERE r.book_id = $1 ORDER BY r.created_at DESC`,
@@ -93,6 +98,7 @@ export const listReviewsForBook = async (bookId) => {
   return rows.map(mapRow);
 };
 
+// Creates a review and returns the stored record.
 export const createReview = async ({
   userId,
   bookId,
@@ -135,6 +141,7 @@ export const createReview = async ({
   return mapRow(result[0]);
 };
 
+// Deletes a review when it belongs to the current user.
 export const deleteReviewById = async (userId, reviewId) => {
   await query('DELETE FROM book_reviews WHERE id = $1 AND user_id = $2', [reviewId, userId]);
 };

@@ -7,6 +7,7 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the follow-up support actions for an order.
 const SupportOptions = ({
   onViewOrderStatus,
   onContactSupport,

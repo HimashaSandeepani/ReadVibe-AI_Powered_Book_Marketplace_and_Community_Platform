@@ -1,6 +1,7 @@
 // Shared stock manager stats card.
 import React from "react";
 
+// Renders a summary metric card for stock manager dashboards.
 const StatsCard = ({ number, label, className = "", variant = "" }) => {
   const variantClass = variant ? `stats-card-${variant}` : "";
 

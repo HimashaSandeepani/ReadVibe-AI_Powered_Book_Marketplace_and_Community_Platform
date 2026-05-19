@@ -10,6 +10,7 @@ import {
 import StatsCard from "../Common/StatsCard";
 import BooksTable from "../Tables/BooksTable";
 
+// Renders the inventory management tab with search and stock alerts.
 const InventoryTab = ({
   stats,
   books,

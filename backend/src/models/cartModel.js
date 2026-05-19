@@ -1,6 +1,7 @@
 // Shopping cart database access helpers.
 import { query } from '../config/database.js';
 
+// Builds the shared cart select used by list queries.
 const baseSelect = `
   SELECT
     c.user_id,
@@ -17,6 +18,7 @@ const baseSelect = `
   LEFT JOIN books b ON c.book_id = b.id
 `;
 
+// Maps a database row into the API cart item shape.
 const mapRow = (row) => ({
   userId: row.user_id,
   bookId: row.book_id,
@@ -29,6 +31,7 @@ const mapRow = (row) => ({
   category: row.category,
 });
 
+// Ensures the cart_items table exists before any read or write operation runs.
 const ensureTable = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS cart_items (
@@ -43,6 +46,7 @@ const ensureTable = async () => {
   `);
 };
 
+// Retries table creation when dependencies are not yet ready.
 const ensureTableWithRetry = async (attempt = 1) => {
   try {
     await ensureTable();
@@ -59,11 +63,13 @@ const ensureTableWithRetry = async (attempt = 1) => {
 
 void ensureTableWithRetry();
 
+// Returns the current cart contents for a single user.
 export const getCartForUser = async (userId) => {
   const { rows } = await query(`${baseSelect} WHERE c.user_id = $1 ORDER BY c.id DESC`, [userId]);
   return rows.map(mapRow);
 };
 
+// Inserts or increments a cart row for the given user and book.
 const upsertCartRow = async (userId, bookId, quantity) => {
   const qty = Math.max(1, quantity || 1);
   await query(
@@ -75,11 +81,13 @@ const upsertCartRow = async (userId, bookId, quantity) => {
   );
 };
 
+// Adds one cart item and returns the refreshed cart.
 export const addToCart = async (userId, bookId, quantity = 1) => {
   await upsertCartRow(userId, bookId, quantity);
   return getCartForUser(userId);
 };
 
+// Updates a cart item quantity or removes it when the quantity is zero.
 export const updateCartItem = async (userId, bookId, quantity) => {
   if (quantity <= 0) {
     await deleteCartItem(userId, bookId);
@@ -93,10 +101,12 @@ export const updateCartItem = async (userId, bookId, quantity) => {
   return getCartForUser(userId);
 };
 
+// Deletes a single cart item for the user.
 export const deleteCartItem = async (userId, bookId) => {
   await query('DELETE FROM cart_items WHERE user_id = $1 AND book_id = $2', [userId, bookId]);
 };
 
+// Clears every cart item for the user.
 export const clearCart = async (userId) => {
   await query('DELETE FROM cart_items WHERE user_id = $1', [userId]);
 };

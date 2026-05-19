@@ -7,12 +7,14 @@ import {
   faCircleInfo,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the user's support message thread list.
 const formatDateTime = (value) =>
   new Date(value).toLocaleString([], {
     dateStyle: "medium",
     timeStyle: "short",
   });
 
+// Renders the support messages section in the profile view.
 const SupportMessagesSection = ({ messages, onBack }) => {
   const getStatusBadge = (status) => {
     switch (status) {

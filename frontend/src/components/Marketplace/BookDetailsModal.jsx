@@ -21,6 +21,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 
+// Renders the marketplace modal for inspecting a selected book.
 const BookDetailsModal = ({
   show,
   onHide,

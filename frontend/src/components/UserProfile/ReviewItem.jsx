@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { formatDate, generateStarRating } from "./utils";
 
+// Renders a single user review entry with edit and delete actions.
 const ReviewItem = ({ review, onEdit, onDelete }) => {
   return (
     <div className="review-item mb-3 pb-3 border-bottom">

@@ -4,6 +4,7 @@ import { Modal, Button, Form, Alert, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookMedical, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the modal for submitting a new book request.
 const RequestBookModal = ({ show, onHide, onSubmit, categories = [] }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -13,6 +14,7 @@ const RequestBookModal = ({ show, onHide, onSubmit, categories = [] }) => {
     reason: "",
   });
 
+  // Submits the request and clears the form.
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
@@ -25,6 +27,7 @@ const RequestBookModal = ({ show, onHide, onSubmit, categories = [] }) => {
     });
   };
 
+  // Updates the request form state as the user types.
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

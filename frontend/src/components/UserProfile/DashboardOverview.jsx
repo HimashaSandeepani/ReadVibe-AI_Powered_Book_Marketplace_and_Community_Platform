@@ -4,6 +4,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the high-level dashboard summary cards for the profile page.
 const DashboardOverview = ({ userStats, onNavigate }) => {
   const statsItems = [
     {

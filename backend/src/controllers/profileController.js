@@ -5,6 +5,7 @@ import { getWishlistForUser } from '../models/wishlistModel.js';
 import { listBookRequests, listPosts } from '../models/communityModel.js';
 import { createReview, deleteReviewById, listReviewsForUser } from '../models/reviewModel.js';
 
+// Extracts the current user id and throws when it is missing or invalid.
 const ensureUserId = (req) => {
   const raw = req.headers['x-user-id'] || req.query.userId || req.body.userId;
   const parsed = Number(raw);
@@ -16,6 +17,7 @@ const ensureUserId = (req) => {
   return parsed;
 };
 
+// Builds the recent activity feed from orders, reviews, and requests.
 const buildRecentActivity = (orders, reviews, requests) => {
   const activities = [];
 
@@ -59,6 +61,7 @@ const buildRecentActivity = (orders, reviews, requests) => {
   return activities;
 };
 
+// Returns the full profile summary for the signed-in user.
 export const getProfileSummary = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);
@@ -108,6 +111,7 @@ export const getProfileSummary = async (req, res, next) => {
   }
 };
 
+// Updates profile fields for the current user.
 export const updateProfile = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);
@@ -134,6 +138,7 @@ export const updateProfile = async (req, res, next) => {
   }
 };
 
+// Returns the current user's review history.
 export const getMyReviews = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);
@@ -144,6 +149,7 @@ export const getMyReviews = async (req, res, next) => {
   }
 };
 
+// Creates a new review for the current user.
 export const createMyReview = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);
@@ -165,6 +171,7 @@ export const createMyReview = async (req, res, next) => {
   }
 };
 
+// Deletes one of the current user's reviews.
 export const deleteMyReview = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);

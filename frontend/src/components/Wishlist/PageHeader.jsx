@@ -4,6 +4,7 @@ import { Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faBookmark } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the wishlist page header and item count.
 const PageHeader = ({ wishlistCount }) => {
   return (
     <div className="page-header mb-4">

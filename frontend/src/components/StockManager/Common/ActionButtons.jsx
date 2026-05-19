@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 
+// Renders the stock manager action button cluster for row-level operations.
 const ActionButtons = ({
   onEdit,
   onDelete,

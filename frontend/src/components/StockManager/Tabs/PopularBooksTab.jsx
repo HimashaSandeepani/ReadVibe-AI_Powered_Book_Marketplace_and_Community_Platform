@@ -14,6 +14,7 @@ import StatusBadge from "../Common/StatusBadge";
 import ActionButtons from "../Common/ActionButtons";
 import { formatCurrency, getStockStatusClass } from "../utils";
 
+// Renders the popular books and featured book management tab.
 const PopularBooksTab = ({
   popularBooks,
   featuredBooks,

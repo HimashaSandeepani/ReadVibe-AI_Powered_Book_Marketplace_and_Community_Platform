@@ -1,6 +1,7 @@
 // Stock manager modal for managing categories.
 import React from "react";
 
+// Renders the category management modal used by the stock manager.
 const CategoryModal = ({
   show,
   onClose,

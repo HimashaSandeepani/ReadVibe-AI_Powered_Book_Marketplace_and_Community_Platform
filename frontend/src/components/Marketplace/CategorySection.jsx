@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import BookCard from "./BookCard";
 
+// Renders a category shelf with featured marketplace books.
 const CategorySection = ({
   category,
   books,

@@ -8,6 +8,7 @@ import {
   faStore,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the order confirmation success header.
 const ConfirmationHeader = ({
   methodDetails,
   onTrackOrder,

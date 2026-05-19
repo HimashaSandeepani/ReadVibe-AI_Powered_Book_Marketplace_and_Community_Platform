@@ -4,6 +4,7 @@ import { Card, Row, Col, Form, Button, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the marketplace filter panel and apply/reset controls.
 const FilterSection = ({
   isFilterCollapsed,
   setIsFilterCollapsed,

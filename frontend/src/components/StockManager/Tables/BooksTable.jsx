@@ -9,6 +9,7 @@ import {
 import StatusBadge from "../Common/StatusBadge";
 import ActionButtons from "../Common/ActionButtons";
 
+// Renders the books table with sort controls and row actions.
 const BooksTable = ({
   books,
   sortConfig,

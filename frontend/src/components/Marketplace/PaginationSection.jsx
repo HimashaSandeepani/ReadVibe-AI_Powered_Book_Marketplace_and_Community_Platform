@@ -2,6 +2,7 @@
 import React from "react";
 import { Pagination } from "react-bootstrap";
 
+// Renders marketplace pagination controls for filtered book results.
 const PaginationSection = ({
   currentPage,
   totalPages,

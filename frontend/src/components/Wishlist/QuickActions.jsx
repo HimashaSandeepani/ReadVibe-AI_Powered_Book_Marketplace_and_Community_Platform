@@ -9,6 +9,7 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders quick actions for searching and sharing the wishlist.
 const QuickActions = ({ onSearchBooks, onShareLink, onShareEmail }) => {
   return (
     <Card className="quick-actions-card mb-3">

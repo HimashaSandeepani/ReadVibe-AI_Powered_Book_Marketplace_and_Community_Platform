@@ -10,6 +10,7 @@ import {
   faComments,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the shortcut action buttons for the profile dashboard.
 const QuickActions = ({ onViewOrders, onViewReviews, onRequestBook, onViewMessages, onViewLiveChat }) => {
   const actions = [
     {

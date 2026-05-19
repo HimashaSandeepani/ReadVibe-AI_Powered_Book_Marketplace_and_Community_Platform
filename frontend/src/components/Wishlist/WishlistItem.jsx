@@ -19,6 +19,7 @@ import {
 import { renderPriorityStars, formatPrice } from "./utils.jsx";
 import createBookCoverPlaceholder from "../../utils/imagePlaceholders";
 
+// Renders an individual wishlist item with priority, stock, and actions.
 const WishlistItem = ({ item, onRemove, onAddToCart, onBuyNow, onEditItem, actionsDisabled = false }) => {
   return (
     <Col lg={4} md={6} key={item.id} className="mb-4">

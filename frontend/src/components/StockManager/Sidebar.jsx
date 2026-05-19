@@ -12,6 +12,7 @@ import {
   faComments,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the stock manager navigation sidebar and section badges.
 const Sidebar = ({
   activeTab,
   onTabChange,

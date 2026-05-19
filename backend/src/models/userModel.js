@@ -39,6 +39,7 @@ const DEFAULT_USERS = [
   },
 ];
 
+// Builds the shared user select used by lookup and list queries.
 const baseUserSelect = `
   SELECT
     u.user_id,
@@ -60,6 +61,7 @@ const baseUserSelect = `
   LEFT JOIN status s ON u.status_id = s.id
 `;
 
+// Maps a database row into the API user shape.
 const mapUserRow = (row) => ({
   id: row.user_id,
   name: row.full_name,
@@ -76,6 +78,7 @@ const mapUserRow = (row) => ({
   createdAt: row.created_at,
 });
 
+// Seeds the default role and status lookup rows.
 const seedDefaultLookups = async () => {
   await Promise.all(
     DEFAULT_STATUSES.map((status) =>
@@ -96,6 +99,7 @@ const seedDefaultLookups = async () => {
   );
 };
 
+// Seeds the default demo users when the database is empty.
 const seedDefaultUsers = async () => {
   for (const defaultUser of DEFAULT_USERS) {
     const existing = await query(
@@ -134,6 +138,7 @@ const seedDefaultUsers = async () => {
   }
 };
 
+// Ensures the user, role, and status tables exist.
 const ensureTables = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS status (
@@ -175,6 +180,7 @@ ensureTables().catch((err) => {
   console.error('Failed to ensure user-related tables', err);
 });
 
+// Looks up a role id, inserting the role when it is missing.
 const getRoleId = async (roleName = 'user') => {
   const normalized = (roleName || 'user').toLowerCase();
   const { rows } = await query('SELECT role_id FROM user_roles WHERE LOWER(role_name) = $1 LIMIT 1', [normalized]);
@@ -188,6 +194,7 @@ const getRoleId = async (roleName = 'user') => {
   return insert.rows[0].role_id;
 };
 
+// Looks up a status id, inserting the status when it is missing.
 const getStatusId = async (statusName = 'active') => {
   const normalized = (statusName || 'active').toLowerCase();
   const { rows } = await query('SELECT id FROM status WHERE LOWER(status) = $1 LIMIT 1', [normalized]);
@@ -201,6 +208,7 @@ const getStatusId = async (statusName = 'active') => {
   return insert.rows[0].id;
 };
 
+// Returns the raw user row for a username or email match.
 const findRawByUsernameOrEmail = async (identifier) => {
   const { rows } = await query(
     `${baseUserSelect} WHERE u.username = $1 OR u.email = $1 LIMIT 1`,
@@ -209,12 +217,14 @@ const findRawByUsernameOrEmail = async (identifier) => {
   return rows[0] || null;
 };
 
+// Returns a user record by username or email.
 export const findByUsernameOrEmail = async (identifier) => {
   const row = await findRawByUsernameOrEmail(identifier);
   if (!row) return null;
   return mapUserRow(row);
 };
 
+// Checks whether a username or email already exists.
 export const userExists = async (username, email, excludeUserId = null) => {
   const params = [username, email];
   const excludeClause = excludeUserId ? 'AND user_id <> $3' : '';
@@ -227,21 +237,25 @@ export const userExists = async (username, email, excludeUserId = null) => {
   return rows.length > 0;
 };
 
+// Returns all available roles.
 export const listRoles = async () => {
   const { rows } = await query('SELECT role_id, role_name FROM user_roles ORDER BY role_name ASC');
   return rows;
 };
 
+// Returns all available statuses.
 export const listStatuses = async () => {
   const { rows } = await query('SELECT id, status, is_active FROM status ORDER BY status ASC');
   return rows;
 };
 
+// Returns one status by id or null when no row exists.
 export const getStatusById = async (id) => {
   const { rows } = await query('SELECT id, status, is_active FROM status WHERE id = $1 LIMIT 1', [id]);
   return rows[0] || null;
 };
 
+// Creates a new status row.
 export const createStatus = async ({ status, isActive = true }) => {
   const name = (status || '').trim();
   if (!name) {
@@ -256,6 +270,7 @@ export const createStatus = async ({ status, isActive = true }) => {
   return rows[0];
 };
 
+// Updates a status row and returns the refreshed record.
 export const updateStatus = async (id, updates = {}) => {
   const fields = [];
   const values = [];
@@ -290,22 +305,26 @@ export const updateStatus = async (id, updates = {}) => {
   return result.rows[0] || null;
 };
 
+// Deletes a status row and reports whether anything was removed.
 export const deleteStatus = async (id) => {
   const result = await query('DELETE FROM status WHERE id = $1', [id]);
   return result.rowCount > 0;
 };
 
+// Returns all users in newest-first order.
 export const getAllUsers = async () => {
   const { rows } = await query(`${baseUserSelect} ORDER BY u.created_at DESC`);
   return rows.map(mapUserRow);
 };
 
+// Returns one user by id or null when no row exists.
 export const getUserById = async (id) => {
   const { rows } = await query(`${baseUserSelect} WHERE u.user_id = $1 LIMIT 1`, [id]);
   if (!rows[0]) return null;
   return mapUserRow(rows[0]);
 };
 
+// Creates a new user account and returns the stored record.
 export const createUser = async ({
   fullName,
   email,
@@ -354,6 +373,7 @@ export const createUser = async ({
   return getUserById(rows[0].user_id);
 };
 
+// Updates the requested user fields and returns the refreshed record.
 export const updateUser = async (id, updates) => {
   const fields = [];
   const values = [];
@@ -417,10 +437,12 @@ export const updateUser = async (id, updates) => {
   return getUserById(id);
 };
 
+// Deletes a user by id.
 export const deleteUser = async (id) => {
   await query('DELETE FROM users WHERE user_id = $1', [id]);
 };
 
+// Verifies a login identifier and password hash.
 export const verifyUser = async (identifier, password) => {
   const user = await findRawByUsernameOrEmail(identifier);
   if (!user) return null;

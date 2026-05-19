@@ -3,6 +3,7 @@ import React from "react";
 import { Button, Card } from "react-bootstrap";
 import LiveChatThreadList from "../LiveChat/LiveChatThreadList";
 
+// Renders the live chat support section inside the profile page.
 const LiveChatSection = ({ threads, onBack, onSendMessage, onStartChat }) => {
   return (
     <Card className="dashboard-card mb-4">

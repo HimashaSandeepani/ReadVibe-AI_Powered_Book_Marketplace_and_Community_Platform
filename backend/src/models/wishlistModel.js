@@ -1,6 +1,7 @@
 // Wishlist database access helpers and table initialization.
 import { query } from '../config/database.js';
 
+// Ensures the wishlist_items table exists before any read or write operation runs.
 const ensureTable = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS wishlist_items (
@@ -32,6 +33,7 @@ const ensureTableWithRetry = async (attempt = 1) => {
 
 void ensureTableWithRetry();
 
+// Builds the shared wishlist select used by list queries.
 const baseSelect = `
   SELECT
     w.user_id,
@@ -52,6 +54,7 @@ const baseSelect = `
   LEFT JOIN books b ON w.book_id = b.id
 `;
 
+// Maps a database row into the API wishlist item shape.
 const mapRow = (row) => ({
   userId: row.user_id,
   bookId: row.book_id,
@@ -69,11 +72,13 @@ const mapRow = (row) => ({
   inStock: row.stock === null ? true : row.stock > 0,
 });
 
+// Returns the current wishlist contents for a single user.
 export const getWishlistForUser = async (userId) => {
   const { rows } = await query(`${baseSelect} WHERE w.user_id = $1 ORDER BY w.created_at DESC`, [userId]);
   return rows.map(mapRow);
 };
 
+// Inserts or updates a wishlist item and returns the refreshed list.
 export const addWishlistItem = async (userId, bookId, priority = 3, notes = null) => {
   await query(
     `INSERT INTO wishlist_items (user_id, book_id, priority, notes)
@@ -85,6 +90,7 @@ export const addWishlistItem = async (userId, bookId, priority = 3, notes = null
   return getWishlistForUser(userId);
 };
 
+// Updates a wishlist item and returns the refreshed list.
 export const updateWishlistItem = async (userId, bookId, updates = {}) => {
   const fields = [];
   const values = [];
@@ -117,11 +123,13 @@ export const updateWishlistItem = async (userId, bookId, updates = {}) => {
   return getWishlistForUser(userId);
 };
 
+// Deletes a single wishlist item for the user.
 export const deleteWishlistItem = async (userId, bookId) => {
   await query('DELETE FROM wishlist_items WHERE user_id = $1 AND book_id = $2', [userId, bookId]);
   return getWishlistForUser(userId);
 };
 
+// Clears every wishlist item for the user.
 export const clearWishlist = async (userId) => {
   await query('DELETE FROM wishlist_items WHERE user_id = $1', [userId]);
   return [];

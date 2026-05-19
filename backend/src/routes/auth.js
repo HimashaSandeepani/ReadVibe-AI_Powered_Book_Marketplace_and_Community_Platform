@@ -2,9 +2,11 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 
+// Builds the authentication router for register, login, and logout flows.
 export const createAuthRouter = (model) => {
   const router = express.Router();
 
+  // Validates and normalizes incoming auth payloads.
   // @route   POST /api/auth/register
   // @desc    Register a new user
   // @access  Public
@@ -52,6 +54,7 @@ export const createAuthRouter = (model) => {
     },
   );
 
+  // Handles credential checks for user login.
   // @route   POST /api/auth/login
   // @desc    Login user
   // @access  Public
@@ -83,6 +86,7 @@ export const createAuthRouter = (model) => {
     },
   );
 
+  // Returns a lightweight logout acknowledgement.
   // @route   POST /api/auth/logout
   // @desc    Logout user (placeholder for future token blacklisting)
   // @access  Public

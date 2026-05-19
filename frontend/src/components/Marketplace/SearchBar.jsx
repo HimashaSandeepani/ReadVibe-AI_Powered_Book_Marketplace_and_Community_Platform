@@ -4,6 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faFilter } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the marketplace search bar and filter toggle button.
 const SearchBar = ({
   searchQuery,
   handleSearch,

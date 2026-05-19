@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import RequestItem from "./RequestItem";
 
+// Renders the user's submitted book requests and status actions.
 const BookRequests = ({ requests, onBack, onNewRequest }) => {
   return (
     <Card className="dashboard-card mb-4">

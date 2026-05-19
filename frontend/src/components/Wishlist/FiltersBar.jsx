@@ -15,6 +15,7 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Renders wishlist filter and sorting controls.
 const FiltersBar = ({
   currentFilter,
   onFilterChange,

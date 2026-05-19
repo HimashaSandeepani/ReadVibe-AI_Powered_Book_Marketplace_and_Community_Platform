@@ -12,6 +12,7 @@ import {
 
 const router = express.Router();
 
+// Wires support message and live chat routes to their handlers.
 router.get('/messages', listSupportMessagesHandler);
 router.post('/messages', createSupportMessageHandler);
 router.post('/messages/:id/replies', addSupportReplyHandler);

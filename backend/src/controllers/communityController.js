@@ -12,6 +12,7 @@ import {
   updateBookRequestStatus,
 } from '../models/communityModel.js';
 
+// Extracts the current user id from the request and validates it.
 const ensureUserId = (req) => {
   const raw = req.headers['x-user-id'] || req.query.userId || req.body.userId;
   const parsed = Number(raw);
@@ -21,6 +22,7 @@ const ensureUserId = (req) => {
   return parsed;
 };
 
+// Returns all community posts.
 export const getCommunityPosts = async (_req, res, next) => {
   try {
     const posts = await listPosts();
@@ -30,6 +32,7 @@ export const getCommunityPosts = async (_req, res, next) => {
   }
 };
 
+// Returns one post together with its comments.
 export const getCommunityPost = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -44,6 +47,7 @@ export const getCommunityPost = async (req, res, next) => {
   }
 };
 
+// Creates a new community post for the signed-in user.
 export const createCommunityPost = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);
@@ -64,6 +68,7 @@ export const createCommunityPost = async (req, res, next) => {
   }
 };
 
+// Deletes a community post by id.
 export const deleteCommunityPost = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -74,6 +79,7 @@ export const deleteCommunityPost = async (req, res, next) => {
   }
 };
 
+// Adds a comment to a community post.
 export const addCommentToPost = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);
@@ -87,6 +93,7 @@ export const addCommentToPost = async (req, res, next) => {
   }
 };
 
+// Toggles the current user's like state for a post.
 export const togglePostLike = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);
@@ -98,6 +105,7 @@ export const togglePostLike = async (req, res, next) => {
   }
 };
 
+// Returns all submitted book requests.
 export const getBookRequests = async (_req, res, next) => {
   try {
     const requests = await listBookRequests();
@@ -107,6 +115,7 @@ export const getBookRequests = async (_req, res, next) => {
   }
 };
 
+// Creates a new book request from the current user.
 export const createBookRequestHandler = async (req, res, next) => {
   try {
     const userId = ensureUserId(req);
@@ -127,6 +136,7 @@ export const createBookRequestHandler = async (req, res, next) => {
   }
 };
 
+// Updates the status of an existing book request.
 export const updateBookRequestStatusHandler = async (req, res, next) => {
   try {
     const id = Number(req.params.id);

@@ -1,6 +1,7 @@
 // Publisher database access helpers.
 import { query } from '../config/database.js';
 
+// Builds the shared publisher select used by list and lookup queries.
 const baseSelect = `
   SELECT
     p.publisher_id,
@@ -23,6 +24,7 @@ const baseSelect = `
     ON book_stats.normalized_publisher = LOWER(TRIM(p.publisher_name))
 `;
 
+// Ensures the publishers table exists before any read or write operation runs.
 const ensureTable = async () => {
   await query(`
     CREATE TABLE IF NOT EXISTS publishers (
@@ -39,6 +41,7 @@ const ensureTable = async () => {
 
 ensureTable().catch((err) => console.error('Failed to ensure publishers table', err));
 
+// Maps a database row into the API publisher shape.
 const mapRow = (row) => ({
   id: row.publisher_id,
   name: row.publisher_name,
@@ -50,17 +53,20 @@ const mapRow = (row) => ({
   createdAt: row.created_at,
 });
 
+// Returns all publishers sorted alphabetically.
 export const listPublishers = async () => {
   const { rows } = await query(`${baseSelect} ORDER BY p.publisher_name ASC`);
   return rows.map(mapRow);
 };
 
+// Returns one publisher by id or null when no row exists.
 export const getPublisherById = async (id) => {
   const { rows } = await query(`${baseSelect} WHERE p.publisher_id = $1 LIMIT 1`, [id]);
   if (!rows[0]) return null;
   return mapRow(rows[0]);
 };
 
+// Creates a new publisher and returns the stored record.
 export const createPublisher = async ({ name, email, phone, address }) => {
   const { rows } = await query(
     `INSERT INTO publishers (publisher_name, email, phone, address)
@@ -71,6 +77,7 @@ export const createPublisher = async ({ name, email, phone, address }) => {
   return getPublisherById(rows[0].publisher_id);
 };
 
+// Updates the provided publisher fields and returns the refreshed row.
 export const updatePublisher = async (id, updates = {}) => {
   const fields = [];
   const values = [];
@@ -107,6 +114,7 @@ export const updatePublisher = async (id, updates = {}) => {
   return getPublisherById(id);
 };
 
+// Deletes a publisher by id.
 export const deletePublisher = async (id) => {
   await query('DELETE FROM publishers WHERE publisher_id = $1', [id]);
 };

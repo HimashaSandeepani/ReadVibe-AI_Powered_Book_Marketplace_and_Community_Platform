@@ -7,6 +7,7 @@ import {
   updateCartItem,
 } from '../models/cartModel.js';
 
+// Extracts the current user id and fails fast when it is missing.
 const ensureUser = (req) => {
   if (!req.userId) {
     throw new Error('userId is required');
@@ -14,6 +15,7 @@ const ensureUser = (req) => {
   return req.userId;
 };
 
+// Returns the current user's cart items.
 export const getCart = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -24,6 +26,7 @@ export const getCart = async (req, res, next) => {
   }
 };
 
+// Adds an item to the current user's cart.
 export const addCartItem = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -34,6 +37,7 @@ export const addCartItem = async (req, res, next) => {
   }
 };
 
+// Updates the quantity for a cart item.
 export const updateCartItemHandler = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -44,6 +48,7 @@ export const updateCartItemHandler = async (req, res, next) => {
   }
 };
 
+// Removes a single item from the cart and returns the updated cart.
 export const deleteCartItemHandler = async (req, res, next) => {
   try {
     const userId = ensureUser(req);
@@ -55,6 +60,7 @@ export const deleteCartItemHandler = async (req, res, next) => {
   }
 };
 
+// Clears every item from the current user's cart.
 export const clearCartHandler = async (req, res, next) => {
   try {
     const userId = ensureUser(req);

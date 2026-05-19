@@ -8,6 +8,7 @@ import {
 } from '../models/bookModel.js';
 import { listReviewsForBook } from '../models/reviewModel.js';
 
+// Returns the full book catalog for list views.
 export const getBooks = async (_req, res, next) => {
   try {
     const books = await listBooks();
@@ -17,6 +18,7 @@ export const getBooks = async (_req, res, next) => {
   }
 };
 
+// Returns one book together with its review list.
 export const getBook = async (req, res, next) => {
   try {
     const book = await getBookById(Number(req.params.id));
@@ -30,6 +32,7 @@ export const getBook = async (req, res, next) => {
   }
 };
 
+// Creates a new book record from the request body.
 export const createBookHandler = async (req, res, next) => {
   try {
     const book = await createBook({
@@ -63,6 +66,7 @@ export const createBookHandler = async (req, res, next) => {
   }
 };
 
+// Updates an existing book after verifying it exists.
 export const updateBookHandler = async (req, res, next) => {
   const id = Number(req.params.id);
   try {
@@ -102,6 +106,7 @@ export const updateBookHandler = async (req, res, next) => {
   }
 };
 
+// Deletes a book after verifying it exists.
 export const deleteBookHandler = async (req, res, next) => {
   const id = Number(req.params.id);
   try {

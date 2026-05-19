@@ -3,6 +3,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShippingFast } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the order tracking update modal for the stock manager.
 const TrackingModal = ({
   show,
   onClose,
@@ -13,6 +14,7 @@ const TrackingModal = ({
 }) => {
   if (!show || !selectedOrder) return null;
 
+  // Updates a single tracking field in the form state.
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     onTrackingUpdate((prev) => ({
@@ -21,6 +23,7 @@ const TrackingModal = ({
     }));
   };
 
+  // Submits the tracking update form.
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave();

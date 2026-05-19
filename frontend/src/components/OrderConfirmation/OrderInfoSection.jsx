@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { formatDate, getOrderDisplayDate, getOrderPaymentInfo } from "./utils";
 
+// Renders the order metadata and payment summary block.
 const OrderInfoSection = ({ order }) => {
   const orderDate = getOrderDisplayDate(order);
   const paymentInfo = getOrderPaymentInfo(order);

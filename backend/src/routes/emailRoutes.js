@@ -5,6 +5,7 @@ import { sendOrderConfirmationEmail } from '../utils/email.js';
 
 const router = express.Router();
 
+// Returns a 400 response when email route validation fails.
 const handleValidation = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

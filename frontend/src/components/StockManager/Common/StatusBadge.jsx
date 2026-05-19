@@ -1,6 +1,7 @@
 // Shared stock manager status badge.
 import React from "react";
 
+// Renders a Bootstrap badge that matches stock manager status types.
 const StatusBadge = ({ status, type = "stock", className = "" }) => {
   const getStatusClass = () => {
     switch (type) {

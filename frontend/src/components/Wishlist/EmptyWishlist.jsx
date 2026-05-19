@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { faBookOpen, faPlus } from "@fortawesome/free-solid-svg-icons";
 
+// Renders the empty-state view when the wishlist has no items.
 const EmptyWishlist = ({ onAddBook }) => {
   return (
     <Card className="empty-wishlist-state">
