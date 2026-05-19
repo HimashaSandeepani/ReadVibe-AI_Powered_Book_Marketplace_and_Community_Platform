@@ -1,3 +1,4 @@
+// Redux slice for shared application UI state.
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

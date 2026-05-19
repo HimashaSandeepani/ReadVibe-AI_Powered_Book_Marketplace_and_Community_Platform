@@ -1,3 +1,4 @@
+// Shared stock manager status badge.
 import React from "react";
 
 const StatusBadge = ({ status, type = "stock", className = "" }) => {

@@ -1,3 +1,4 @@
+// Marketplace category browsing section.
 import React from "react";
 import { Row, Badge, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";

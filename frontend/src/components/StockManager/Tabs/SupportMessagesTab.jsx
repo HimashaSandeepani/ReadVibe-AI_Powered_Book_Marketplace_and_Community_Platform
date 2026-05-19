@@ -1,3 +1,4 @@
+// Stock manager support messages tab.
 import React, { useMemo } from "react";
 import { Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

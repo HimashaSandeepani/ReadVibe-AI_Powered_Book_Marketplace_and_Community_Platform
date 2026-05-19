@@ -1,5 +1,7 @@
+// Admin statistic summary cards.
 import React from "react";
 
+// Admin statistics summary cards component.
 const StatsCards = ({ userStats, postStats, liveChatStats }) => {
   const stats = [
     {

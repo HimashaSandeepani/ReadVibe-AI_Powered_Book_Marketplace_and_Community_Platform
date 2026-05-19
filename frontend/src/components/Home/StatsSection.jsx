@@ -1,3 +1,4 @@
+// Home page section that highlights platform metrics.
 import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +9,7 @@ import {
   faBrain,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Reads the stored book count for the home page stats section.
 const getStoredBookCount = () => {
   try {
     const storedBooks = JSON.parse(localStorage.getItem("stockBooks")) || [];
@@ -18,10 +20,12 @@ const getStoredBookCount = () => {
   }
 };
 
+// Home page section that highlights platform metrics.
 const StatsSection = () => {
   const [bookCount, setBookCount] = useState(() => getStoredBookCount());
 
   useEffect(() => {
+    // Keeps the metric in sync when stock data changes.
     const handleStorageUpdate = () => {
       setBookCount(getStoredBookCount());
     };
@@ -32,6 +36,7 @@ const StatsSection = () => {
     };
   }, []);
 
+  // Metric cards displayed on the home page.
   const stats = [
     {
       icon: faBook,

@@ -1,6 +1,8 @@
+// Table of community posts in the admin panel.
 import React from "react";
 import { getStatusBadgeClass } from "./utils";
 
+// Formats post timestamps for table display.
 const formatTimestamp = (value) => {
   if (!value) return "Recently";
 
@@ -13,6 +15,7 @@ const formatTimestamp = (value) => {
   }
 };
 
+// Admin posts table component.
 const PostsTable = ({ posts, onViewPost, onDeletePost }) => {
   return (
     <div className="admin-dashboard-card">

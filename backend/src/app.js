@@ -1,3 +1,4 @@
+// Express app initialization and middleware wiring for the API server.
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';

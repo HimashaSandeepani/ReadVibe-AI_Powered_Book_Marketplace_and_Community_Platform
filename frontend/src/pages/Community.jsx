@@ -1,3 +1,4 @@
+// Community page for discussion posts, book requests, and engagement.
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -24,6 +25,7 @@ import {
 import { fetchBooksFromApi } from "../components/StockManager/utils";
 import { isPrivilegedUser } from "../utils/auth";
 
+// Builds the default community feed used when no API data is available.
 const createDefaultCommunityPosts = () => [
   {
     id: "P001",
@@ -87,6 +89,7 @@ const DEFAULT_REQUEST_CATEGORIES = [
   "Other",
 ];
 
+// Loads stored categories for the community request form.
 const getStoredCategories = () => {
   if (typeof window === "undefined") return [];
 
@@ -98,6 +101,7 @@ const getStoredCategories = () => {
   }
 };
 
+// Reads the current user for the community page.
 const getStoredCurrentUser = () => {
   const storedUser = localStorage.getItem("currentUser");
   if (!storedUser) {
@@ -111,6 +115,7 @@ const getStoredCurrentUser = () => {
   }
 };
 
+// Converts a username into a readable display name.
 const humanizeUsername = (username) => {
   if (!username) return "User";
   return username
@@ -119,6 +124,7 @@ const humanizeUsername = (username) => {
     .join(" ");
 };
 
+// Normalizes a community post from the API into the UI format.
 const mapApiPostToUi = (post) => {
   if (!post) return null;
 
@@ -151,6 +157,7 @@ const mapApiPostToUi = (post) => {
   };
 };
 
+// Normalizes a community comment from the API into the UI format.
 const mapApiCommentToUi = (comment) => {
   if (!comment) return null;
 
@@ -170,6 +177,7 @@ const mapApiCommentToUi = (comment) => {
   };
 };
 
+// Community page component.
 const Community = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(() => getStoredCurrentUser());

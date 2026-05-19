@@ -1,3 +1,4 @@
+// User profile API endpoints.
 import express from 'express';
 import { body, validationResult, param } from 'express-validator';
 import {

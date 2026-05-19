@@ -1,3 +1,4 @@
+// Controller layer for community post requests.
 import {
   listPosts,
   getPostById,

@@ -1,3 +1,4 @@
+// Shared loading spinner for asynchronous UI states.
 import React from "react";
 
 const LoadingSpinner = ({

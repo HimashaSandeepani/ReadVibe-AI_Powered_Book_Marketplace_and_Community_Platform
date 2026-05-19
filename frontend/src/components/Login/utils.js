@@ -1,3 +1,4 @@
+// Login utility functions for demo users, API auth, validation, and reset flows.
 // Demo users for testing
 export const DEMO_USERS = [
   {
@@ -117,7 +118,8 @@ For support: support@readvibe.com
 For partnership inquiries: partners@readvibe.com
 `;
 
-// Initialize demo users
+
+// Seeds local storage with demo users if they are missing.
 export const initializeDemoUsers = () => {
   const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
 
@@ -140,6 +142,7 @@ export const initializeDemoUsers = () => {
 // API helpers
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
+// Sends JSON requests to the backend auth endpoints.
 const handleApi = async (path, options = {}) => {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: { "Content-Type": "application/json" },
@@ -154,6 +157,7 @@ const handleApi = async (path, options = {}) => {
   return data;
 };
 
+// Registers a user through the backend auth API.
 export const registerUserApi = async ({
   name,
   email,
@@ -176,6 +180,7 @@ export const registerUserApi = async ({
   return data.user;
 };
 
+// Logs a user in through the backend auth API.
 export const loginUserApi = async ({ identifier, password }) => {
   const data = await handleApi("/api/auth/login", {
     method: "POST",
@@ -184,14 +189,13 @@ export const loginUserApi = async ({ identifier, password }) => {
   return data.user;
 };
 
-// Find user by credentials
-// Legacy local helpers kept for reference (not used once API is wired)
+// Removes password fields before storing or exposing a user object.
 export const removePasswordFromUser = (user) => {
   const { password: UNUSED_PASSWORD, password_hash: UNUSED_HASH, ...rest } = user;
   return rest;
 };
 
-// Validate login form
+// Validates login form fields before submission.
 export const validateLoginForm = (loginData) => {
   const errors = {};
 
@@ -206,7 +210,7 @@ export const validateLoginForm = (loginData) => {
   return errors;
 };
 
-// Validate signup form
+// Validates signup form fields before account creation.
 export const validateSignupForm = (signupData) => {
   const errors = {};
 
@@ -245,23 +249,23 @@ export const validateSignupForm = (signupData) => {
   return errors;
 };
 
-// Generate reset code
+// Returns the demo reset code used for password recovery flows.
 export const generateResetCode = () => {
   return "123456"; // Demo code
 };
 
-// Save reset code
+// Stores a reset code in local storage for later validation.
 export const saveResetCode = (email, code) => {
   localStorage.setItem(`reset_${email}`, code);
 };
 
-// Validate reset code
+// Checks whether a reset code matches the stored value.
 export const validateResetCode = (email, code) => {
   const storedCode = localStorage.getItem(`reset_${email}`);
   return storedCode === code;
 };
 
-// Update user password
+// Updates the stored password and clears the reset code.
 export const updateUserPassword = (email, newPassword) => {
   const users = JSON.parse(localStorage.getItem("users") || "[]");
   const userIndex = users.findIndex((user) => user.email === email);
@@ -276,7 +280,7 @@ export const updateUserPassword = (email, newPassword) => {
   return false;
 };
 
-// Redirect based on user role
+// Routes the signed-in user to the correct dashboard.
 export const redirectBasedOnRole = (user, navigate) => {
   switch (user.role) {
     case "admin":

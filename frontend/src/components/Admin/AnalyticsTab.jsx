@@ -1,6 +1,8 @@
+// Admin analytics dashboard tab.
 import React from "react";
 import { calculateUserStats, calculatePostStats } from "./utils";
 
+// Admin analytics dashboard tab component.
 const AnalyticsTab = ({ users, posts }) => {
   const userStats = calculateUserStats(users);
   const postStats = calculatePostStats(posts);

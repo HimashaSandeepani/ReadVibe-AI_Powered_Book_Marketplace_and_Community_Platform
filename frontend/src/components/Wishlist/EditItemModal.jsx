@@ -1,3 +1,4 @@
+// Wishlist modal for editing item priority, notes, and actions.
 import React from "react";
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

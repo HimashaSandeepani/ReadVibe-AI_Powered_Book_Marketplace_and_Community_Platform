@@ -1,8 +1,10 @@
+// Support message cache and API helpers.
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 const SUPPORT_MESSAGES_UPDATED_EVENT = "support-messages-updated";
 export const SUPPORT_MESSAGES_CACHE_KEY = "supportMessagesCache";
 let supportMessagesCache = [];
 
+// Safely parses JSON with a fallback value.
 const safeParse = (value, fallback) => {
   try {
     const parsed = JSON.parse(value);
@@ -12,11 +14,13 @@ const safeParse = (value, fallback) => {
   }
 };
 
+// Emits an update event for support message consumers.
 const emitSupportMessagesUpdated = () => {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent(SUPPORT_MESSAGES_UPDATED_EVENT));
 };
 
+// Sends JSON requests to the support backend APIs.
 const handleApi = async (path, options = {}) => {
   const { headers = {}, ...restOptions } = options;
 
@@ -36,6 +40,7 @@ const handleApi = async (path, options = {}) => {
   return data;
 };
 
+// Maps support status values to display labels.
 export const getSupportMessageStatusLabel = (status) => {
   const normalizedStatus = String(status || "").trim().toLowerCase();
 
@@ -44,6 +49,7 @@ export const getSupportMessageStatusLabel = (status) => {
   return status || "Open";
 };
 
+// Maps support status values to badge variants.
 export const getSupportMessageStatusVariant = (status) => {
   const normalizedStatus = String(status || "").trim().toLowerCase();
 
@@ -52,6 +58,7 @@ export const getSupportMessageStatusVariant = (status) => {
   return "secondary";
 };
 
+// Normalizes a support message for display and caching.
 const normalizeSupportMessage = (message) => ({
   ...message,
   orderId: message?.orderId ?? message?.order_id ?? null,
@@ -66,17 +73,20 @@ const normalizeSupportMessage = (message) => ({
   replies: Array.isArray(message?.replies) ? message.replies : [],
 });
 
+// Replaces the in-memory support message cache.
 const syncSupportMessagesCache = (messages) => {
   supportMessagesCache = Array.isArray(messages) ? messages.map(normalizeSupportMessage) : [];
   return supportMessagesCache;
 };
 
+// Returns the normalized support message cache.
 export const getStoredSupportMessagesCache = () => (
   Array.isArray(supportMessagesCache)
     ? supportMessagesCache.map(normalizeSupportMessage)
     : []
 );
 
+// Loads support messages from the backend.
 export const loadSupportMessages = async (userId = null) => {
   const query = userId ? `?userId=${encodeURIComponent(userId)}` : "";
   const data = await handleApi(`/api/support/messages${query}`);
@@ -90,14 +100,17 @@ export const loadSupportMessages = async (userId = null) => {
   return messages;
 };
 
+// Returns the current in-memory support message cache.
 export const getSupportMessages = () => supportMessagesCache;
 
+// Persists support messages to the in-memory cache and emits updates.
 export const saveSupportMessages = async (messages) => {
   syncSupportMessagesCache(messages);
   emitSupportMessagesUpdated();
   return supportMessagesCache;
 };
 
+// Creates a new support message via the backend API.
 export const createSupportMessage = async ({ order, user, message, type = "support", source = "order-confirmation" }) => {
   if (!order || !user || !message?.trim()) return null;
 
@@ -129,6 +142,7 @@ export const createSupportMessage = async ({ order, user, message, type = "suppo
   return nextMessage;
 };
 
+// Adds a reply to an existing support message.
 export const addSupportReply = async (messageId, replyText, repliedBy = {}) => {
   if (!messageId || !replyText?.trim()) return null;
 
@@ -152,12 +166,15 @@ export const addSupportReply = async (messageId, replyText, repliedBy = {}) => {
   return nextMessage;
 };
 
+// Filters support messages by user ID.
 export const getSupportMessagesForUser = (userId) => {
   const normalizedUserId = String(userId ?? "");
   return getSupportMessages().filter((message) => String(message.userId) === normalizedUserId);
 };
 
+// Counts support messages that are still open.
 export const getUnreadSupportMessageCount = () =>
   getSupportMessages().filter((message) => message.status === "Open").length;
 
+// Returns the support messages update event name.
 export const getSupportMessagesUpdatedEventName = () => SUPPORT_MESSAGES_UPDATED_EVENT;

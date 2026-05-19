@@ -1,3 +1,4 @@
+// Stock manager tab for book request handling.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook } from "@fortawesome/free-solid-svg-icons";

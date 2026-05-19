@@ -1,3 +1,4 @@
+// Admin dashboard page that coordinates management tabs and summary views.
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -47,6 +48,7 @@ const DEFAULT_SYSTEM_SETTINGS = {
   emailNotifications: true,
 };
 
+// Reads the current admin session user from local storage.
 const getStoredUser = () => {
   if (typeof window === "undefined") return null;
   try {
@@ -57,6 +59,7 @@ const getStoredUser = () => {
   }
 };
 
+// Formats an admin post timestamp for display.
 const formatAdminPostTimestamp = (value) => {
   if (!value) return "Recently";
 
@@ -69,6 +72,7 @@ const formatAdminPostTimestamp = (value) => {
   }
 };
 
+// Normalizes a community post for the admin dashboard.
 const normalizeCommunityPost = (post) => {
   if (!post) return null;
 
@@ -88,6 +92,7 @@ const normalizeCommunityPost = (post) => {
   };
 };
 
+// Builds the initial admin dashboard state.
 const getInitialAdminData = () => {
   if (typeof window === "undefined") {
     return {
@@ -109,6 +114,7 @@ const getInitialAdminData = () => {
   };
 };
 
+// Admin panel page component.
 const AdminPanel = () => {
   const navigate = useNavigate();
   const location = useLocation();

@@ -1,3 +1,4 @@
+// Global site footer.
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,9 +14,11 @@ import {
   faLinkedinIn,
 } from "@fortawesome/free-brands-svg-icons";
 
+// Global site footer component.
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  // Handles newsletter signup submission and clears the email field.
   const handleSubscribe = (e) => {
     e.preventDefault();
     const emailInput = e.target.querySelector('input[type="email"]');

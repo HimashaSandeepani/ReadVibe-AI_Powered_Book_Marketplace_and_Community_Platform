@@ -1,8 +1,10 @@
+// Delivery details cart summary panel.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { formatPriceLKR } from "./utils";
 
+// Cart summary component that previews delivery order items and pricing.
 const CartSummary = ({ cartItems, orderSummary }) => {
   if (!cartItems || cartItems.length === 0) return null;
 

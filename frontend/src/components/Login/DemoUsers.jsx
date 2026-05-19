@@ -1,3 +1,4 @@
+// Demo account shortcuts for login testing.
 import React from "react";
 import { Card, Alert } from "react-bootstrap";
 import { DEMO_USERS } from "./utils";

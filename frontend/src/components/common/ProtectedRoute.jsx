@@ -1,6 +1,8 @@
+// Route guard for authenticated or role-restricted views.
 import { Navigate, useLocation } from "react-router-dom";
 import { getCurrentUser } from "../../utils/auth";
 
+// Route guard that blocks unauthenticated or unauthorized users.
 const ProtectedRoute = ({
   children,
   requireAdmin = false,

@@ -1,3 +1,4 @@
+// Global site header and navigation.
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,10 +26,12 @@ import {
   syncFromStorage as syncCartFromStorage,
 } from "../../store/slices/cartSlice";
 
+// Reads the initial wishlist count from storage.
 const getInitialWishlistCount = () => {
   return getWishlistCount();
 };
 
+// Global site header component.
 const Header = () => {
   const [user, setUser] = useState(() => getCurrentUser());
   const [wishlistCount, setWishlistCount] = useState(() =>
@@ -44,6 +47,7 @@ const Header = () => {
     user?.role === "stock" || user?.role === "stock-manager";
   const isRegularUser = !!user && !isAdminUser && !isStockManagerUser;
 
+  // Refreshes the wishlist count from storage.
   const updateWishlistCount = () => {
     setWishlistCount(getWishlistCount());
   };
@@ -77,6 +81,7 @@ const Header = () => {
     };
   }, [dispatch]);
 
+  // Logs the current user out and resets header state.
   const handleLogout = () => {
     dispatch(logoutSuccess());
     logout();
@@ -86,6 +91,7 @@ const Header = () => {
     navigate("/");
   };
 
+  // Collapses the mobile nav after a link click.
   const handleNavLinkClick = () => {
     setExpanded(false);
   };

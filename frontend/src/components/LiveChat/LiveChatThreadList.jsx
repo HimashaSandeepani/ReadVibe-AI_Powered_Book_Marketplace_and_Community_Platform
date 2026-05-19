@@ -1,14 +1,17 @@
+// Live chat thread list for support conversations.
 import React, { useMemo, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faPaperPlane, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
+// Formats live chat timestamps for display in the thread list.
 const formatDateTime = (value) =>
   new Date(value).toLocaleString([], {
     dateStyle: "medium",
     timeStyle: "short",
   });
 
+// Live chat thread list component for support conversations.
 const LiveChatThreadList = ({
   title,
   description,
@@ -20,13 +23,16 @@ const LiveChatThreadList = ({
   onStartChat,
   sendButtonLabel = "Send Message",
 }) => {
+  // Stores the current draft message for each chat thread.
   const [drafts, setDrafts] = useState({});
 
+  // Keeps the newest live chat threads at the top of the list.
   const sortedThreads = useMemo(
     () => [...threads].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
     [threads],
   );
 
+  // Sends a drafted reply for the selected thread and clears the input on success.
   const handleSubmit = async (event, thread) => {
     event.preventDefault();
     const draft = drafts[thread.id] || "";

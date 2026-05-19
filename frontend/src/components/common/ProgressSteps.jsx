@@ -1,14 +1,17 @@
+// Shared progress step indicator used across flows.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Row } from "react-bootstrap";
 
+// Default step sequence shared by checkout and delivery flows.
 const defaultSteps = [
   { number: 1, label: "Delivery" },
   { number: 2, label: "Payment" },
   { number: 3, label: "Confirmation" },
 ];
 
+// Styling presets for the reusable progress step indicator.
 const variantConfig = {
   default: {
     containerClass: "checkout-steps",
@@ -32,6 +35,7 @@ const variantConfig = {
   },
 };
 
+// Shared progress step indicator used across checkout and delivery screens.
 const ProgressSteps = ({
   currentStep = 1,
   steps = defaultSteps,
@@ -41,6 +45,7 @@ const ProgressSteps = ({
   const config = variantConfig[variant] || variantConfig.default;
   const fillMode = connectorFill || config.connectorFill || "full";
 
+  // Renders the simplified delivery-specific progress layout.
   if (variant === "delivery") {
     return (
       <div className={config.containerClass}>
@@ -68,6 +73,7 @@ const ProgressSteps = ({
     active: step.number === currentStep,
   }));
 
+  // Converts completion state into a connector fill width.
   const progressWidth = (completed) => {
     if (!completed) return "0%";
     if (fillMode === "half") return "50%";

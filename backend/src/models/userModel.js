@@ -1,3 +1,4 @@
+// User account database access helpers and password hashing.
 import bcrypt from 'bcryptjs';
 import { query } from '../config/database.js';
 

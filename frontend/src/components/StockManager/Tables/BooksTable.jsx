@@ -1,3 +1,4 @@
+// Stock manager table for listing books, sorting columns, and managing stock actions.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

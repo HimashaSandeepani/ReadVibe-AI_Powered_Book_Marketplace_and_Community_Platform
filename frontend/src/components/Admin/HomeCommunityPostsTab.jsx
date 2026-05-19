@@ -1,3 +1,4 @@
+// Admin tab for home community post moderation.
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +10,7 @@ import {
   saveHomeFeaturedCommunityPostIds,
 } from "../../utils/homeFeaturedCommunityPosts";
 
+// Admin tab for selecting posts featured on the home page.
 const HomeCommunityPostsTab = () => {
   const [posts, setPosts] = useState([]);
   const [selectedPostIds, setSelectedPostIds] = useState(() => getHomeFeaturedCommunityPostIds());
@@ -39,6 +41,7 @@ const HomeCommunityPostsTab = () => {
     selectedPostIds.includes(String(post.id)),
   );
 
+  // Toggles a community post in the home page feature list.
   const handleTogglePost = (postId) => {
     const normalizedId = String(postId);
 

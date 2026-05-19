@@ -1,3 +1,4 @@
+// Cart page that manages items, totals, and checkout entry points.
 import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +33,7 @@ import { getCurrentUser } from "../utils/auth";
 import { showNotification, getAllBooks } from "../utils/helpers";
 import "../styles/pages/Cart.css";
 
+// Cart page component.
 const Cart = () => {
   const cart = useSelector(selectCartItems);
   const [user, setUser] = useState(() => getCurrentUser());

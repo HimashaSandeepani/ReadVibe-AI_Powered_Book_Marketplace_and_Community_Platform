@@ -1,3 +1,4 @@
+// Shared footer for admin views.
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../../styles/components/AdminHeaderFooter.css";
 
+// Admin footer component that provides quick links and system status.
 const AdminFooter = () => {
   const currentYear = new Date().getFullYear();
 

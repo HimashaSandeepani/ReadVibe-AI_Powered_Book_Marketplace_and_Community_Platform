@@ -1,3 +1,4 @@
+// PostgreSQL connection configuration and query helpers for the backend.
 import pkg from 'pg';
 import dotenv from 'dotenv';
 

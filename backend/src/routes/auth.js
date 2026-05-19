@@ -1,3 +1,4 @@
+// Authentication endpoints for login, signup, and session-related validation.
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 

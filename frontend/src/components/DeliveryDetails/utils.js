@@ -1,4 +1,6 @@
+// Delivery details utility functions for address validation, shipping, and order summary.
 // Price formatting
+// Formats LKR values for delivery screens.
 export const formatPriceLKR = (price) => {
   return new Intl.NumberFormat("en-LK", {
     style: "currency",
@@ -8,7 +10,7 @@ export const formatPriceLKR = (price) => {
   }).format(price);
 };
 
-// Countries list
+// Country options used in the address form.
 export const countries = [
   { value: "", label: "Select Country" },
   { value: "LK", label: "Sri Lanka" },
@@ -25,7 +27,7 @@ export const countries = [
   { value: "MY", label: "Malaysia" },
 ];
 
-// Shipping methods data
+// Shipping method definitions used by the delivery wizard.
 export const shippingMethods = {
   standard: {
     id: "standard",
@@ -54,6 +56,7 @@ export const shippingMethods = {
 };
 
 // Form validation
+// Validates common delivery form fields.
 export const validateField = (fieldName, value) => {
   switch (fieldName) {
     case "email":
@@ -74,6 +77,7 @@ export const validateField = (fieldName, value) => {
 };
 
 // Calculate order summary
+// Calculates subtotal, shipping, tax, and total for delivery checkout.
 export const calculateOrderSummary = (cartItems, shippingPrice = 500) => {
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -93,12 +97,14 @@ export const calculateOrderSummary = (cartItems, shippingPrice = 500) => {
 };
 
 // Get country name from code
+// Resolves a country label from its stored code.
 export const getCountryName = (countryCode) => {
   const country = countries.find((c) => c.value === countryCode);
   return country ? country.label : "";
 };
 
 // Generate address preview HTML
+// Renders a small HTML preview of the entered address.
 export const generateAddressPreview = (formData, countriesList) => {
   const { firstName, lastName, address, city, state, zipCode, country } = formData;
   if (firstName || lastName || address || city || state || zipCode) {

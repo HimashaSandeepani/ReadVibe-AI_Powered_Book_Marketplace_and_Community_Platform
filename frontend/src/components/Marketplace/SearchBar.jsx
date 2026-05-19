@@ -1,3 +1,4 @@
+// Marketplace search input for finding books quickly.
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,3 +1,4 @@
+// Marketplace filter controls for narrowing book results.
 import React from "react";
 import { Card, Row, Col, Form, Button, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,14 +1,18 @@
+// Community API helpers and event dispatchers.
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
+// Emits an update event when book requests change.
 const emitBookRequestsUpdated = () => {
   window.dispatchEvent(new CustomEvent("book-requests-updated"));
 };
 
+// Emits an update event when community posts change.
 export const emitCommunityPostsUpdated = () => {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent("community-posts-updated"));
 };
 
+// Sends JSON requests to the community backend APIs.
 const handleApi = async (path, options = {}) => {
   const { headers = {}, ...restOptions } = options;
 
@@ -32,16 +36,19 @@ const handleApi = async (path, options = {}) => {
   return data;
 };
 
+// Fetches all community posts.
 export const fetchCommunityPostsApi = async () => {
   const data = await handleApi(`/api/community/posts`);
   return data.posts || [];
 };
 
+// Fetches a single community post and its comments.
 export const fetchCommunityPostWithCommentsApi = async (postId) => {
   const data = await handleApi(`/api/community/posts/${postId}`);
   return { post: data.post, comments: data.comments || [] };
 };
 
+// Creates a new community post.
 export const createCommunityPostApi = async ({ userId, title, content, category, bookId, bookTitle }) => {
   if (!userId) throw new Error("userId is required to create a post");
 
@@ -71,6 +78,7 @@ export const createCommunityPostApi = async ({ userId, title, content, category,
   return data.post;
 };
 
+// Toggles like state for a community post.
 export const toggleCommunityPostLikeApi = async ({ userId, postId }) => {
   if (!userId) throw new Error("userId is required to like a post");
 
@@ -84,6 +92,7 @@ export const toggleCommunityPostLikeApi = async ({ userId, postId }) => {
   return data; // { liked, likesCount }
 };
 
+// Adds a comment to a community post.
 export const addCommunityCommentApi = async ({ userId, postId, content }) => {
   if (!userId) throw new Error("userId is required to comment on a post");
 
@@ -98,6 +107,7 @@ export const addCommunityCommentApi = async ({ userId, postId, content }) => {
   return data.comments || [];
 };
 
+// Creates a book request for the community feature.
 export const createBookRequestApi = async ({
   userId,
   bookTitle,
@@ -130,11 +140,13 @@ export const createBookRequestApi = async ({
   return data.request;
 };
 
+// Fetches all book requests.
 export const fetchBookRequestsApi = async () => {
   const data = await handleApi(`/api/community/requests`);
   return data.requests || [];
 };
 
+// Updates the status of a book request.
 export const updateBookRequestStatusApi = async (requestId, status) => {
   const data = await handleApi(`/api/community/requests/${requestId}/status`, {
     method: "PUT",

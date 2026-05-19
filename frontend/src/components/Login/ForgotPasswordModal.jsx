@@ -1,3 +1,4 @@
+// Password reset modal for login recovery.
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +13,7 @@ const ForgotPasswordModal = ({ show, onHide, onSubmit }) => {
   const [success, setSuccess] = useState("");
   const [resetStep, setResetStep] = useState(1);
 
+  // Submits the current password reset step payload to the parent flow.
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
@@ -39,6 +41,7 @@ const ForgotPasswordModal = ({ show, onHide, onSubmit }) => {
     });
   };
 
+  // Clears the modal state and closes the password reset dialog.
   const handleClose = () => {
     setEmail("");
     setResetCode("");

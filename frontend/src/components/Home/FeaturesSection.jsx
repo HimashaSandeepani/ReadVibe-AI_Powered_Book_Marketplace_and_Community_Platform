@@ -1,3 +1,4 @@
+// Home page section that summarizes platform features.
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,7 +8,9 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Home page section that summarizes platform features.
 const FeaturesSection = () => {
+  // Feature cards shown on the home page.
   const features = [
     {
       icon: faRobot,

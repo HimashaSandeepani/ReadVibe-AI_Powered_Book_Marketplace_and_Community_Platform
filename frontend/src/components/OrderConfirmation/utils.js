@@ -1,3 +1,4 @@
+// Order confirmation utility functions for invoices, tracking, and recommendations.
 // Format price helper
 import { formatPrice, formatDate } from "../../utils/helpers.js";
 import { getCurrentUser } from "../../utils/auth.js";
@@ -8,11 +9,13 @@ const normalizeRecommendationId = (value) => {
   return String(value).trim();
 };
 
+// Resolves a book's recommendation ID from multiple possible ID fields.
 const getBookRecommendationId = (book) =>
   normalizeRecommendationId(
     book?.datasetBookId ?? book?.dataset_book_id ?? book?.id,
   );
 
+// Builds a lookup table for book recommendation matching.
 const buildRecommendationLookup = (books = []) => {
   const lookup = new Map();
 
@@ -33,6 +36,7 @@ const buildRecommendationLookup = (books = []) => {
   return lookup;
 };
 
+// Normalizes selected book IDs into dataset IDs.
 const resolveDatasetBookIds = (bookIds = [], books = []) => {
   const lookup = buildRecommendationLookup(books);
   const resolved = [];
@@ -52,6 +56,7 @@ const resolveDatasetBookIds = (bookIds = [], books = []) => {
   return resolved;
 };
 
+// Normalizes association rules into a consistent numeric shape.
 const normalizeRules = (rules = []) => {
   return (Array.isArray(rules) ? rules : [])
     .map((rule) => ({
@@ -68,16 +73,19 @@ const normalizeRules = (rules = []) => {
     .filter((rule) => rule.antecedent.length > 0 && rule.consequent.length > 0);
 };
 
+// Adds a value only if it has not already been included.
 const uniquePush = (list, value) => {
   if (!value || list.includes(value)) return;
   list.push(value);
 };
 
+// Looks up a book by any recommendation ID field.
 const getBookByRecommendationId = (books, bookId) => {
   const lookup = buildRecommendationLookup(books);
   return lookup.get(normalizeRecommendationId(bookId)) || null;
 };
 
+// Shuffles a list of books for fallback recommendations.
 const shuffleBooks = (books = []) => {
   const shuffled = [...books];
   for (let index = shuffled.length - 1; index > 0; index -= 1) {
@@ -87,6 +95,7 @@ const shuffleBooks = (books = []) => {
   return shuffled;
 };
 
+// Reads a saved payment confirmation from storage.
 const getStoredPaymentConfirmation = (orderId) => {
   try {
     const key = getOrderPaymentConfirmationKey(orderId);
@@ -105,6 +114,7 @@ const getStoredPaymentConfirmation = (orderId) => {
   }
 };
 
+// Resolves the display date for an order.
 export const getOrderDisplayDate = (order) =>
   order?.orderDate ||
   order?.createdAt ||
@@ -142,6 +152,7 @@ export const shippingMethods = {
     price: 500.0,
   },
   express: {
+  // Resolves the payment details for an order.
     id: "express",
     title: "Express Shipping",
     description: "Priority shipping with expedited delivery. Includes tracking and insurance.",
@@ -153,6 +164,7 @@ export const shippingMethods = {
   },
   overnight: {
     id: "overnight",
+  // Defines the shipping options used on the confirmation screen.
     title: "Overnight Shipping",
     description: "Guaranteed overnight delivery. Includes premium tracking and full insurance.",
     days: "Next business day",
@@ -164,12 +176,13 @@ export const shippingMethods = {
 };
 
 // Get order by ID
+// Fetches an order from local storage by its ID.
 export const getOrderById = (orderId) => {
   const orders = JSON.parse(localStorage.getItem("userOrders")) || [];
   return orders.find((order) => order.id === orderId);
 };
 
-// Get latest user order
+// Returns the most recent order for the signed-in user.
 export const getLatestUserOrder = () => {
   const user = getCurrentUser();
   if (!user) return null;
@@ -181,13 +194,13 @@ export const getLatestUserOrder = () => {
   return userOrders[userOrders.length - 1];
 };
 
-// Get tracking updates
+// Returns tracking updates saved for the given order.
 export const getTrackingUpdates = (orderId) => {
   const allUpdates = JSON.parse(localStorage.getItem("orderTrackingUpdates")) || [];
   return allUpdates.filter((update) => update.orderId === orderId);
 };
 
-// Get ordered categories
+// Extracts unique categories from the ordered items.
 export const getOrderedCategories = (order, books) => {
   if (!order || !order.items || !books) return [];
 
@@ -203,6 +216,7 @@ export const getOrderedCategories = (order, books) => {
   return categories;
 };
 
+// Extracts dataset book IDs from an order for recommendation matching.
 export const getOrderedDatasetBookIds = (order, books) => {
   if (!order || !order.items || !books) return [];
 
@@ -232,6 +246,7 @@ export const getOrderedDatasetBookIds = (order, books) => {
   return selectedIds;
 };
 
+// Produces a ranked list of recommended dataset book IDs.
 export const getRecommendedBookIds = (selectedBookIds, rules, books, limit = 4) => {
   const availableBooks = Array.isArray(books) ? books : [];
   const selectedIds = resolveDatasetBookIds(selectedBookIds, availableBooks);
@@ -315,6 +330,7 @@ export const getRecommendedBookIds = (selectedBookIds, rules, books, limit = 4) 
   return recommendedIds.slice(0, limit);
 };
 
+// Resolves recommended book objects from their IDs.
 export const getRecommendedBooksByIds = (bookIds, books) => {
   const lookup = buildRecommendationLookup(books);
   return (Array.isArray(bookIds) ? bookIds : [])
@@ -322,7 +338,8 @@ export const getRecommendedBooksByIds = (bookIds, books) => {
     .filter(Boolean);
 };
 
-// Get recommended books
+
+// Returns a small list of recommended books by category preference.
 export const getRecommendedBooks = (categories, books, limit = 4) => {
   if (!categories || categories.length === 0 || !books) {
     return books.slice(0, limit);
@@ -355,7 +372,7 @@ export const getRecommendedBooks = (categories, books, limit = 4) => {
   return recommended.slice(0, limit);
 };
 
-// Calculate estimated dates
+// Computes shipping and delivery dates for a shipping method.
 export const calculateEstimatedDates = (shippingMethodKey) => {
   const now = new Date();
   const method = shippingMethods[shippingMethodKey] || shippingMethods.standard;
@@ -377,7 +394,7 @@ export const calculateEstimatedDates = (shippingMethodKey) => {
   };
 };
 
-// Generate invoice content
+// Builds the plain-text invoice for an order.
 export const generateInvoiceContent = (order, user, trackingUpdates = []) => {
   const date = new Date().toLocaleDateString("en-US", {
     year: "numeric",
@@ -458,6 +475,7 @@ export const generateInvoiceContent = (order, user, trackingUpdates = []) => {
 };
 
 // Download invoice
+// Downloads the generated invoice as a text file.
 export const downloadInvoice = (order, user, trackingUpdates = []) => {
   if (!user || !order) return false;
 
@@ -480,6 +498,7 @@ export const downloadInvoice = (order, user, trackingUpdates = []) => {
 };
 
 // Add support request
+// Stores a support request for the given order and user.
 export const addSupportRequest = (order, user, message) => {
   const supportRequests = JSON.parse(localStorage.getItem("supportRequests")) || [];
 

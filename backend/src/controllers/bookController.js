@@ -1,3 +1,4 @@
+// Controller layer for book catalog requests.
 import {
   createBook,
   deleteBook,

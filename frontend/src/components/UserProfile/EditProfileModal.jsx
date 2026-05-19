@@ -1,3 +1,4 @@
+// User profile edit modal.
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

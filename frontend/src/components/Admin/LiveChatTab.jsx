@@ -1,7 +1,9 @@
+// Admin tab for live chat moderation.
 import React from "react";
 import LiveChatThreadList from "../LiveChat/LiveChatThreadList";
 import { getCurrentUser } from "../../utils/auth";
 
+// Admin live chat moderation tab component.
 const LiveChatTab = ({ threads, onSendMessage }) => {
   const currentUser = getCurrentUser();
 

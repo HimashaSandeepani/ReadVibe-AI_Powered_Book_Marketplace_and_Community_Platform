@@ -1,3 +1,4 @@
+// Book category API endpoints.
 import express from 'express';
 import { body, param, validationResult } from 'express-validator';
 import {

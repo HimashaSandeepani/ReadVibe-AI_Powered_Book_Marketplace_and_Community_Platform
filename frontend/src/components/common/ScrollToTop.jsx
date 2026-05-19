@@ -1,6 +1,8 @@
+// Utility component that resets scroll position on navigation.
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+// Scroll behavior helper that resets the viewport after route changes.
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 

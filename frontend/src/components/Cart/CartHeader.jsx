@@ -1,8 +1,10 @@
+// Cart page header and quick actions.
 import React from "react";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStore, faTrash } from "@fortawesome/free-solid-svg-icons";
 
+// Cart header component that shows the page title and clear-cart action.
 const CartHeader = ({ cart, onClearCart }) => {
   return (
     <div className="cart-header">

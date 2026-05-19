@@ -1,3 +1,4 @@
+// User profile modal for requesting a book.
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

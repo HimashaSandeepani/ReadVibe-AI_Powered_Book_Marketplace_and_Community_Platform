@@ -1,7 +1,10 @@
+// Delivery details progress indicator.
 import React from "react";
 import { Row } from "react-bootstrap";
 
+// Delivery progress indicator for the checkout flow.
 const ProgressSteps = ({ currentStep = 1 }) => {
+  // Static delivery step labels shown in the indicator.
   const steps = [
     { number: 1, label: "Delivery" },
     { number: 2, label: "Payment" },

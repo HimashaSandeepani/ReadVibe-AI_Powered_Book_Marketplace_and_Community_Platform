@@ -1,3 +1,4 @@
+// Community post card with interaction controls.
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,6 +8,7 @@ import {
   faBook,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Community post card component with like, comment, and share interactions.
 const PostCard = ({
   post,
   currentUser,
@@ -30,6 +32,7 @@ const PostCard = ({
     setCommentInput(commentInputs[post.id] || "");
   }, [commentInputs, post.id]);
 
+  // Keeps the local comment input and shared comment state in sync.
   const handleCommentChange = (value) => {
     setCommentInput(value);
     setCommentInputs((prev) => ({ ...prev, [post.id]: value }));

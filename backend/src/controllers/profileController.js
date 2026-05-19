@@ -1,3 +1,4 @@
+// Controller layer for user profile and activity requests.
 import { getUserById, updateUser } from '../models/userModel.js';
 import { getOrdersForUser } from '../models/orderModel.js';
 import { getWishlistForUser } from '../models/wishlistModel.js';

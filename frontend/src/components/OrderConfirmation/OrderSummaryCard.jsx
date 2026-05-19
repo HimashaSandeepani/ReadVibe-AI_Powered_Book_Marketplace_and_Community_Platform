@@ -1,3 +1,4 @@
+// Order summary card for confirmation details.
 import React from "react";
 import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

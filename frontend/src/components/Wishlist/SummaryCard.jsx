@@ -1,3 +1,4 @@
+// Wishlist summary card with totals and bulk actions.
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,3 +1,4 @@
+// Quick actions panel for wishlist shortcuts and sharing.
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

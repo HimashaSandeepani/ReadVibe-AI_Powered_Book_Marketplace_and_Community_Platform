@@ -1,3 +1,4 @@
+// Server entry point that composes the app and starts listening.
 import { createApp } from './app.js';
 import { createAuthRouter } from './routes/auth.js';
 import booksRoutes from './routes/books.js';

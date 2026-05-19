@@ -1,3 +1,4 @@
+// Shipping method selector for delivery options.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,7 +9,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { formatPriceLKR } from "./utils";
 
+// Shipping method selector component for choosing a delivery option.
 const ShippingMethodSection = ({ shippingMethod, setShippingMethod }) => {
+  // Available delivery options rendered in the selector.
   const shippingMethodsArray = [
     {
       id: "standard",
@@ -39,6 +42,7 @@ const ShippingMethodSection = ({ shippingMethod, setShippingMethod }) => {
     },
   ];
 
+  // Returns the icon element for the selected shipping method.
   const getIconComponent = (icon) => {
     return <FontAwesomeIcon icon={icon} className="me-2" />;
   };

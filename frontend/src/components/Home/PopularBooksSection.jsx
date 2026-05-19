@@ -1,3 +1,4 @@
+// Home page section for popular books.
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Badge } from "react-bootstrap";
@@ -7,9 +8,11 @@ import { faFire, faBookmark, faCogs } from "@fortawesome/free-solid-svg-icons";
 import { fetchBooksFromApi } from "../StockManager/utils";
 import { isPrivilegedUser } from "../../utils/auth";
 
+// Home page section for popular books.
 const PopularBooksSection = ({ currentUser, onViewDetails }) => {
   const [featuredBooks, setFeaturedBooks] = useState([]);
 
+  // Compares books using sales, stock, and title tie-breakers.
   const comparePopularBooks = (left, right) => {
     const leftMonthlySales = Number(left.salesThisMonth) || 0;
     const rightMonthlySales = Number(right.salesThisMonth) || 0;
@@ -32,6 +35,7 @@ const PopularBooksSection = ({ currentUser, onViewDetails }) => {
     return String(left.title || "").localeCompare(String(right.title || ""));
   };
 
+  // Resolves a book image from local assets or the provided data.
   const getBookImage = (bookTitle) => {
     const imageMap = {
       "The Midnight Library": "/assets/The_Midnight_Library.jpeg",
@@ -48,6 +52,7 @@ const PopularBooksSection = ({ currentUser, onViewDetails }) => {
   };
 
   useEffect(() => {
+    // Uses the best available image for each featured book.
     const resolveBookImage = (book) => {
       const localImage =
         book.image ||
@@ -58,6 +63,7 @@ const PopularBooksSection = ({ currentUser, onViewDetails }) => {
       return localImage || getBookImage(book.title);
     };
 
+    // Loads and prioritizes the most popular books for the home page.
     const loadFeaturedBooks = async () => {
       try {
         const storedBooks = await fetchBooksFromApi();
@@ -97,10 +103,12 @@ const PopularBooksSection = ({ currentUser, onViewDetails }) => {
 
     void loadFeaturedBooks();
 
+    // Refreshes the list when storage changes elsewhere in the app.
     const handleStorageUpdate = () => {
       void loadFeaturedBooks();
     };
 
+    // Refreshes the list after book review updates.
     const handleBookReviewsUpdate = () => {
       void loadFeaturedBooks();
     };

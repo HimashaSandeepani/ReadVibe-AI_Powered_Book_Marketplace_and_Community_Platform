@@ -1,3 +1,4 @@
+// Wishlist page for saved books, filters, and quick actions.
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";

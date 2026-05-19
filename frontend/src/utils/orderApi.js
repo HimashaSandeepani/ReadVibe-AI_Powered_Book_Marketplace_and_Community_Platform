@@ -1,10 +1,13 @@
+// Order API helpers for checkout and order tracking flows.
 const API_BASE = import.meta.env?.VITE_BACKEND_URL || "http://localhost:5000";
 
+// Normalizes an ID into a positive integer.
 const normalizeId = (value) => {
   const parsed = Number(value);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
 };
 
+// Sends JSON requests to the order backend APIs.
 const handleApi = async (path, options = {}) => {
   const { headers = {}, ...restOptions } = options;
 
@@ -24,6 +27,7 @@ const handleApi = async (path, options = {}) => {
   return data;
 };
 
+// Creates a new order through the backend API.
 export const createOrderApi = async (payload) => {
   const normalizedUserId = normalizeId(payload?.userId);
   if (!normalizedUserId) throw new Error("userId is required to create an order");
@@ -47,6 +51,7 @@ export const createOrderApi = async (payload) => {
   return data.order;
 };
 
+// Fetches the current user's orders.
 export const getOrdersApi = async (userId) => {
   const normalizedUserId = normalizeId(userId);
   const data = await handleApi(`/api/orders?userId=${encodeURIComponent(normalizedUserId)}`, {
@@ -57,6 +62,7 @@ export const getOrdersApi = async (userId) => {
   return data.orders || [];
 };
 
+// Fetches a single order for the current user.
 export const getOrderApi = async (userId, orderId) => {
   const normalizedUserId = normalizeId(userId);
   const data = await handleApi(`/api/orders/${orderId}?userId=${encodeURIComponent(normalizedUserId)}`, {
@@ -67,6 +73,7 @@ export const getOrderApi = async (userId, orderId) => {
   return data.order;
 };
 
+// Updates tracking details for an order.
 export const updateOrderTrackingApi = async (orderId, payload) => {
   const data = await handleApi(`/api/orders/${orderId}/tracking`, {
     method: "PUT",

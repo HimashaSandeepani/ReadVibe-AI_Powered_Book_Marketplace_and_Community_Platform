@@ -1,3 +1,4 @@
+// Stock manager modal for viewing request details.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";

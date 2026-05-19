@@ -1,3 +1,4 @@
+// Home page section that previews community activity and posts.
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
@@ -26,6 +27,7 @@ import {
 } from "../../utils/homeFeaturedCommunityPosts";
 import { isPrivilegedUser } from "../../utils/auth";
 
+// Home page section that previews community activity and posts.
 const CommunitySection = ({ currentUser }) => {
   const [communityPosts, setCommunityPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,12 +37,14 @@ const CommunitySection = ({ currentUser }) => {
   const resolveCurrentUser = () => currentUser || getCurrentUser();
   const actionsDisabled = isPrivilegedUser();
 
+  // Normalizes comment records into the home preview shape.
   const mapCommentToUi = (comment) => ({
     user: comment.userFullName || comment.username || comment.user || "User",
     comment: comment.content,
     timestamp: comment.createdAt || comment.timestamp || null,
   });
 
+  // Formats timestamps for the preview cards.
   const formatCommentTimestamp = (timestamp) => {
     if (!timestamp) return "";
 
@@ -50,6 +54,7 @@ const CommunitySection = ({ currentUser }) => {
     return date.toLocaleString();
   };
 
+  // Loads the featured community posts shown on the home page.
   const loadPosts = async () => {
     setLoading(true);
     try {
@@ -95,6 +100,7 @@ const CommunitySection = ({ currentUser }) => {
   useEffect(() => {
     void loadPosts();
 
+    // Refreshes the preview when community posts change elsewhere.
     const handleCommunityPostsUpdated = () => {
       void loadPosts();
     };
@@ -105,6 +111,7 @@ const CommunitySection = ({ currentUser }) => {
     };
   }, []);
 
+  // Toggles a community post like for the current user.
   const handleLike = async (postId) => {
     const user = resolveCurrentUser();
     if (!user) {
@@ -141,6 +148,7 @@ const CommunitySection = ({ currentUser }) => {
     }
   };
 
+  // Adds a comment to the selected community post.
   const handleAddComment = async (postId) => {
     const user = resolveCurrentUser();
     if (!user) {
@@ -190,6 +198,7 @@ const CommunitySection = ({ currentUser }) => {
     }
   };
 
+  // Shares a community post using the native share API or clipboard.
   const handleShare = async (post) => {
     if (actionsDisabled) {
       alert("Admin and stock manager accounts cannot share posts.");
@@ -212,6 +221,7 @@ const CommunitySection = ({ currentUser }) => {
     alert("Post link copied to clipboard!");
   };
 
+  // Expands or collapses the comment list for a post.
   const toggleComments = (postId) => {
     setExpandedComments((prev) => ({
       ...prev,

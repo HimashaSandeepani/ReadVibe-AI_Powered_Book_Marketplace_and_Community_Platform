@@ -1,3 +1,4 @@
+// Order confirmation loading indicator.
 import React from "react";
 
 const LoadingSpinner = ({ message = "Loading order confirmation..." }) => {

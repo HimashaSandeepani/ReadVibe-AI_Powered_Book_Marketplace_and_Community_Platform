@@ -1,6 +1,6 @@
-// components/Community/utils.js
+// Community utility functions for post IDs, validation, and local storage updates.
 
-// Function to generate unique post ID
+// Generates the next community post ID from local storage.
 export const generatePostId = () => {
   try {
     const posts = JSON.parse(localStorage.getItem("communityPosts")) || [];
@@ -14,7 +14,7 @@ export const generatePostId = () => {
   return `P${String((JSON.parse(localStorage.getItem("communityPosts"))?.length || 0) + 1).padStart(3, "0")}`;
 };
 
-// Safe function to get user avatar
+// Returns a compact avatar label for a user object or string.
 export const getUserAvatar = (user) => {
   if (!user) return "US";
 
@@ -34,6 +34,7 @@ export const getUserAvatar = (user) => {
 };
 
 // Safe function to get user name
+// Returns a display name for the current post author.
 export const getUserName = (user) => {
   if (!user) return "User";
 
@@ -56,6 +57,7 @@ export const getUserName = (user) => {
 };
 
 // Format timestamp for display
+// Formats timestamps into relative or fallback labels.
 export const formatTimestamp = (timestamp) => {
   if (!timestamp) return "Recently";
 
@@ -79,6 +81,7 @@ export const formatTimestamp = (timestamp) => {
 };
 
 // Helper function to update post in admin panel storage
+// Mirrors a post update into the admin panel cache.
 export const updatePostInAdminPanel = (updatedPost) => {
   try {
     const adminPosts = JSON.parse(localStorage.getItem("adminCommunityPosts")) || [];
@@ -86,6 +89,7 @@ export const updatePostInAdminPanel = (updatedPost) => {
 
     if (adminPostIndex !== -1) {
       const adminPost = { ...updatedPost };
+// Shared helper that blocks interactions for unauthenticated users.
       delete adminPost.userDisplay;
       adminPosts[adminPostIndex] = adminPost;
       localStorage.setItem("adminCommunityPosts", JSON.stringify(adminPosts));
@@ -96,6 +100,7 @@ export const updatePostInAdminPanel = (updatedPost) => {
 };
 
 // Validation functions
+// Blocks post creation when the user is not logged in.
 export const canCreatePost = (currentUser) => {
   if (!currentUser) {
     return {
@@ -107,6 +112,7 @@ export const canCreatePost = (currentUser) => {
   return { canProceed: true };
 };
 
+// Blocks post interactions when the user is not logged in.
 export const canInteract = (currentUser) => {
   if (!currentUser) {
     return {
@@ -118,6 +124,7 @@ export const canInteract = (currentUser) => {
   return { canProceed: true };
 };
 
+// Blocks book requests when the user is not logged in.
 export const canRequestBook = (currentUser) => {
   if (!currentUser) {
     return {

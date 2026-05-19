@@ -1,7 +1,9 @@
+// Admin dashboard overview tab.
 import { useEffect, useState } from "react";
 import StatsCards from "./StatsCards";
 import { fetchLiveChatThreadsSummary } from "../../utils/liveChat";
 
+// Formats a timestamp into a relative time label.
 const formatRelativeTime = (value) => {
   if (!value) return "Recently";
 
@@ -24,6 +26,7 @@ const formatRelativeTime = (value) => {
   return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
 };
 
+// Maps admin statuses to Bootstrap variants.
 const getStatusClass = (status) => {
   switch (status) {
     case "Active":
@@ -37,12 +40,14 @@ const getStatusClass = (status) => {
   }
 };
 
+// Admin dashboard tab component.
 const DashboardTab = ({ users, posts, liveChatCount = 0, liveChatThreads = [] }) => {
   const [apiLiveChatCount, setApiLiveChatCount] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
 
+    // Loads the live chat count from the API.
     const loadLiveChatCount = async () => {
       try {
         const summary = await fetchLiveChatThreadsSummary();

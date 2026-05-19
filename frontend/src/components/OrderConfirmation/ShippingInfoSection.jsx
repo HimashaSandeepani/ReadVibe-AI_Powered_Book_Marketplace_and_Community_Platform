@@ -1,3 +1,4 @@
+// Shipping information section for confirmed orders.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

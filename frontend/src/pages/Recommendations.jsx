@@ -1,3 +1,4 @@
+// Recommendations page that surfaces AI-generated book suggestions.
 import { useEffect, useMemo, useState } from "react";
 import { Container, Row, Col, Card, Button, Spinner, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";

@@ -1,3 +1,4 @@
+// Controller layer for order processing and tracking requests.
 import { createOrder, getAllOrders, getOrderById, getOrdersForUser, updateOrderStatus, updateOrderTracking } from '../models/orderModel.js';
 import { getUserById } from '../models/userModel.js';
 import { sendOrderConfirmationEmail } from '../services/emailService.js';

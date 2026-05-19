@@ -1,3 +1,4 @@
+// Category database access helpers and table initialization.
 import { query } from '../config/database.js';
 
 const ensureTable = async () => {

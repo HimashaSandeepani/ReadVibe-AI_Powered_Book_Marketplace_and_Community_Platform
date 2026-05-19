@@ -1,7 +1,9 @@
+// Delivery address preview panel.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
+// Delivery address preview component shown during checkout.
 const AddressPreview = ({ addressPreview }) => {
   return (
     <div className="delivery-address-preview">

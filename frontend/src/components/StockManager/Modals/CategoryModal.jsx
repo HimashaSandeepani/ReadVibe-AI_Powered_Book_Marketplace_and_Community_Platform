@@ -1,3 +1,4 @@
+// Stock manager modal for managing categories.
 import React from "react";
 
 const CategoryModal = ({

@@ -1,3 +1,4 @@
+// Stock manager table for tracking orders and handling fulfillment actions.
 import React from "react";
 import StatusBadge from "../Common/StatusBadge";
 import ActionButtons from "../Common/ActionButtons";

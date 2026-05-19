@@ -1,9 +1,12 @@
+// Single cart item row with quantity controls.
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
+// Cart item component that displays one book row with quantity controls.
 const CartItem = ({ item, book, onRemove, onUpdateQuantity }) => {
+  // Formats cart prices in LKR for the item display.
   const formatPrice = (price, showCurrency = true) => {
     if (showCurrency) {
       return new Intl.NumberFormat("en-LK", {

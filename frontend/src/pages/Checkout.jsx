@@ -1,3 +1,4 @@
+// Checkout page that handles delivery, payment, and order submission.
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +28,7 @@ import { getOrderApi } from "../utils/orderApi";
 
 import "../styles/pages/Checkout.css";
 
+// Safely parses JSON stored in session storage.
 const safeParseJSON = (value) => {
   if (!value) {
     return null;
@@ -39,6 +41,7 @@ const safeParseJSON = (value) => {
   }
 };
 
+// Builds the checkout order data from saved session state.
 const buildOrderData = () => {
   const deliveryData = safeParseJSON(sessionStorage.getItem("deliveryData"));
   const checkoutCart = safeParseJSON(sessionStorage.getItem("checkoutCart")) || [];
@@ -60,6 +63,7 @@ const buildOrderData = () => {
   };
 };
 
+// Checkout page component.
 const Checkout = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState(() => getCurrentUser());
@@ -162,6 +166,7 @@ const Checkout = () => {
     fetchOrder();
   }, [user, orderData?.orderId, orderData?.shipping]);
 
+  // Updates payment form state for the checkout page.
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setPaymentData((prev) => ({
@@ -175,10 +180,12 @@ const Checkout = () => {
     }
   };
 
+  // Handles card number input changes.
   const handleCardNumberChange = (e) => {
     handleInputChange(e);
   };
 
+  // Submits the payment form and finalizes the order.
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -1,3 +1,4 @@
+// Admin user management tab.
 import React from "react";
 
 const UsersTab = ({

@@ -1,6 +1,7 @@
 // Initial sample data
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
+// Sends JSON requests to the admin backend APIs.
 const handleApi = async (path, options = {}) => {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: { "Content-Type": "application/json" },
@@ -15,11 +16,13 @@ const handleApi = async (path, options = {}) => {
   return data;
 };
 
+// Fetches all admin users from the backend.
 export const fetchUsersFromApi = async () => {
   const data = await handleApi("/api/users");
   return data.users || [];
 };
 
+// Creates a new admin-managed user.
 export const createAdminUserApi = async (payload) => {
   const data = await handleApi("/api/users", {
     method: "POST",
@@ -28,6 +31,7 @@ export const createAdminUserApi = async (payload) => {
   return data.user;
 };
 
+// Updates an existing admin-managed user.
 export const updateAdminUserApi = async (userId, payload) => {
   const data = await handleApi(`/api/users/${userId}`, {
     method: "PUT",
@@ -36,6 +40,7 @@ export const updateAdminUserApi = async (userId, payload) => {
   return data.user;
 };
 
+// Deletes an admin-managed user.
 export const deleteAdminUserApi = async (userId) => {
   await handleApi(`/api/users/${userId}`, { method: "DELETE" });
   return true;
@@ -150,6 +155,7 @@ export const initialSystemSettings = {
 
 // Load data from localStorage
 
+// Loads admin dashboard seed data from local storage.
 export const loadData = () => {
   const storedUsers = JSON.parse(localStorage.getItem("adminUsers"));
   const adminPosts = JSON.parse(localStorage.getItem("adminCommunityPosts"));
@@ -191,6 +197,7 @@ export const loadData = () => {
 };
 
 // Save data to localStorage
+// Saves admin dashboard data back to local storage.
 export const saveData = (users, posts, settings, statuses) => {
   if (users) localStorage.setItem("adminUsers", JSON.stringify(users));
   if (posts) localStorage.setItem("adminCommunityPosts", JSON.stringify(posts));
@@ -199,6 +206,7 @@ export const saveData = (users, posts, settings, statuses) => {
 };
 
 // Role badge styling
+// Maps an admin user role to a badge class.
 export const getRoleBadgeClass = (role) => {
   switch (role) {
     case "admin":
@@ -213,6 +221,7 @@ export const getRoleBadgeClass = (role) => {
 };
 
 // Status badge styling
+// Maps an admin status value to a badge class.
 export const getStatusBadgeClass = (status) => {
   switch (status) {
     case "active":
@@ -228,12 +237,14 @@ export const getStatusBadgeClass = (status) => {
 };
 
 // Filter users by role
+// Filters users by the selected role.
 export const filterUsersByRole = (users, role) => {
   if (role === "all") return users;
   return users.filter((user) => user.role === role);
 };
 
 // Calculate user stats
+// Calculates summary statistics for admin users.
 export const calculateUserStats = (users) => {
   const now = new Date();
   const thirtyDaysAgo = new Date(now);
@@ -250,6 +261,7 @@ export const calculateUserStats = (users) => {
 };
 
 // Calculate post stats
+// Calculates summary statistics for admin posts.
 export const calculatePostStats = (posts) => {
   return {
     total: posts.length,
@@ -309,6 +321,7 @@ export const validateEditUser = (user, editingUser, existingUsers) => {
 };
 
 // Show notification
+// Shows a temporary admin notification.
 export const showNotification = (message, type = "success") => {
   const notification = document.createElement("div");
   notification.className = `alert alert-${type} position-fixed`;
@@ -330,6 +343,7 @@ export const showNotification = (message, type = "success") => {
 
 
 // Add this helper function to utils.js
+// Extracts a display name from a user payload.
 export const extractUserName = (userData) => {
   if (!userData) return "Unknown";
   if (typeof userData === 'string') return userData;

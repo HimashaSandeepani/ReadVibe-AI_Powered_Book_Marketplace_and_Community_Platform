@@ -1,9 +1,11 @@
+// Checkout payment form wrapper.
 import React from "react";
 import { Form } from "react-bootstrap";
 import PaymentMethods from "./PaymentMethods";
 import CreditCardForm from "./CreditCardForm";
 import BillingAddress from "./BillingAddress";
 
+// Payment form wrapper that combines payment method, card, and billing fields.
 const PaymentForm = ({
   paymentData,
   formErrors,

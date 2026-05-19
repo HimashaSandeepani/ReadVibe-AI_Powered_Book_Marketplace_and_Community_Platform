@@ -1,3 +1,4 @@
+// Email-triggering API endpoints for order notifications.
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import { sendOrderConfirmationEmail } from '../utils/email.js';

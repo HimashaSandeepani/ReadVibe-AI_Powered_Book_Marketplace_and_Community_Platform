@@ -1,3 +1,4 @@
+// Shared header for admin views.
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +17,9 @@ import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../../store/slices/authSlice";
 import "../../styles/components/AdminHeaderFooter.css";
 
+// Admin header component that handles navigation and account actions.
 const AdminHeader = () => {
+  // Keeps the local user state in sync with storage changes.
   const [user, setUser] = useState(() => getCurrentUser());
   const [expanded, setExpanded] = useState(false);
   const location = useLocation();
@@ -25,6 +28,7 @@ const AdminHeader = () => {
   const isOnAdminPanel = location.pathname === "/admin-panel";
 
   useEffect(() => {
+    // Re-read the current user whenever another tab updates storage.
     const handleStorageChange = () => {
       setUser(getCurrentUser());
     };
@@ -33,6 +37,7 @@ const AdminHeader = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
+  // Clears auth state and returns the user to the login page.
   const handleLogout = () => {
     dispatch(logoutSuccess());
     logout();
@@ -40,16 +45,19 @@ const AdminHeader = () => {
     navigate("/login");
   };
 
+  // Navigates back to the main public site.
   const handleGoToMainSite = () => {
     setExpanded(false);
     navigate("/");
   };
 
+  // Opens the admin dashboard route from the header menu.
   const handleGoToAdminPanel = () => {
     setExpanded(false);
     navigate("/admin-panel");
   };
 
+  // Routes to the stock manager dashboard from the header menu.
   const handleGoToStockManger = () => {
     setExpanded(false);
     navigate("/admin-panel");

@@ -1,5 +1,7 @@
+// Stock manager utility functions for API access, formatting, filters, and metrics.
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
+// Sends JSON requests to the stock manager backend APIs.
 const handleApi = async (path, options = {}) => {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: { "Content-Type": "application/json" },
@@ -14,16 +16,19 @@ const handleApi = async (path, options = {}) => {
   return data;
 };
 
+// Fetches all books for stock manager screens.
 export const fetchBooksFromApi = async () => {
   const data = await handleApi("/api/books");
   return data.books || [];
 };
 
+// Fetches one book by ID for editing or inspection.
 export const fetchBookByIdApi = async (bookId) => {
   const data = await handleApi(`/api/books/${bookId}`);
   return data.book || null;
 };
 
+// Creates a new book through the backend API.
 export const createBookApi = async (payload) => {
   const data = await handleApi("/api/books", {
     method: "POST",
@@ -32,6 +37,7 @@ export const createBookApi = async (payload) => {
   return data.book;
 };
 
+// Updates an existing book through the backend API.
 export const updateBookApi = async (bookId, payload) => {
   const data = await handleApi(`/api/books/${bookId}`, {
     method: "PUT",
@@ -40,16 +46,19 @@ export const updateBookApi = async (bookId, payload) => {
   return data.book;
 };
 
+// Deletes a book through the backend API.
 export const deleteBookApi = async (bookId) => {
   await handleApi(`/api/books/${bookId}`, { method: "DELETE" });
   return true;
 };
 
+// Fetches the complete order list for stock management.
 export const fetchAllOrdersApi = async () => {
   const data = await handleApi("/api/orders/all");
   return data.orders || [];
 };
 
+// Updates the fulfillment status for an order.
 export const updateOrderStatusApi = async (orderId, status) => {
   const data = await handleApi(`/api/orders/${orderId}/status`, {
     method: "PUT",
@@ -58,6 +67,7 @@ export const updateOrderStatusApi = async (orderId, status) => {
   return data.order;
 };
 
+// Updates tracking details for an order.
 export const updateOrderTrackingApi = async (orderId, payload) => {
   const data = await handleApi(`/api/orders/${orderId}/tracking`, {
     method: "PUT",
@@ -66,11 +76,13 @@ export const updateOrderTrackingApi = async (orderId, payload) => {
   return data.order;
 };
 
+// Fetches all publishers for stock manager screens.
 export const fetchPublishersFromApi = async () => {
   const data = await handleApi("/api/publishers");
   return data.publishers || [];
 };
 
+// Creates a publisher through the backend API.
 export const createPublisherApi = async (payload) => {
   const data = await handleApi("/api/publishers", {
     method: "POST",
@@ -79,6 +91,7 @@ export const createPublisherApi = async (payload) => {
   return data.publisher;
 };
 
+// Updates a publisher through the backend API.
 export const updatePublisherApi = async (publisherId, payload) => {
   const data = await handleApi(`/api/publishers/${publisherId}`, {
     method: "PUT",
@@ -87,12 +100,14 @@ export const updatePublisherApi = async (publisherId, payload) => {
   return data.publisher;
 };
 
+// Deletes a publisher through the backend API.
 export const deletePublisherApi = async (publisherId) => {
   await handleApi(`/api/publishers/${publisherId}`, { method: "DELETE" });
   return true;
 };
 
 // Currency formatter for LKR
+// Formats currency in LKR for stock manager displays.
 export const formatCurrency = (amount) => {
   return new Intl.NumberFormat("en-LK", {
     style: "currency",
@@ -103,9 +118,11 @@ export const formatCurrency = (amount) => {
 };
 
 // Helper function to convert USD to LKR (approximate rate)
+// Converts USD amounts to an approximate LKR value.
 export const usdToLkr = (usd) => usd * 325;
 
 // Stock status helper functions
+// Maps book stock status to a Bootstrap badge class.
 export const getStockStatusClass = (status) => {
   const classes = {
     "In Stock": "badge bg-success",
@@ -115,6 +132,7 @@ export const getStockStatusClass = (status) => {
   return classes[status] || "badge bg-secondary";
 };
 
+// Maps order status to a Bootstrap badge class.
 export const getOrderStatusClass = (status) => {
   const classes = {
     Processing: "badge bg-warning text-dark",
@@ -126,6 +144,7 @@ export const getOrderStatusClass = (status) => {
   return classes[status] || "badge bg-secondary";
 };
 
+// Maps request status to a Bootstrap badge class.
 export const getRequestStatusClass = (status) => {
   const classes = {
     Pending: "badge bg-warning text-dark",
@@ -136,16 +155,19 @@ export const getRequestStatusClass = (status) => {
   return classes[status] || "badge bg-secondary";
 };
 
+// Returns the badge class for a publisher status.
 export const getPublisherStatusClass = (status) => {
   return status === "Active" ? "badge bg-success" : "badge bg-secondary";
 };
 
 // Calculate stock percentage
+// Calculates how full a book's stock is relative to max stock.
 export const getStockPercentage = (book) => {
   return (book.stock / book.maxStock) * 100;
 };
 
 // Filter books by search query
+// Filters books by title, author, ISBN, or category.
 export const filterBooks = (books, searchQuery) => {
   if (!searchQuery) return books;
 
@@ -160,6 +182,7 @@ export const filterBooks = (books, searchQuery) => {
 };
 
 // Sort books
+// Sorts books by the selected column and direction.
 export const sortBooks = (books, sortConfig) => {
   if (!sortConfig.key) return books;
 
@@ -175,6 +198,7 @@ export const sortBooks = (books, sortConfig) => {
 };
 
 // Calculate statistics
+// Aggregates sales metrics for books and orders.
 export const calculateBookSalesMetrics = (stockBooks, stockOrders = []) => {
   const metricsByBookId = new Map(
     stockBooks.map((book) => [Number(book?.id), {
@@ -222,6 +246,7 @@ export const calculateBookSalesMetrics = (stockBooks, stockOrders = []) => {
   return metricsByBookId;
 };
 
+// Summarizes inventory health and profit metrics.
 export const calculateInventoryStats = (stockBooks, stockOrders = []) => {
   const isLowStockBook = (book) => {
     const stock = Number(book?.stock) || 0;
@@ -287,6 +312,7 @@ export const calculateInventoryStats = (stockBooks, stockOrders = []) => {
   };
 };
 
+// Summarizes order status and revenue metrics.
 export const calculateOrderStats = (stockOrders) => {
   const normalizeStatus = (status) => String(status || "").toLowerCase();
 
@@ -305,6 +331,7 @@ export const calculateOrderStats = (stockOrders) => {
   };
 };
 
+// Summarizes request status metrics.
 export const calculateRequestStats = (bookRequests) => {
   return {
     total: bookRequests.length,
@@ -316,6 +343,7 @@ export const calculateRequestStats = (bookRequests) => {
 };
 
 // Show notification
+// Displays a temporary Bootstrap notification.
 export const showNotification = (message, type) => {
   // Create notification element
   const notification = document.createElement("div");
@@ -337,6 +365,7 @@ export const showNotification = (message, type) => {
 };
 
 // Initial data
+// Returns seeded stock book data for the manager views.
 export const initialStockBooks = () => {
   return [
     {
@@ -462,6 +491,7 @@ export const initialStockBooks = () => {
   ];
 };
 
+// Returns seeded order data for the manager views.
 export const initialStockOrders = () => {
   return [
     {
@@ -509,6 +539,7 @@ export const initialStockOrders = () => {
   ];
 };
 
+// Returns seeded publisher data for the manager views.
 export const initialPublishers = () => {
   return [
     {
@@ -560,6 +591,7 @@ export const initialPublishers = () => {
 };
 
 // Format price
+// Formats stock manager prices as LKR.
 export const formatPrice = (price) => {
   return new Intl.NumberFormat("en-LK", {
     style: "currency",
@@ -570,6 +602,7 @@ export const formatPrice = (price) => {
 };
 
 // Calculate stock alert color
+// Returns the alert color for a given stock level.
 export const getStockAlertColor = (stock, minStock) => {
   if (stock === 0) return "danger";
   if (stock <= minStock) return "warning";

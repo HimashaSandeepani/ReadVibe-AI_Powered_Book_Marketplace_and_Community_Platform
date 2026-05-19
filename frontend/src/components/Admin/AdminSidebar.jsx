@@ -1,5 +1,7 @@
+// Sidebar navigation for the admin panel.
 import React from "react";
 
+// Admin sidebar navigation component.
 const AdminSidebar = ({ activeTab, onTabChange, liveChatCount }) => {
   const tabs = [
     { id: "dashboard", label: "Dashboard", icon: "tachometer-alt" },

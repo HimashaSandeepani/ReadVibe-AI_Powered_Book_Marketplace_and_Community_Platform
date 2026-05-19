@@ -1,3 +1,4 @@
+# Schedules the recommendation retraining task in Windows Task Scheduler.
 param(
     [switch]$Install,
     [string]$TaskName = "ReadVibe Recommendation Retraining",

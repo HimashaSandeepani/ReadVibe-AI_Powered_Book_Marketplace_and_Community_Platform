@@ -1,5 +1,7 @@
+// Admin modal for adding a new user.
 import React, { useState } from "react";
 
+// Admin modal component for adding a new user.
 const AddUserModal = ({ show, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     username: "",
@@ -9,6 +11,7 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
     confirmPassword: "",
   });
 
+  // Submits the new user form and resets the modal state.
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
@@ -21,6 +24,7 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
     });
   };
 
+  // Updates a single add-user form field.
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

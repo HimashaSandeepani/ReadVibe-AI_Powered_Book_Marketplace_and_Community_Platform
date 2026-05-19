@@ -1,3 +1,4 @@
+// Shared header for stock manager views.
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../../store/slices/authSlice";
 import "../../styles/components/StockManagerHeaderFooter.css";
 
+// Stock manager header component that handles navigation and logout.
 const StockManagerHeader = () => {
   const [user, setUser] = useState(() => getCurrentUser());
   const [expanded, setExpanded] = useState(false);
@@ -26,6 +28,7 @@ const StockManagerHeader = () => {
   const isAdminUser = user?.role === "admin";
 
   useEffect(() => {
+    // Re-read the current user whenever storage changes in another tab.
     const handleStorageChange = () => {
       setUser(getCurrentUser());
     };
@@ -34,6 +37,7 @@ const StockManagerHeader = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
+  // Clears auth state and redirects to the login page.
   const handleLogout = () => {
     dispatch(logoutSuccess());
     logout();
@@ -41,11 +45,13 @@ const StockManagerHeader = () => {
     navigate("/login");
   };
 
+  // Returns the user to the public landing site.
   const handleGoToMainSite = () => {
     setExpanded(false);
     navigate("/");
   };
 
+  // Opens the stock manager dashboard route.
   const handleGoToStockManager = () => {
     setExpanded(false);
     navigate("/stock-manager");

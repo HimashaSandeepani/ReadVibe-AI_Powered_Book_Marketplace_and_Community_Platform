@@ -1,7 +1,10 @@
+// Admin user table and row actions.
 import React from "react";
 import { getRoleBadgeClass, getStatusBadgeClass } from "./utils";
 
+// Admin table for filtering and managing users.
 const UserTable = ({ users, onEditUser, onDeleteUser, activeUserSubTab }) => {
+  // Filters users based on the active admin sub-tab.
   const filteredUsers = () => {
     switch (activeUserSubTab) {
       case "all":

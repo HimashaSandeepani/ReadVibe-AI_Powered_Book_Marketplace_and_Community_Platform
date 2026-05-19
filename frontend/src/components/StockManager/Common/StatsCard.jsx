@@ -1,3 +1,4 @@
+// Shared stock manager stats card.
 import React from "react";
 
 const StatsCard = ({ number, label, className = "", variant = "" }) => {

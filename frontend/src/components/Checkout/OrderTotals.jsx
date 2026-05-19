@@ -1,6 +1,8 @@
+// Checkout totals and cost breakdown.
 import React from "react";
 import { formatPrice } from "./utils";
 
+// Order totals breakdown for subtotal, shipping, tax, and final total.
 const OrderTotals = ({ totals }) => {
   return (
     <div className="checkout-totals">

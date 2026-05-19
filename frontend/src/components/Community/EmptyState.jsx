@@ -1,6 +1,8 @@
+// Empty state for the community feed.
 import React from "react";
 import { Link } from "react-router-dom";
 
+// Empty state component that prompts users to start a discussion.
 const EmptyState = ({ currentUser, handleOpenCreatePostModal }) => {
   return (
     <div className="empty-community-state">

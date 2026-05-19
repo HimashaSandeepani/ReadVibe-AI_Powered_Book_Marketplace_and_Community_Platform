@@ -1,5 +1,7 @@
+// Modal for creating a new community post.
 import React from "react";
 
+// Community post creation modal with title, content, category, and book fields.
 const CreatePostModal = ({
   showCreatePostModal,
   setShowCreatePostModal,

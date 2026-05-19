@@ -1,3 +1,4 @@
+// User profile page for activity, reviews, support, and account settings.
 import { useState, useEffect, useMemo } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -77,6 +78,7 @@ const DEFAULT_REQUEST_CATEGORIES = [
   "Other",
 ];
 
+// Loads the stored category list for profile request forms.
 const getStoredCategories = () => {
   if (typeof window === "undefined") return [];
 
@@ -88,6 +90,7 @@ const getStoredCategories = () => {
   }
 };
 
+// User profile page component.
 const UserProfile = () => {
   const seededUser = typeof window === "undefined" ? null : getCurrentUser();
   const [searchParams] = useSearchParams();
@@ -118,6 +121,7 @@ const UserProfile = () => {
 
   const navigate = useNavigate();
 
+  // Loads profile data for the signed-in user.
   const initializeUserData = async (currentUser) => {
     if (!currentUser) return;
 
@@ -138,6 +142,7 @@ const UserProfile = () => {
     setLoading(false);
   };
 
+  // Refreshes support messages for the current user.
   const refreshSupportMessages = async (currentUser) => {
     if (!currentUser) {
       setSupportMessages([]);
@@ -148,6 +153,7 @@ const UserProfile = () => {
     setSupportMessages(messages.length ? messages : getSupportMessagesForUser(currentUser.id));
   };
 
+  // Refreshes live chat threads for the current user.
   const refreshLiveChatThreads = async (currentUser) => {
     if (!currentUser) {
       setLiveChatThreads([]);

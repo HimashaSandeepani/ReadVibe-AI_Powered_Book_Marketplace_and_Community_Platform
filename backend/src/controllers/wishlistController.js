@@ -1,3 +1,4 @@
+// Controller layer for wishlist requests.
 import {
   addWishlistItem,
   clearWishlist,

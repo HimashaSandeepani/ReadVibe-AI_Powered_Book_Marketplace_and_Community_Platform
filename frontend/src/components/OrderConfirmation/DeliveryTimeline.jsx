@@ -1,7 +1,9 @@
+// Delivery timeline for confirmed orders.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCheck } from "@fortawesome/free-solid-svg-icons";
 
+// Defines the canonical order progression for the timeline.
 const statusOrder = [
   "Processing",
   "Shipped",
@@ -10,8 +12,10 @@ const statusOrder = [
   "Returned",
 ];
 
+// Normalizes a status string for comparisons.
 const normalizeStatus = (status) => String(status || "Processing").trim().toLowerCase();
 
+// Formats a timeline date for display.
 const formatTimelineDate = (value) => {
   if (!value) return "";
 
@@ -25,6 +29,7 @@ const formatTimelineDate = (value) => {
   });
 };
 
+// Resolves the latest status from tracking updates.
 const getLatestStatus = (trackingUpdates = [], currentStatus = "Processing") => {
   const latestUpdate = Array.isArray(trackingUpdates) && trackingUpdates.length > 0
     ? trackingUpdates[trackingUpdates.length - 1]
@@ -33,6 +38,7 @@ const getLatestStatus = (trackingUpdates = [], currentStatus = "Processing") => 
   return latestUpdate?.status || currentStatus || "Processing";
 };
 
+// Returns the current stage index for the timeline.
 const getStatusIndex = (status) => {
   const normalized = normalizeStatus(status);
   const index = statusOrder.findIndex(
@@ -41,6 +47,7 @@ const getStatusIndex = (status) => {
   return index >= 0 ? index : 0;
 };
 
+// Delivery timeline component.
 const DeliveryTimeline = ({
   shipDate,
   deliveryDate,
@@ -50,6 +57,7 @@ const DeliveryTimeline = ({
 }) => {
   const latestStatus = getLatestStatus(trackingUpdates, currentStatus);
   const activeIndex = getStatusIndex(latestStatus);
+  // Finds the latest update for a specific status.
   const latestUpdateByStatus = (targetStatus) =>
     [...trackingUpdates]
       .reverse()

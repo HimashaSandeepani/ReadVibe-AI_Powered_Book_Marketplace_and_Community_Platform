@@ -1,3 +1,4 @@
+// Order confirmation page with delivery summary and follow-up actions.
 import { useEffect, useState, useMemo } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";

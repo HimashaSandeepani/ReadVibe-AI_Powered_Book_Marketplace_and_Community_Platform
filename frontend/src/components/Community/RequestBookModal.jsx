@@ -1,5 +1,7 @@
+// Modal for requesting a book from the community.
 import React from "react";
 
+// Book request modal that captures title, author, category, and reason.
 const RequestBookModal = ({
   showRequestBookModal,
   setShowRequestBookModal,

@@ -1,5 +1,7 @@
+// Admin system settings and diagnostics tab.
 import React from "react";
 
+// Admin system settings tab component.
 const SystemTab = ({
   systemSettings,
   onSystemSettingsChange,

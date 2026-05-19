@@ -1,3 +1,4 @@
+// Wishlist helper data and formatting utilities.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

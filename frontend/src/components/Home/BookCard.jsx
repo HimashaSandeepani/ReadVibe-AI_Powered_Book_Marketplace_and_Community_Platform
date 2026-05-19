@@ -1,3 +1,4 @@
+// Home page book card used for featured and popular listings.
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Badge, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -26,23 +27,28 @@ import { addItem, setCart } from "../../store/slices/cartSlice";
 import { addCartItemApi } from "../../utils/cartApi";
 import { getCurrentUser, isPrivilegedUser } from "../../utils/auth";
 
+// Home page book card component used for featured and popular listings.
 const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, rank = null }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Resolves the active user for wishlist and cart actions.
   const resolvedCurrentUser =
     currentUser && typeof currentUser === "object" ? currentUser : getCurrentUser();
   const currentUserId = resolvedCurrentUser?.id ?? null;
   const isActionsDisabled = actionsDisabled || isPrivilegedUser();
 
+  // Checks whether the current user is logged in.
   const isLoggedIn = () => resolvedCurrentUser !== null;
 
+  // Checks whether a book is already present in the wishlist.
   const isInWishlist = (bookId) => {
     if (!resolvedCurrentUser) return false;
     const wishlist = getUserWishlist();
     return wishlist.some((item) => item.id === bookId);
   };
 
+  // Adds the selected book to the wishlist.
   const handleAddToWishlist = async (e) => {
     e.stopPropagation();
 
@@ -64,6 +70,7 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
     }
   };
 
+  // Adds the selected book to the cart.
   const handleAddToCart = async (e) => {
     e.stopPropagation();
 
@@ -129,6 +136,7 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
     }
   };
 
+  // Adds the selected book to a one-item checkout cart.
   const handleBuyNow = (e) => {
     e.stopPropagation();
 
@@ -172,18 +180,21 @@ const BookCard = ({ book, currentUser, onViewDetails, actionsDisabled = false, r
     navigate("/delivery-details");
   };
 
+  // Creates the tooltip for wishlist actions.
   const wishlistTooltip = (props) => (
     <Tooltip id="wishlist-tooltip" {...props}>
       {isLoggedIn() ? "Add to Wishlist" : "Login to add to wishlist"}
     </Tooltip>
   );
 
+  // Creates the tooltip for cart actions.
   const cartTooltip = (props) => (
     <Tooltip id="cart-tooltip" {...props}>
       {isLoggedIn() ? "Add to Cart" : "Login to add to cart"}
     </Tooltip>
   );
 
+  // Creates the tooltip for the buy-now action.
   const buyNowTooltip = (props) => (
     <Tooltip id="buynow-tooltip" {...props}>
       {isLoggedIn() ? "Buy Now" : "Login to buy"}

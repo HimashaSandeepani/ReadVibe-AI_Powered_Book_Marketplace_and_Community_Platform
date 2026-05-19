@@ -1,3 +1,4 @@
+// Publisher database access helpers.
 import { query } from '../config/database.js';
 
 const baseSelect = `

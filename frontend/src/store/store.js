@@ -1,3 +1,4 @@
+// Redux store configuration for the frontend application state.
 import { configureStore } from "@reduxjs/toolkit";
 import appReducer from "./slices/appSlice";
 import authReducer from "./slices/authSlice";

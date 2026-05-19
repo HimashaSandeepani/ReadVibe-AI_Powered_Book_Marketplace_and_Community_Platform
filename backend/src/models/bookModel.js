@@ -1,3 +1,4 @@
+// Book database access helpers and catalog queries.
 import { query } from '../config/database.js';
 
 const baseSelect = `

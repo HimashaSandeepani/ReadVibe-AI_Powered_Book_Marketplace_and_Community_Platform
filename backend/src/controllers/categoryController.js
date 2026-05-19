@@ -1,3 +1,4 @@
+// Controller layer for category management requests.
 import {
   createCategory,
   deleteCategory,

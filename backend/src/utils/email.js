@@ -1,3 +1,4 @@
+// Email transport setup and template helpers for notification messages.
 import nodemailer from 'nodemailer';
 
 const parseBoolean = (value) => String(value).toLowerCase() === 'true';

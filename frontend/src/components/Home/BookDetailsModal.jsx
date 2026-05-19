@@ -1,3 +1,4 @@
+// Home page modal for viewing detailed book information.
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Modal, Button, Badge, Row, Col } from "react-bootstrap";
@@ -33,6 +34,7 @@ import {
 import { addItem, setCart } from "../../store/slices/cartSlice";
 import { getCurrentUser, isPrivilegedUser } from "../../utils/auth";
 
+// Home page modal for viewing detailed book information.
 const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,6 +42,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
   if (!book) return null;
   const reviewItems = Array.isArray(book.reviewsList) ? book.reviewsList : [];
 
+  // Resolves the active user for wishlist and cart actions.
   const resolvedCurrentUser =
     currentUser && typeof currentUser === "object" ? currentUser : getCurrentUser();
   const currentUserId = resolvedCurrentUser?.id ?? null;
@@ -47,12 +50,14 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
   const isActionsDisabled = actionsDisabled || isPrivilegedUser();
   const isBookInStock = book.inStock ?? Number(book.stock) > 0;
 
+  // Checks whether the current book is already in the wishlist.
   const isInWishlist = (bookId) => {
     if (!resolvedCurrentUser) return false;
     const wishlist = getUserWishlist();
     return wishlist.some((item) => item.id === bookId);
   };
 
+  // Adds the book to the user's wishlist.
   const handleAddToWishlist = async () => {
     if (isActionsDisabled) {
       showNotification("Admin and stock manager accounts cannot use wishlist actions.", "warning");
@@ -73,6 +78,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
     }
   };
 
+  // Adds the book to the cart.
   const handleAddToCart = () => {
     if (isActionsDisabled) {
       showNotification("Admin and stock manager accounts cannot add books to cart.", "warning");
@@ -103,6 +109,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
     showNotification("Book added to cart!", "success");
   };
 
+  // Replaces the cart with this book and starts delivery checkout.
   const handleBuyNow = () => {
     if (isActionsDisabled) {
       showNotification("Admin and stock manager accounts cannot buy books.", "warning");
@@ -145,6 +152,7 @@ const BookDetailsModal = ({ show, onHide, book, currentUser, actionsDisabled }) 
     navigate("/delivery-details");
   };
 
+  // Chooses the appropriate stock badge for the current book.
   const getStockBadge = () => {
     if (book.stock > 10) {
       return <Badge bg="success">In Stock</Badge>;

@@ -1,3 +1,4 @@
+"""Retrain the book recommendation model from updated interaction data."""
 import argparse
 import csv
 import json

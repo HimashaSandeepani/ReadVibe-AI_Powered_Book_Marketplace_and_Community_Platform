@@ -1,3 +1,4 @@
+// Terms and conditions modal for signup flow.
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -5,6 +6,7 @@ import { faFileContract } from "@fortawesome/free-solid-svg-icons";
 import { TERMS_AND_CONDITIONS } from "./utils";
 
 const TermsModal = ({ show, onHide, onAgree }) => {
+  // Converts the terms text into headings, paragraphs, and list items.
   const renderTermsContent = () => {
     return TERMS_AND_CONDITIONS.split("\n").map((line, index) => {
       if (line.startsWith("# ")) {

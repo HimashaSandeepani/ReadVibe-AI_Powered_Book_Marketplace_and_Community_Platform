@@ -1,3 +1,4 @@
+// Home page that surfaces featured books, community content, and AI recommendations.
 import { useState, useEffect, useRef } from "react";
 import { Container } from "react-bootstrap";
 import { getCurrentUser as getNormalizedCurrentUser } from "../utils/auth";
@@ -14,10 +15,12 @@ import { fetchBookByIdApi } from "../components/StockManager/utils";
 import { isPrivilegedUser } from "../utils/auth";
 import "../styles/pages/Home.css";
 
+// Reads the current user for the home page.
 const getStoredCurrentUser = () => {
   return getNormalizedCurrentUser();
 };
 
+// Home page component.
 const Home = () => {
   const [currentUser, setCurrentUser] = useState(() => getStoredCurrentUser());
   const [showBookModal, setShowBookModal] = useState(false);
@@ -39,10 +42,12 @@ const Home = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
+  // Returns whether a user is signed in.
   const isLoggedIn = () => {
     return currentUser !== null;
   };
 
+  // Merges cached reviews into a book detail payload.
   const mergeBookReviews = (book) => {
     if (!book) return book;
 
@@ -67,6 +72,7 @@ const Home = () => {
     };
   };
 
+  // Loads a book's details and opens the modal.
   const handleViewDetails = async (book) => {
     try {
       const detailedBook = await fetchBookByIdApi(book.id);
@@ -103,6 +109,7 @@ const Home = () => {
     return () => window.removeEventListener("book-reviews-updated", handleBookReviewsUpdated);
   }, []);
 
+  // Closes the book details modal.
   const handleCloseModal = () => {
     setShowBookModal(false);
   };

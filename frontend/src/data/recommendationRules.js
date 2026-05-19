@@ -1,3 +1,4 @@
+// Static recommendation rules used by the frontend recommendation view.
 export const BOOK_RECOMMENDATION_RULES = [
   { antecedent: ['0671043323'], consequent: ['0333648250'], support: 0.08279506752789195, confidence: 1.0, lift: 12.078014184397164 },
   { antecedent: ['0671043323'], consequent: ['0671535404'], support: 0.08279506752789195, confidence: 1.0, lift: 12.078014184397164 },

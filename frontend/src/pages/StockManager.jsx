@@ -1,3 +1,4 @@
+// Stock manager dashboard for inventory, orders, and publisher workflows.
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";

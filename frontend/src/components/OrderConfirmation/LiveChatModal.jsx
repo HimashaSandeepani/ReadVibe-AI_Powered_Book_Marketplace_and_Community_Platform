@@ -1,3 +1,4 @@
+// Live chat modal for post-order support.
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

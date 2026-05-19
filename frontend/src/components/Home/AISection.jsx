@@ -1,3 +1,4 @@
+// Home page section that introduces the AI recommendation feature.
 import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,10 +11,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { isPrivilegedUser } from "../../utils/auth";
 
+// Home page AI recommendation section.
 const AISection = () => {
   const navigate = useNavigate();
   const actionsDisabled = isPrivilegedUser();
 
+  // Explains the three-step recommendation workflow.
   const howItWorksSteps = [
     {
       icon: faShoppingCart,

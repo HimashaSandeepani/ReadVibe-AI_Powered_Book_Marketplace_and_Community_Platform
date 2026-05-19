@@ -1,3 +1,4 @@
+// Shipping address entry form.
 import React from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +15,7 @@ import {
   faMapMarkerAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Shipping address form component that captures the recipient's details.
 const ShippingAddressForm = ({ formData, errors, handleChange, countries }) => {
   return (
     <div className="delivery-section">

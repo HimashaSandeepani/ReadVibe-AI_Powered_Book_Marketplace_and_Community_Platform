@@ -1,3 +1,4 @@
+// Checkout order summary panel.
 import React from "react";
 import { Card } from "react-bootstrap";
 import OrderItems from "./OrderItems";
@@ -5,6 +6,7 @@ import OrderTotals from "./OrderTotals";
 import DeliveryAddressDisplay from "./DeliveryAddressDisplay";
 import SecurityBadges from "./SecurityBadges";
 
+// Checkout order summary wrapper that combines items, totals, and trust cues.
 const OrderSummary = ({ orderData }) => {
   return (
     <Card className="checkout-order-summary">

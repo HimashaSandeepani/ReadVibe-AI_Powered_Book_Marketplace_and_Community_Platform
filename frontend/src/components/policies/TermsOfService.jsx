@@ -1,4 +1,4 @@
-// TermsOfService.jsx
+// Terms of service page content.
 import React from "react";
 import { Container, Card, ListGroup, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

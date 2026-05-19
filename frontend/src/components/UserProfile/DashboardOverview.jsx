@@ -1,3 +1,4 @@
+// User profile dashboard overview cards.
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

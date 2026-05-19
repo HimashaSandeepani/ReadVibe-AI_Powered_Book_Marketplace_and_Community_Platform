@@ -1,7 +1,9 @@
+// Cart item list renderer.
 import React from "react";
 import { Card } from "react-bootstrap";
 import CartItem from "./CartItem";
 
+// Cart items list component that renders every item currently in the cart.
 const CartItemsList = ({ cart, books, onRemoveItem, onUpdateQuantity }) => {
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 

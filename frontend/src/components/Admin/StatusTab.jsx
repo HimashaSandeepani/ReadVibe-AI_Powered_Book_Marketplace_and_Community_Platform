@@ -1,5 +1,7 @@
+// Admin status and health overview tab.
 import React, { useMemo, useState } from "react";
 
+// Admin tab for managing custom status labels.
 const StatusTab = ({ statuses = [], onSaveStatus, onDeleteStatus }) => {
   const [statusInput, setStatusInput] = useState("");
   const [selectedStatusId, setSelectedStatusId] = useState(null);
@@ -9,6 +11,7 @@ const StatusTab = ({ statuses = [], onSaveStatus, onDeleteStatus }) => {
     [statuses, selectedStatusId],
   );
 
+  // Saves the current status entry.
   const handleSave = () => {
     const name = (statusInput || "").trim();
     if (!name) return;
@@ -20,6 +23,7 @@ const StatusTab = ({ statuses = [], onSaveStatus, onDeleteStatus }) => {
     setSelectedStatusId(null);
   };
 
+  // Deletes the selected status entry.
   const handleDelete = () => {
     if (!selectedStatus || !onDeleteStatus) return;
     onDeleteStatus(selectedStatus.id);
@@ -27,6 +31,7 @@ const StatusTab = ({ statuses = [], onSaveStatus, onDeleteStatus }) => {
     setSelectedStatusId(null);
   };
 
+  // Clears the status form and selection.
   const handleCancel = () => {
     setStatusInput("");
     setSelectedStatusId(null);

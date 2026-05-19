@@ -1,3 +1,4 @@
+// JWT authentication and authorization guards for protected routes.
 import jwt from 'jsonwebtoken';
 import { UnauthorizedError, ForbiddenError } from '../utils/errors.js';
 

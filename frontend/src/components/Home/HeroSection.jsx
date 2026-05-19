@@ -1,3 +1,4 @@
+// Home page hero banner and primary call to action.
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +9,7 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Home page hero banner and primary call to action.
 const HeroSection = () => {
   return (
     <section className="hero-section">

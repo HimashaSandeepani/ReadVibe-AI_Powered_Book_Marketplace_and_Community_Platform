@@ -1,3 +1,4 @@
+// Marketplace page for browsing, filtering, and opening book details.
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -51,8 +52,10 @@ import GuestNotice from "../components/Marketplace/GuestNotice";
 import SearchBar from "../components/Marketplace/SearchBar";
 import EmptyState from "../components/Marketplace/EmptyState";
 
+// Reads the normalized current user for marketplace gating.
 const getStoredUser = () => getNormalizedCurrentUser();
 
+// Loads the current user's wishlist from storage.
 const getStoredWishlist = () => getUserWishlist();
 
 const DEFAULT_FILTERS = {
@@ -65,6 +68,7 @@ const DEFAULT_FILTERS = {
   preOrder: false,
 };
 
+// Loads persisted categories for marketplace filters.
 const getStoredCategories = () => {
   try {
     const stored = JSON.parse(window.localStorage.getItem("categories"));
@@ -74,8 +78,10 @@ const getStoredCategories = () => {
   }
 };
 
+// Marketplace page component.
 const Marketplace = () => {
   const dispatch = useDispatch();
+  // Resolves a display image for a book.
   const resolveBookImage = useCallback((book) => {
     const imageFromBook =
       book.image ||
@@ -83,6 +89,7 @@ const Marketplace = () => {
     return imageFromBook || "/assets/default_book.jpg";
   }, []);
 
+  // Normalizes API books for marketplace rendering.
   const normalizeBooks = useCallback(
     (booksArray) =>
       (booksArray || []).map((book) => ({
@@ -103,6 +110,7 @@ const Marketplace = () => {
     [resolveBookImage],
   );
 
+  // Merges cached reviews into a book detail object.
   const mergeBookReviews = useCallback((book) => {
     if (!book) return book;
 
@@ -157,6 +165,7 @@ const Marketplace = () => {
     return [...categories].filter(Boolean).sort((left, right) => left.localeCompare(right));
   }, [allBooks, storedCategories]);
 
+  // Applies the current marketplace filters to the book list.
   const applyFilters = useCallback(() => {
     const filtered = filterBooks(filters, allBooks);
     setFilteredBooks(filtered);

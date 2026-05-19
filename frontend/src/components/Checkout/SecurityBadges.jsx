@@ -1,3 +1,4 @@
+// Checkout trust and security badges.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,6 +7,7 @@ import {
   faUserShield,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Trust and security badges shown beneath the checkout summary.
 const SecurityBadges = () => {
   return (
     <div className="security-badges">

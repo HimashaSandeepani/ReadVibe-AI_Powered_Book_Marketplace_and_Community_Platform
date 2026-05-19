@@ -1,9 +1,12 @@
+// Cart order summary and totals panel.
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
+// Order summary component that displays cart totals and checkout actions.
 const OrderSummary = ({ totals, onCheckout, onContinueShopping, cart }) => {
+  // Formats totals in LKR for the order summary panel.
   const formatPriceLKR = (price) => {
     return new Intl.NumberFormat("en-LK", {
       style: "currency",

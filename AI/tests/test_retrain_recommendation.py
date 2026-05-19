@@ -1,3 +1,4 @@
+"""Tests for the book recommendation retraining workflow."""
 from __future__ import annotations
 
 import importlib.util

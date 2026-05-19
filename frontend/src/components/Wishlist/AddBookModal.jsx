@@ -1,3 +1,4 @@
+// Wishlist modal for searching and adding books to the user's list.
 import React from "react";
 import {
   Modal,

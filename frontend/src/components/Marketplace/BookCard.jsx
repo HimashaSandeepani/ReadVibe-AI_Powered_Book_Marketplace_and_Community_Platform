@@ -1,3 +1,4 @@
+// Marketplace book card with quick actions and book preview.
 import React from "react";
 import { Button, Badge, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

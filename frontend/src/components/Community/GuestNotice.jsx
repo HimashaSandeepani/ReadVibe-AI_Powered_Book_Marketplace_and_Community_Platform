@@ -1,8 +1,10 @@
+// Guest-only notice for the community feed.
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
+// Guest notice that explains posting restrictions for signed-out users.
 const GuestNotice = () => {
   return (
     <div className="guest-restriction mb-4">

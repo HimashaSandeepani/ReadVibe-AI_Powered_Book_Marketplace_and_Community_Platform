@@ -1,3 +1,4 @@
+// Shared application error types and HTTP error helpers.
 export class AppError extends Error {
   constructor(message, status = 500) {
     super(message);

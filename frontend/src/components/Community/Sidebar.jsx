@@ -1,5 +1,7 @@
+// Community sidebar for filters and navigation.
 import React from "react";
 
+// Community sidebar that shows contributors, tags, and guidelines.
 const Sidebar = ({ topContributors, popularTags, handleTagClick }) => {
   return (
     <div className="community-sidebar sidebar-sticky">

@@ -1,3 +1,4 @@
+// User profile utility functions for profile data, reviews, book requests, and stats.
 import { formatPrice, formatDate, showNotification, getAllBooks } from "../../utils/helpers";
 import { getCurrentUser, setCurrentUser } from "../../utils/auth";
 import { createBookRequestApi } from "../../utils/communityApi";
@@ -28,11 +29,13 @@ const handleApi = async (path, options = {}) => {
 
 export const books = getAllBooks();
 
+// Builds a compact star representation from a numeric rating.
 export const generateStarRating = (rating) => {
   const safeRating = Number(rating) || 0;
   return "*".repeat(Math.max(0, Math.min(5, Math.round(safeRating))));
 };
 
+// Normalizes an order shape from API/local storage into the profile view format.
 const normalizeOrder = (order) => {
   const items = Array.isArray(order?.items) ? order.items : [];
   const shippingAddress = order?.shippingAddress || {};
@@ -59,20 +62,24 @@ const normalizeOrder = (order) => {
   };
 };
 
+// Normalizes a review object for consistent profile rendering.
 const normalizeReview = (review) => ({
   ...review,
   bookId: review?.bookId?.toString?.() ?? String(review?.bookId ?? ""),
   date: review?.date || review?.createdAt,
 });
 
+// Converts a review list into the normalized profile format.
 const normalizeBookReviewList = (reviews = []) =>
   reviews.map((review) => normalizeReview(review));
 
+// Normalizes activity timestamps for profile activity cards.
 const normalizeActivity = (activity) => ({
   ...activity,
   time: activity?.time ? formatDate(activity.time) : "Recently",
 });
 
+// Normalizes a book request object for profile display.
 const normalizeBookRequest = (request) => ({
   ...request,
   userName: request?.userFullName || request?.username || "User",
@@ -86,22 +93,27 @@ const normalizeBookRequest = (request) => ({
   adminNotes: request?.adminNotes || request?.stock_managerNotes || "",
 });
 
+// Derives a display name for review authors.
 const getBookReviewDisplayName = (user) => user?.fullName || user?.name || user?.username || "Reader";
 
+// Notifies listeners that the cached book reviews changed.
 const emitBookReviewsUpdated = () => {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent(BOOK_REVIEWS_UPDATED_EVENT));
 };
 
+// Returns every cached review across all books.
 export const getStoredBookReviews = () => {
   return [...bookReviewsCache.values()].flat();
 };
 
+// Returns cached reviews for a single book.
 export const getBookReviewsForBook = (bookId) => {
   const normalizedBookId = String(bookId ?? "");
   return bookReviewsCache.get(normalizedBookId) || [];
 };
 
+// Fetches and caches reviews for a single book.
 export const loadBookReviewsForBook = async (bookId) => {
   const normalizedBookId = String(bookId ?? "");
   if (!normalizedBookId) return [];
@@ -113,6 +125,7 @@ export const loadBookReviewsForBook = async (bookId) => {
   return reviews;
 };
 
+// Inserts a new review into the local review cache.
 export const updateBookReviewCache = (review, book, user) => {
   if (!review) return;
 
@@ -145,11 +158,13 @@ export const updateBookReviewCache = (review, book, user) => {
   }
 };
 
+// Normalizes identity values for cross-source user matching.
 const normalizeIdentityValue = (value) => {
   if (value === null || value === undefined) return "";
   return String(value).trim().toLowerCase();
 };
 
+// Counts community posts associated with the current user.
 const getUserCommunityPostCount = (user) => {
   if (!user?.id && !user?.username && !user?.name && !user?.fullName) {
     return 0;
@@ -191,6 +206,7 @@ const getUserCommunityPostCount = (user) => {
   }
 };
 
+// Loads all profile-related data for the current user.
 export const loadUserData = async (user) => {
   if (!user?.id) {
     return {
@@ -230,6 +246,7 @@ export const loadUserData = async (user) => {
   };
 };
 
+// Persists profile edits through the backend and updates the current user.
 export const updateUserProfile = async (user, updatedData) => {
   const data = await handleApi("/api/profile", {
     method: "PUT",
@@ -246,6 +263,7 @@ export const updateUserProfile = async (user, updatedData) => {
   return data.user;
 };
 
+// Submits a book request from the profile screen.
 export const submitBookRequest = async (user, requestData) =>
   createBookRequestApi({
     userId: user.id,
@@ -256,6 +274,7 @@ export const submitBookRequest = async (user, requestData) =>
     reason: requestData.reason,
   });
 
+  // Submits a review for a book and updates the local review cache.
 export const submitReview = async (user, book, reviewData, orderId = null) => {
   const data = await handleApi("/api/profile/reviews", {
     method: "POST",
@@ -292,6 +311,7 @@ export const submitReview = async (user, book, reviewData, orderId = null) => {
   return savedReview;
 };
 
+// Deletes a review and removes it from the local review cache.
 export const deleteReview = async (reviewId, userId) => {
   await handleApi(`/api/profile/reviews/${reviewId}?userId=${encodeURIComponent(userId)}`, {
     method: "DELETE",
@@ -306,6 +326,7 @@ export const deleteReview = async (reviewId, userId) => {
   emitBookReviewsUpdated();
 };
 
+// Returns order items that the user has not reviewed yet.
 export const findUnreviewedItems = (order, userReviews) => {
   const items = Array.isArray(order?.items) ? order.items : [];
   return items.filter((item) => {

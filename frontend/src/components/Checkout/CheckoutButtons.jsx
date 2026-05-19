@@ -1,8 +1,10 @@
+// Checkout navigation and submit buttons.
 import React from "react";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faLock } from "@fortawesome/free-solid-svg-icons";
 
+// Checkout action buttons for navigating back or submitting the order.
 const CheckoutButtons = ({ onBack, onSubmit, isLoading, onNavigateBack }) => {
   const handleBackClick = onBack || onNavigateBack;
 

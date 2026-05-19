@@ -1,3 +1,4 @@
+// Stock manager orders tab.
 import React from "react";
 import StatsCard from "../Common/StatsCard";
 import OrdersTable from "../Tables/OrdersTable";

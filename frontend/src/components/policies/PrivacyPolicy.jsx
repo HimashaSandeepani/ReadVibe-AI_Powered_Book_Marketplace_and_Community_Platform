@@ -1,4 +1,4 @@
-// PrivacyPolicy.jsx
+// Privacy policy page content.
 import React from "react";
 import { Container, Card, ListGroup, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

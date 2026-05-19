@@ -1,6 +1,8 @@
+// Checkout order items list.
 import React from "react";
 import { formatPrice } from "./utils";
 
+// Order items list shown in the checkout summary.
 const OrderItems = ({ items }) => {
   return (
     <div id="orderItems" className="mb-3">

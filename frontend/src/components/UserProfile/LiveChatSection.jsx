@@ -1,3 +1,4 @@
+// User profile live chat support section.
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import LiveChatThreadList from "../LiveChat/LiveChatThreadList";

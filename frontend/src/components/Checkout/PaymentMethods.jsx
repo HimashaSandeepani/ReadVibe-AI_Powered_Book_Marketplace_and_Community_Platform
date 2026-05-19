@@ -1,7 +1,9 @@
+// Checkout payment method selector.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 
+// Payment method selector that highlights the supported card option.
 const PaymentMethods = () => {
   return (
     <div className="payment-methods mb-4">

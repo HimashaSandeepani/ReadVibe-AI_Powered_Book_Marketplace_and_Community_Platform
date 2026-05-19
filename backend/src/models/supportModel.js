@@ -1,3 +1,4 @@
+// Support ticket and chat database access helpers.
 import pool, { query } from '../config/database.js';
 
 const ensureTables = async () => {

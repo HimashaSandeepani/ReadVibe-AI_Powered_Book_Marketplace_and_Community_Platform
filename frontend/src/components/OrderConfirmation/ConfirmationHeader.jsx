@@ -1,3 +1,4 @@
+// Order confirmation header and status summary.
 import React from "react";
 import { Button, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

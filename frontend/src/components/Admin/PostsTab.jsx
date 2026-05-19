@@ -1,5 +1,7 @@
+// Admin tab for community posts.
 import React from "react";
 
+// Admin community posts tab component.
 const PostsTab = () => {
   return (
     <>

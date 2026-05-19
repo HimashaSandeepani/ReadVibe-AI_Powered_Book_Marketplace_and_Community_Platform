@@ -1,3 +1,4 @@
+// Controller layer for author-related requests.
 import {
   createAuthor,
   deleteAuthor,

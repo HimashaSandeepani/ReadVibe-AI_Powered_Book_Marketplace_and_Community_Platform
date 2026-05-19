@@ -1,3 +1,4 @@
+// Controller layer for publisher-related requests.
 import {
   createPublisher,
   deletePublisher,

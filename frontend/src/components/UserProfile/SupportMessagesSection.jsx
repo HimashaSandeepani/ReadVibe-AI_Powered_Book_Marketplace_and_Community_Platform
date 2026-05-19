@@ -1,3 +1,4 @@
+// User profile support messages section.
 import React from "react";
 import { Button, Card, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

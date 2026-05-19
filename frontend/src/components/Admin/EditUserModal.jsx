@@ -1,5 +1,7 @@
+// Admin modal for editing an existing user.
 import React, { useState } from "react";
 
+// Builds the edit-user form state from the selected user.
 const buildFormState = (user) => ({
   username: user?.username || "",
   email: user?.email || "",
@@ -7,6 +9,7 @@ const buildFormState = (user) => ({
   status: user?.status || "active",
 });
 
+// Admin edit-user modal component.
 const EditUserModalContent = ({ user, onClose, onSubmit }) => {
   const [formData, setFormData] = useState(() => buildFormState(user));
 

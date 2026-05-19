@@ -1,13 +1,16 @@
+// Checkout progress indicator.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
+// Static checkout step definitions used by the progress indicator.
 const baseSteps = [
   { number: 1, label: "Delivery" },
   { number: 2, label: "Payment" },
   { number: 3, label: "Confirmation" },
 ];
 
+// Checkout progress tracker that highlights the current step.
 const ProgressSteps = ({ currentStep = 2 }) => {
   const steps = baseSteps.map((step) => ({
     ...step,

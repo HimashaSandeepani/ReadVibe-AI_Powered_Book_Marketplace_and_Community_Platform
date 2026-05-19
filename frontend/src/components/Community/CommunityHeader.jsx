@@ -1,3 +1,4 @@
+// Community page header and action bar.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,6 +7,7 @@ import {
   faBookMedical,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Community header component that exposes the main create and request actions.
 const Header = ({
   currentUser,
   handleOpenCreatePostModal,

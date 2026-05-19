@@ -1,7 +1,8 @@
+// Home page utility functions for featured books, community actions, and cart shortcuts.
 import { addItem, setCart } from "../../store/slices/cartSlice";
 import { showNotification, formatPrice, generateStarRating, addToWishlist } from "../../utils/helpers";
 
-// Image mapping utility
+// Resolves a home page book image from the title.
 export const getBookImage = (bookTitle) => {
   const imageMap = {
     "The Midnight Library": "/assets/The_Midnight_Library.jpeg",
@@ -17,7 +18,8 @@ export const getBookImage = (bookTitle) => {
   return imageMap[bookTitle] || "/assets/default_book.jpg";
 };
 
-// Book loading and formatting utilities
+
+// Loads stock books from local storage for the home page.
 export const loadStockBooks = () => {
   try {
     const storedBooks = JSON.parse(localStorage.getItem("stockBooks")) || [];
@@ -28,6 +30,7 @@ export const loadStockBooks = () => {
   }
 };
 
+// Formats featured books for the home page hero sections.
 export const formatFeaturedBooks = (stockBooks, getBookImage) => {
   // Get featured books from stock
   let featured = stockBooks.filter(book => book.featured === true);
@@ -74,7 +77,7 @@ export const formatFeaturedBooks = (stockBooks, getBookImage) => {
   }));
 };
 
-// Community post utilities
+// Toggles like state for a community post.
 export const handleCommunityPostLike = (communityPosts, setCommunityPosts, postId, isLoggedIn, navigate) => {
   if (!isLoggedIn()) {
     alert("Please login to like posts");
@@ -93,6 +96,7 @@ export const handleCommunityPostLike = (communityPosts, setCommunityPosts, postI
   );
 };
 
+// Adds a comment to a community post.
 export const handleCommunityPostComment = (communityPosts, setCommunityPosts, postId, commentText, currentUser) => {
   if (!commentText.trim()) return communityPosts;
 
@@ -112,6 +116,7 @@ export const handleCommunityPostComment = (communityPosts, setCommunityPosts, po
   );
 };
 
+// Shares a community post through native share or clipboard fallback.
 export const handleCommunityPostShare = (post, isLoggedIn, navigate) => {
   if (!isLoggedIn()) {
     alert("Please login to share posts");
@@ -142,7 +147,7 @@ export const handleCommunityPostShare = (post, isLoggedIn, navigate) => {
   }
 };
 
-// Book action utilities
+// Adds a book to the cart from the home page.
 export const handleAddToCart = ({
   bookId,
   featuredBooks,
@@ -192,7 +197,7 @@ export const handleAddToCart = ({
   return true;
 };
 
-// Direct Buy Now function
+// Replaces the cart with a single item and sends the user to delivery details.
 export const directBuyNow = ({
   bookId,
   featuredBooks,
@@ -245,6 +250,7 @@ export const directBuyNow = ({
   return true;
 };
 
+// Returns the stock badge metadata for a book.
 export const getStockBadge = (book) => {
   if (book.stock > 10) {
     return { variant: "success", text: "In Stock" };

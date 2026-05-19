@@ -1,6 +1,8 @@
+// Admin modal for reviewing or editing a post.
 import React from "react";
 import { getStatusBadgeClass } from "./utils";
 
+// Formats post timestamps for display in the modal.
 const formatTimestamp = (value) => {
   if (!value) return "Recently";
 
@@ -13,6 +15,7 @@ const formatTimestamp = (value) => {
   }
 };
 
+// Admin post details modal component.
 const PostModal = ({ show, onClose, post, onDeletePost }) => {
   if (!show || !post) return null;
 

@@ -1,3 +1,4 @@
+// Signup form for creating new accounts.
 import React from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

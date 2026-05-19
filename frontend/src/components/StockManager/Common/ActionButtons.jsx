@@ -1,3 +1,4 @@
+// Shared stock manager action buttons.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

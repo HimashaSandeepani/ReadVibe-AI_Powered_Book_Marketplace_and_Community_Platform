@@ -1,8 +1,10 @@
+// Important note block for delivery selection.
 import React from "react";
 import { Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
+// Important delivery note component that explains tax and shipping rules.
 const ImportantNote = () => {
   return (
     <div className="delivery-note alert alert-info">

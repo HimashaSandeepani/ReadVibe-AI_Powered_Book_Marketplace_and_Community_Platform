@@ -1,3 +1,4 @@
+// Modal for tracking an order status.
 import React from "react";
 import { Modal, Button, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

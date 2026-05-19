@@ -1,6 +1,6 @@
-// components/Checkout/utils.js
+// Checkout utility functions for payment validation, delivery dates, and storage cleanup.
 
-// Format price function (copied from helpers to avoid import issues)
+// Formats LKR values for checkout displays.
 export const formatPrice = (price) => {
   return new Intl.NumberFormat("en-LK", {
     style: "currency",
@@ -10,7 +10,7 @@ export const formatPrice = (price) => {
   }).format(price);
 };
 
-// Payment processing utilities
+// Normalizes card number spacing for display.
 export const formatCardNumber = (value) => {
   const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
   const matches = v.match(/\d{4,16}/g);
@@ -29,6 +29,7 @@ export const formatCardNumber = (value) => {
 };
 
 // Form validation
+// Validates payment form fields and returns field-level errors.
 export const validatePaymentForm = (paymentData) => {
   const errors = {};
 
@@ -62,6 +63,7 @@ export const validatePaymentForm = (paymentData) => {
 };
 
 // Calculate estimated delivery
+// Calculates the estimated delivery timestamp for the selected shipping method.
 export const calculateEstimatedDelivery = (shippingMethod) => {
   const now = new Date();
   let daysToAdd;
@@ -84,6 +86,7 @@ export const calculateEstimatedDelivery = (shippingMethod) => {
 };
 
 // Simulate payment processing
+// Simulates a checkout payment response for demo flows.
 export const processPayment = async () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -104,9 +107,12 @@ export const processPayment = async () => {
   });
 };
 
+// Builds the storage key for a saved payment confirmation.
 export const getOrderPaymentConfirmationKey = (orderId) =>
   orderId ? `orderPaymentConfirmation_${orderId}` : "orderPaymentConfirmation_latest";
 
+// Saves the payment confirmation to local and session storage.
+// Persists a payment confirmation in both local and session storage.
 export const saveOrderPaymentConfirmation = (confirmation) => {
   const orderId = confirmation?.orderId;
   const key = getOrderPaymentConfirmationKey(orderId);
@@ -117,6 +123,7 @@ export const saveOrderPaymentConfirmation = (confirmation) => {
 };
 
 // Clear checkout data from storage
+// Removes checkout-related session storage entries.
 export const clearCheckoutData = () => {
   sessionStorage.removeItem("deliveryData");
   sessionStorage.removeItem("checkoutCart");

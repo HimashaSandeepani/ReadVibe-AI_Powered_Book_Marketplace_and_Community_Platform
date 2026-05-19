@@ -1,5 +1,7 @@
+// Redux slice for the shopping cart state.
 import { createSlice } from "@reduxjs/toolkit";
 
+// Reads the cart state from local storage.
 const readCartFromStorage = () => {
   if (typeof window === "undefined") return [];
   try {
@@ -11,6 +13,7 @@ const readCartFromStorage = () => {
   }
 };
 
+// Emits a cart-updated event for other listeners.
 const emitCartEvent = () => {
   try {
     const dispatchCartEvent = () => {
@@ -28,6 +31,7 @@ const emitCartEvent = () => {
   }
 };
 
+// Saves the cart state and broadcasts the change.
 const persistCart = (items) => {
   try {
     window.localStorage.setItem("cart", JSON.stringify(items));
@@ -45,9 +49,11 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    // Reloads the cart from local storage.
     syncFromStorage: (state) => {
       state.items = readCartFromStorage();
     },
+    // Adds an item or increases its quantity.
     addItem: (state, action) => {
       const incoming = action.payload;
       const existing = state.items.find((i) => i.id === incoming.id);
@@ -65,6 +71,7 @@ const cartSlice = createSlice({
       }
       persistCart(state.items);
     },
+    // Adjusts an item's quantity by delta.
     updateQuantity: (state, action) => {
       const { id, delta } = action.payload;
       state.items = state.items
@@ -80,15 +87,18 @@ const cartSlice = createSlice({
         .filter(Boolean);
       persistCart(state.items);
     },
+    // Removes a single cart item.
     removeItem: (state, action) => {
       const id = action.payload;
       state.items = state.items.filter((item) => item.id !== id);
       persistCart(state.items);
     },
+    // Empties the cart.
     clearCart: (state) => {
       state.items = [];
       persistCart(state.items);
     },
+    // Replaces the cart with a provided list.
     setCart: (state, action) => {
       state.items = action.payload || [];
       persistCart(state.items);
@@ -105,7 +115,9 @@ export const {
   setCart,
 } = cartSlice.actions;
 
+// Selects the cart item array.
 export const selectCartItems = (state) => state.cart.items;
+// Selects the total item count across the cart.
 export const selectCartCount = (state) =>
   state.cart.items.reduce((sum, item) => sum + (item.quantity || 0), 0);
 

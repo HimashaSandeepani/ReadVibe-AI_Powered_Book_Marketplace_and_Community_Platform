@@ -1,10 +1,13 @@
+// Wishlist API helpers for backend-backed wishlist operations.
 const API_BASE = import.meta.env?.VITE_BACKEND_URL || "http://localhost:5000";
 
+// Normalizes an ID into a positive integer.
 const normalizeId = (value) => {
   const parsed = Number(value);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
 };
 
+// Validates and resolves a required numeric ID.
 const requireId = (value, label) => {
   const normalized = normalizeId(value);
   if (!normalized) {
@@ -13,6 +16,7 @@ const requireId = (value, label) => {
   return normalized;
 };
 
+// Mirrors wishlist data into local storage and emits an update event.
 const syncWishlistStorage = (userId, items) => {
   const normalizedUserId = normalizeId(userId);
   if (!normalizedUserId) return;
@@ -28,6 +32,7 @@ const syncWishlistStorage = (userId, items) => {
   }
 };
 
+// Sends JSON requests to the wishlist backend APIs.
 const handleApi = async (path, options = {}) => {
   const { headers = {}, ...restOptions } = options;
 
@@ -47,6 +52,7 @@ const handleApi = async (path, options = {}) => {
   return data;
 };
 
+// Fetches the current user's wishlist items.
 export const fetchWishlistApi = async (userId) => {
   const normalizedUserId = requireId(userId, "userId");
   const data = await handleApi(`/api/wishlist?userId=${encodeURIComponent(normalizedUserId)}`, {
@@ -57,6 +63,7 @@ export const fetchWishlistApi = async (userId) => {
   return items;
 };
 
+// Adds a wishlist item through the backend API.
 export const addWishlistItemApi = async ({ userId, bookId, priority, notes }) => {
   const normalizedUserId = requireId(userId, "userId");
   const normalizedBookId = requireId(bookId, "bookId");
@@ -76,6 +83,7 @@ export const addWishlistItemApi = async ({ userId, bookId, priority, notes }) =>
   return items;
 };
 
+// Updates a wishlist item through the backend API.
 export const updateWishlistItemApi = async ({ userId, bookId, priority, notes }) => {
   const normalizedUserId = requireId(userId, "userId");
   const normalizedBookId = requireId(bookId, "bookId");
@@ -94,6 +102,7 @@ export const updateWishlistItemApi = async ({ userId, bookId, priority, notes })
   return items;
 };
 
+// Deletes a wishlist item through the backend API.
 export const deleteWishlistItemApi = async ({ userId, bookId }) => {
   const normalizedUserId = requireId(userId, "userId");
   const normalizedBookId = requireId(bookId, "bookId");
@@ -107,6 +116,7 @@ export const deleteWishlistItemApi = async ({ userId, bookId }) => {
   return items;
 };
 
+// Clears the user's wishlist through the backend API.
 export const clearWishlistApi = async (userId) => {
   const normalizedUserId = requireId(userId, "userId");
   const data = await handleApi(`/api/wishlist?userId=${encodeURIComponent(normalizedUserId)}`, {

@@ -1,3 +1,4 @@
+// Controller layer for support ticket and chat requests.
 import {
   addSupportReply,
   createSupportMessage,

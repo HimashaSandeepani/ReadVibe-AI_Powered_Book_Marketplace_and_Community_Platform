@@ -1,3 +1,4 @@
+// Marketplace modal for inspecting a selected book.
 import React from "react";
 import { Modal, Button, Row, Col, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

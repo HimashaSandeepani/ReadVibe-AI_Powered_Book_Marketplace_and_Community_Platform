@@ -1,3 +1,4 @@
+// Book catalog API endpoints and validation rules.
 import express from 'express';
 import { body, param, validationResult } from 'express-validator';
 import {

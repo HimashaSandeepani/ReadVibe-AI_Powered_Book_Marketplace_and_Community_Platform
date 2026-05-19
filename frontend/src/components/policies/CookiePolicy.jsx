@@ -1,4 +1,4 @@
-// CookiePolicy.jsx
+// Cookie policy page content.
 import React from "react";
 import { Container, Card, Table, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

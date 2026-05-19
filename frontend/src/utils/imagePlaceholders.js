@@ -1,3 +1,4 @@
+// SVG placeholder generators for missing book cover artwork.
 const createBookCoverPlaceholder = (label = "Book Cover", width = 200, height = 300) => {
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${label}">

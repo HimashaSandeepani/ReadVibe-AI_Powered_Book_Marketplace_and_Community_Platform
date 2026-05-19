@@ -1,3 +1,4 @@
+// Home page notice shown to guest users.
 import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,6 +7,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Home page notice shown to guest users.
 const GuestNotice = () => {
   return (
     <div className="guest-notice">

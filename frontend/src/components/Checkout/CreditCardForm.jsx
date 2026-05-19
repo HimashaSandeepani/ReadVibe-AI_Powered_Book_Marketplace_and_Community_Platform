@@ -1,15 +1,18 @@
+// Credit card payment form fields.
 import React from "react";
 import { Form, Row, Col, InputGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { formatCardNumber } from "./utils";
 
+// Credit card payment form that captures card number, expiry, CVV, and name.
 const CreditCardForm = ({
   paymentData,
   formErrors,
   isLoading,
   handleInputChange,
 }) => {
+  // Formats card input locally before forwarding it to the parent handler.
   const handleLocalCardNumberChange = (e) => {
     const formatted = formatCardNumber(e.target.value);
     handleInputChange({

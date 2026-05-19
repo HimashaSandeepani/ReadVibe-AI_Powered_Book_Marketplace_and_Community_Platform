@@ -1,3 +1,4 @@
+// Login and signup page with authentication entry flows.
 import { useState, useEffect, useMemo } from "react";
 import { Container, Card, Row, Col } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -29,11 +30,13 @@ import {
 
 import "../styles/pages/Login.css";
 
+// Detects whether the login page should open in signup mode.
 const isSignupQuery = (searchParams) => {
   const urlParams = new URLSearchParams(searchParams);
   return urlParams.get("signup") === "true";
 };
 
+// Login page component.
 const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -62,6 +65,7 @@ const Login = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
 
+  // Syncs the page mode with the URL query string.
   const updateFormModeQuery = (mode) => {
     const params = new URLSearchParams(location.search);
     if (mode === "signup") {
@@ -89,6 +93,7 @@ const Login = () => {
     initializeDemoUsers();
   }, [navigate]);
 
+  // Handles the login form submission.
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const errors = validateLoginForm(loginData);
@@ -119,6 +124,7 @@ const Login = () => {
     }
   };
 
+  // Handles the signup form submission.
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
     const errors = validateSignupForm(signupData);
@@ -147,6 +153,7 @@ const Login = () => {
     }
   };
 
+  // Handles the password reset flow.
   const handleForgotPasswordSubmit = (data) => {
     const {
       step,

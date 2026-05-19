@@ -1,3 +1,4 @@
+// Support contact modal for order issues.
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

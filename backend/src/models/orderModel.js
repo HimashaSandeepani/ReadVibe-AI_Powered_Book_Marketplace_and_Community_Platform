@@ -1,3 +1,4 @@
+// Order database access helpers and table initialization.
 import pool, { query } from '../config/database.js';
 
 const ensureTables = async () => {

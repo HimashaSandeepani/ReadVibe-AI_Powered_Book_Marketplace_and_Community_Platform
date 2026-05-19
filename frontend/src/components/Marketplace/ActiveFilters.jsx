@@ -1,3 +1,4 @@
+// Marketplace controls that display and clear active filters.
 import React from "react";
 import { Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

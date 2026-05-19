@@ -1,5 +1,7 @@
+// Delivery details loading indicator.
 import React from "react";
 
+// Delivery details loading indicator shown while checkout data loads.
 const LoadingSpinner = () => {
   return (
     <div className="delivery-loading">

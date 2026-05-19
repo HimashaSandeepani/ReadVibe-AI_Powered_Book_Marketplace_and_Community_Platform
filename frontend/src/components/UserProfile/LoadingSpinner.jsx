@@ -1,3 +1,4 @@
+// User profile loading indicator.
 import React from "react";
 
 const LoadingSpinner = ({ message = "Loading profile..." }) => {

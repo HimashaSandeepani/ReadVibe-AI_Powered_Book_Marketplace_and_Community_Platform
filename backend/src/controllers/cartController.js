@@ -1,3 +1,4 @@
+// Controller layer for shopping cart requests.
 import {
   addToCart,
   clearCart,

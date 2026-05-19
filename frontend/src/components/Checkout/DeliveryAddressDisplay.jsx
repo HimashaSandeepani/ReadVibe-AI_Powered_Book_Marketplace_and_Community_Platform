@@ -1,5 +1,7 @@
+// Checkout delivery address summary.
 import React from "react";
 
+// Delivery address summary shown inside the checkout order review.
 const DeliveryAddressDisplay = ({ shipping }) => {
   if (!shipping) return null;
 

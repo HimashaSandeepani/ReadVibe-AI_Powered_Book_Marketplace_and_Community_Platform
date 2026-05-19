@@ -1,8 +1,10 @@
+// Delivery details order summary.
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReceipt } from "@fortawesome/free-solid-svg-icons";
 import { formatPriceLKR } from "./utils";
 
+// Delivery order summary component that displays subtotal, shipping, tax, and total.
 const OrderSummary = ({ orderSummary }) => {
   return (
     <div className="delivery-summary">

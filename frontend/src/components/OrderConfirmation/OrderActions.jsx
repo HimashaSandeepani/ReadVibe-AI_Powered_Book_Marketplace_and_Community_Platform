@@ -1,3 +1,4 @@
+// Follow-up actions available after order placement.
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

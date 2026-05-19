@@ -1,3 +1,4 @@
+// Support message and live chat API endpoints.
 import express from 'express';
 import {
   addSupportReplyHandler,

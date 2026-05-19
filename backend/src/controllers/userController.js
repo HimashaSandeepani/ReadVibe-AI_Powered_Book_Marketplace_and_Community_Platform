@@ -1,3 +1,4 @@
+// Controller layer for user administration requests.
 import {
   createUser,
   deleteUser,

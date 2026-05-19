@@ -1,5 +1,7 @@
+// Shared frontend helper functions for cart, wishlist, and user data.
 import { addWishlistItemApi } from "./wishlistApi.js";
 
+// Normalizes a user object and resolves any legacy ID field names.
 const normalizeUser = (user) => {
   if (!user || typeof user !== "object") return null;
 
@@ -17,6 +19,7 @@ const normalizeUser = (user) => {
 };
 
 // Return inventory books from localStorage
+// Loads the stock book list and normalizes the displayed fields.
 export const getAllBooks = () => {
   try {
     const stored = JSON.parse(localStorage.getItem("stockBooks")) || [];
@@ -42,14 +45,17 @@ export const getAllBooks = () => {
 };
 
 // Cart functions
+// Returns the cart from local storage.
 export const getCart = () => {
   return JSON.parse(localStorage.getItem('cart')) || []
 }
 
+// Persists the cart to local storage.
 export const updateCart = (cart) => {
   localStorage.setItem('cart', JSON.stringify(cart))
 }
 
+// Adds a book to the cart or increments its quantity.
 export const addToCart = (bookId, quantity = 1) => {
   const cart = getCart()
   const book = getAllBooks().find(b => b.id === bookId)
@@ -70,10 +76,12 @@ export const addToCart = (bookId, quantity = 1) => {
       quantity: quantity
     })
   }
+    // Removes a book from the cart.
 
   updateCart(cart)
 }
 
+// Updates a cart item's quantity and removes it if the count reaches zero.
 export const removeFromCart = (bookId) => {
   const cart = getCart().filter(item => item.id !== bookId)
   updateCart(cart)
@@ -96,6 +104,7 @@ export const updateQuantity = (bookId, change) => {
 
 
 // Search books
+// Searches books by title or author.
 export const searchBooks = (query, booksArray = getAllBooks()) => {
   const q = (query || "").toLowerCase();
   return booksArray.filter(
@@ -106,6 +115,7 @@ export const searchBooks = (query, booksArray = getAllBooks()) => {
 };
 
 // Add or sync wishlist entry via backend API
+// Adds a book to the backend-backed wishlist.
 export const addToWishlist = async (bookId, userId) => {
   const normalizedUserId = Number(userId);
   const normalizedBookId = Number(bookId);
@@ -129,6 +139,7 @@ export const addToWishlist = async (bookId, userId) => {
 // Add these to your existing helpers.js
 
 // Filter books function
+// Filters books using category, price, rating, review count, and stock flags.
 export const filterBooks = (filters, booksArray) => {
   let filtered = [...booksArray];
   const minRating = Number(filters.minRating) || 0;
@@ -162,6 +173,7 @@ export const filterBooks = (filters, booksArray) => {
 };
 
 // Enhanced showNotification function
+// Shows a styled toast notification in the page shell.
 export const showNotification = (message, type = 'info') => {
   const typeMap = {
     success: { icon: 'check-circle', label: 'Success' },
@@ -210,6 +222,7 @@ export const showNotification = (message, type = 'info') => {
 
 
 // Price formatting cart, delivery
+// Formats a price in Sri Lankan rupees.
 export const formatPrice = (price) => {
   return new Intl.NumberFormat('en-LK', {
     style: 'currency',
@@ -223,12 +236,14 @@ export const formatPrice = (price) => {
 
 
 // Star rating generator
+// Converts a numeric rating into a 5-star string.
 export const generateStarRating = (rating) => {
   const stars = Math.round(rating);
   return '★'.repeat(stars) + '☆'.repeat(5 - stars);
 };
 
 // Truncate text
+// Shortens text to a maximum length with an ellipsis.
 export const truncateText = (text, maxLength) => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
@@ -241,6 +256,7 @@ export const truncateText = (text, maxLength) => {
 // };
 
 // Debounce function
+// Delays repeated calls until the input settles.
 export const debounce = (func, wait) => {
   let timeout;
   return function executedFunction(...args) {
@@ -260,11 +276,13 @@ export const debounce = (func, wait) => {
 // utils/helpers.js
 
 
+// Retrieves a book by ID from local storage.
 export const getBookById = (bookId) => {
   const books = JSON.parse(localStorage.getItem('books')) || [];
   return books.find(book => book.id.toString() === bookId.toString());
 };
 
+// Updates a stored book's rating.
 export const updateBookRating = (bookId, rating) => {
   const books = JSON.parse(localStorage.getItem('books')) || [];
   const bookIndex = books.findIndex(book => book.id.toString() === bookId.toString());
@@ -278,6 +296,7 @@ export const updateBookRating = (bookId, rating) => {
 
 
 //wishlist
+// Returns the number of wishlist items for the current user.
 export const getWishlistCount = () => {
   const user = normalizeUser(JSON.parse(localStorage.getItem('currentUser')));
   if (!user) return 0;
@@ -289,22 +308,27 @@ export const getWishlistCount = () => {
 
 
 // Authentication utilities
+// Returns the normalized current user from local storage.
 export const getCurrentUser = () => {
   return normalizeUser(JSON.parse(localStorage.getItem('currentUser')))
 }
 
+// Stores the normalized current user in local storage.
 export const setCurrentUser = (user) => {
   localStorage.setItem('currentUser', JSON.stringify(normalizeUser(user)))
 }
 
+// Removes the current user from local storage.
 export const logout = () => {
   localStorage.removeItem('currentUser')
 }
 
+// Checks whether a current user is present.
 export const isAuthenticated = () => {
   return !!localStorage.getItem('currentUser')
 }
 
+// Returns the current user's wishlist items.
 export const getUserWishlist = () => {
   const user = getCurrentUser()
   if (!user) return []
@@ -312,6 +336,7 @@ export const getUserWishlist = () => {
   return JSON.parse(localStorage.getItem(`wishlist_${user.id}`)) || []
 }
 
+// Returns the current user's wishlist count.
 export const updateWishlistCount = () => {
   // This function can be called to update wishlist count in real-time
   const user = getCurrentUser()
@@ -325,6 +350,7 @@ export const updateWishlistCount = () => {
 
 
 //order confirmation
+// Formats a timestamp for order confirmation screens.
 export const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {

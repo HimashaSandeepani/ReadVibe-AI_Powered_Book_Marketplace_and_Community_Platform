@@ -1,3 +1,4 @@
+// Wishlist item card with status, priority, and item actions.
 import React from "react";
 import { Card, Badge, Button, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

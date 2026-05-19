@@ -1,3 +1,4 @@
+// Wishlist filtering and sorting controls.
 import React from "react";
 import { Card, Button, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

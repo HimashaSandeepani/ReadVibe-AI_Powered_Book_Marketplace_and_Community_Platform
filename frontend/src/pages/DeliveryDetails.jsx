@@ -1,3 +1,4 @@
+// Delivery details page for address and shipping selection.
 import { useState, useEffect, useMemo } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -43,6 +44,7 @@ const DEFAULT_FORM_DATA = {
   shippingMethod: "standard",
 };
 
+// Safely parses JSON stored in session or local storage.
 const safeParseJSON = (value) => {
   if (!value) {
     return null;
@@ -55,6 +57,7 @@ const safeParseJSON = (value) => {
   }
 };
 
+// Loads the saved shipping address for a user.
 const getSavedAddress = (userId) => {
   if (!userId) {
     return null;
@@ -63,6 +66,7 @@ const getSavedAddress = (userId) => {
   return safeParseJSON(localStorage.getItem(`userAddress_${userId}`));
 };
 
+// Builds the initial delivery form values from user data and storage.
 const buildInitialFormData = (user) => {
   const baseData = { ...DEFAULT_FORM_DATA };
 
@@ -84,6 +88,7 @@ const buildInitialFormData = (user) => {
   return baseData;
 };
 
+// Resolves checkout cart items from session storage and catalog data.
 const getCheckoutCartItems = () => {
   const savedCart = safeParseJSON(sessionStorage.getItem("checkoutCart")) || [];
   const catalogBooks = getAllBooks();
@@ -100,6 +105,7 @@ const getCheckoutCartItems = () => {
   });
 };
 
+// Delivery details page component.
 const DeliveryDetails = () => {
   const initialUser = getCurrentUser();
   const [currentUser] = useState(initialUser);
@@ -152,6 +158,7 @@ const DeliveryDetails = () => {
     }
   }, [currentUser, navigate]);
 
+  // Validates the delivery form before submission.
   const validateForm = () => {
     const newErrors = {};
 
@@ -179,6 +186,7 @@ const DeliveryDetails = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Updates delivery form state and clears field errors.
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -194,6 +202,7 @@ const DeliveryDetails = () => {
     }
   };
 
+  // Persists the current shipping address for the signed-in user.
   const saveAddress = () => {
     if (currentUser) {
       const address = {
@@ -214,6 +223,7 @@ const DeliveryDetails = () => {
     }
   };
 
+  // Submits delivery details and creates the order.
   const handleSubmit = (e) => {
     e.preventDefault();
 
